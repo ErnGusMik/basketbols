@@ -2,9 +2,9 @@
 Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitītājs.
 
 ### Darba plānojums
-| Darbs                 | Nodošanas datums | Statuss       |
-| --------------------- | ---------------- | ------------- |
-| Serveris, Datubāze    | 10/11/23         | 🟡 Nav uzsākts |
+| Darbs                 | Nodošanas datums | Statuss        |
+| --------------------- | ---------------- | -------------- |
+| Serveris, Datubāze    | 10/11/23         | 🟢 Procesā     |
 | Jauna turnīra lapa    | 17/11/23         | 🟡 Nav uzsākts |
 | Spēles, turnīra lapa  | 01/12/23         | 🟡 Nav uzsākts |
 | Pēcspēles analīze     | 08/12/23         | 🟡 Nav uzsākts |
