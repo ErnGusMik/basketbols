@@ -1,13 +1,14 @@
 /* 
 Structure:
 ID
+UserID
 Name
 Description
 Location
 Organizer
 Logo
-Dates
-Groups
+Dates (tournament start and end dates)
+Groups (number of groups)
 FinalsNum
 RefereeNum
 */

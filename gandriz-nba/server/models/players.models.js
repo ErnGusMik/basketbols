@@ -3,7 +3,7 @@ Structure:
 ID
 Name
 TeamID
-Number
+Number (in team)
 Points
 Blocks
 */

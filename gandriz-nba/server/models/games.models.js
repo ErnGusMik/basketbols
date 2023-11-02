@@ -5,19 +5,30 @@ Team1ID
 Team2ID
 Team1Points
 Team2Points
-RefereeIDs
-Date
+RefereeIDs (seperated with ',')
+Date  (varchar 'hh:mm dd/mm/yyyy')
 TournamentID
-Blocks
-3points
-LostPoints
-2points
+
+team1Blocks
+team13points
+team1LostPoints
+team12points
+
+team2Blocks
+team23points
+team2LostPoints
+team22points
+
 TimesTied
 TimesLeadChanged
-BiggestLead
-MostPointsInRow
-BestPlayers
-Finals
+
+team2BiggestLead
+team1BiggestLead
+team1MostPointsInRow
+team2MostPointsInRow
+team1BestPlayers (playerIDs seperated with ',')
+team2BestPlayers (playerIDs seperated with ',')
+Finals (0 if not, 4 for quarterfinals, 2 for semifinals, 1 for finals)
 */
 
 const modelGame = (id, team1ID, team2ID, team1Points, team2Points, refereeIDs, date, tournamentID, blocks, threePoints, lostPoints, twoPoints, timesTied, timesLeadChanged, biggestLead, mostPointsInRow, bestPlayers, finals) => {

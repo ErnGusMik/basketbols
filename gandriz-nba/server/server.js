@@ -8,6 +8,8 @@ const dbClient = require('./config/db.conf')
 // test connection to db
 app.get('/test', async (req, res) => {
     await dbClient.connect(err => {
+        console.log(err)
+        res.send(err)
     })
     const result = await dbClient.query('SELECT NOW()')
     await dbClient.end()
