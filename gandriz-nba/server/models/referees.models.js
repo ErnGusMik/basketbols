@@ -1,18 +1,16 @@
 /*
 Structure:
-ID
 TournamentID
 Name
 Finals
 */
+const db = require("./../database/postgres.database");
 
-const modelReferee = (id, tournamentID, name, finals) => {
-    const text = 'INSERT INTO referees (id, tournamentID, name, finals) VALUES ($1, $2, $3, $4)';
-    const values = [id, tournamentID, name, finals];
-    return {
-        text,
-        values
-    };
-}
+const modelReferee = async (tournamentID, name, finals) => {
+  const text =
+    "INSERT INTO referees (tournamentID, name, finals) VALUES ($1, $2, $3) RETURNING id";
+  const values = [tournamentID, name, finals];
+  return await db(text, values);
+};
 
 module.exports = modelReferee;
