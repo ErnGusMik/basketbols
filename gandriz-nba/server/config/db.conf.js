@@ -1,4 +1,4 @@
-const { Client } = require('pg')
+const { Client, Pool } = require('pg')
 
 const client = new Client({
     user: process.env.DB_USER,

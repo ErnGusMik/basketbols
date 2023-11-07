@@ -1,13 +1,17 @@
-const client = require('./../config/db.conf')
+const client = require("./../config/db.conf");
 
-const runQuery = async (text, values) => {
-    await client.connect(err => {
-        console.log(err)
-        return err
-    })
-    const result = await client.query(text, values)
-    await client.end()
-    return result.rows
-}
+const openConnection = async () => {
+client.connect((err) => {
+    if (err) {
+      console.log(err);
+      return err;
+    }
+  });
+};
 
-module.exports = runQuery
+const query = async (text, values) => {
+  const result = await client.query(text, values);
+  return result.rows;
+};
+
+module.exports = { query, openConnection };

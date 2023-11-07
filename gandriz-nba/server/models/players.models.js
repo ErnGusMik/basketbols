@@ -12,7 +12,7 @@ const modelPlayer = async (name, teamID, number, points, blocks) => {
   const text =
     "INSERT INTO players (name, teamID, number, points, blocks) VALUES ($1, $2, $3, $4, $5) RETURNING id";
   const values = [name, teamID, number, points, blocks];
-  return await db(text, values);
+  return await db.query(text, values);
 };
 
 module.exports = modelPlayer;

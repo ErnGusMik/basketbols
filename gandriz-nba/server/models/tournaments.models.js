@@ -12,6 +12,8 @@ Groups (number of groups)
 FinalsNum
 RefereeNum
 */
+const db = require("../database/postgres.database");
+
 
 const modelTournament = async (
   userID,
@@ -26,7 +28,7 @@ const modelTournament = async (
   refereeNum
 ) => {
   const text =
-    "INSERT INTO tournaments (userID, name, description, location, organizer, logo, dates, groups, finalsNum, refereeNum) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id";
+    "INSERT INTO tournaments (userid, name, description, location, organizer, logo, dates, groups, finalsNum, refereeNum) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id";
   const values = [
     userID,
     name,
@@ -39,7 +41,7 @@ const modelTournament = async (
     finalsNum,
     refereeNum,
   ];
-  return await db(text, values);
+  return await db.query(text, values);
 };
 
 module.exports = modelTournament;

@@ -136,7 +136,7 @@ const updateGame = async (
     team1BestPlayers,
     team2BestPlayers,
   ];
-  return await db(text, values);
+  return await db.query(text, values);
 };
 
 module.exports = {modelGame, updateGame};

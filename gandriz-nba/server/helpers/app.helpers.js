@@ -1,23 +1,28 @@
 const db = require("./../database/postgres.database");
 
-const verifyUserID = (userID) => {
-  db.query("SELECT * FROM users WHERE id = $1", [userID])
+const verifyUserID = async (userID) => {
+  const result = await db
+    .query("SELECT (id, name, surname, email) FROM users WHERE id = $1", [
+      userID,
+    ])
     .then((result) => {
-      if (result.rows.length === 0) {
+      if (!result) {
         return false;
       }
       return true;
     })
     .catch((err) => {
-      console.log(err);
+      console.log("Error " + err);
       return false;
     });
+  return result;
 };
 
-const verifyTournamentID = (tournamentID) => {
-  db.query("SELECT * FROM tournaments WHERE id = $1", [tournamentID])
+const verifyTournamentID = async (tournamentID) => {
+  const result = await db
+    .query("SELECT * FROM tournaments WHERE id = $1", [tournamentID])
     .then((result) => {
-      if (result.rows.length === 0) {
+      if (result.length === 0) {
         return false;
       }
       return true;
@@ -26,12 +31,14 @@ const verifyTournamentID = (tournamentID) => {
       console.log(err);
       return false;
     });
+  return result;
 };
 
-const verifyTeamID = (teamID) => {
-  db.query("SELECT * FROM teams WHERE id = $1", [teamID])
+const verifyTeamID = async (teamID) => {
+  const result = await db
+    .query("SELECT * FROM teams WHERE id = $1", [teamID])
     .then((result) => {
-      if (result.rows.length === 0) {
+      if (result.length === 0) {
         return false;
       }
       return true;
@@ -40,11 +47,28 @@ const verifyTeamID = (teamID) => {
       console.log(err);
       return false;
     });
-}
+  return result;
+};
 
+const verifyRefereeID = async (refereeID) => {
+  const result = await db
+    .query("SELECT * FROM referees WHERE id = $1", [refereeID])
+    .then((result) => {
+      if (result.length === 0) {
+        return false;
+      }
+      return true;
+    })
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
+  return result;
+};
 
 module.exports = {
   verifyUserID,
   verifyTournamentID,
-  verifyTeamID
+  verifyTeamID,
+  verifyRefereeID,
 };

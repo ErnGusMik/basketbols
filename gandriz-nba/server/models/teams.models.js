@@ -12,7 +12,7 @@ AvgLostPoints
 TournamentID
 */
 
-const db = require("./../database/postgres.database");
+const db = require("../database/postgres.database");
 
 const modelTeam = async (
   name,
@@ -42,7 +42,7 @@ const modelTeam = async (
     AvgLostPoints,
     tournamentID,
   ];
-  return await db(text, values);
+  return await db.query(text, values);
 };
 
 module.exports = modelTeam;

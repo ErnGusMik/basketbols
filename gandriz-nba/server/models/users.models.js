@@ -13,7 +13,7 @@ const modelUser = async (id, name, surname, email, password) => {
   const text =
     "INSERT INTO users (id, name, surname, email, password) VALUES ($1, $2, $3, $4, $5)";
   const values = [id, name, surname, email, password];
-  return await db(text, values);
+  return await db.query(text, values);
 };
 
 module.exports = modelUser;
