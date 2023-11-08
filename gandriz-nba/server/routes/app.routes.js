@@ -1,9 +1,11 @@
 const helpers = require("./../helpers/app.helpers");
-const tournamentModel = require("./../models/tournaments.models");
-const teamModel = require("./../models/teams.models");
-const refereeModel = require("./../models/referees.models");
-const playerModel = require("./../models/players.models");
-const game = require("./../models/games.models");
+const tournaments = require("./../models/tournaments.models");
+const teams = require("./../models/teams.models");
+const referees = require("./../models/referees.models");
+const players = require("./../models/players.models");
+const games = require("./../models/games.models");
+
+// POST & PUT requests
 
 const newTournament = async (req, res, next) => {
   /* POST /api/tournaments/new
@@ -37,7 +39,7 @@ const newTournament = async (req, res, next) => {
   //   res.status(400).send("Logo must be an image");
   //   return;
   // }
-  const result = await tournamentModel(
+  const result = await tournaments.modelTournament(
     req.body.userID,
     req.body.name,
     req.body.description,
@@ -71,17 +73,17 @@ const newTeam = async (req, res, next) => {
     res.status(400).send("Tournament not found");
     return;
   }
-  const result = await teamModel(
+  const result = await teams.modelTeam(
     req.body.name,
-    req.body.points,
-    req.body.tournamentPoints,
-    req.body.wins,
-    req.body.losses,
-    req.body.ties,
-    req.body.avgPoints,
-    req.body.avgBlocks,
-    req.body.avg3points,
-    req.body.AvgLostPoints,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
     req.body.tournamentID
   );
   res.status(201).send(result[0].id.toString());
@@ -99,7 +101,7 @@ const newReferee = async (req, res, next) => {
     res.status(400).send("Tournament not found");
     return;
   }
-  const result = await refereeModel(
+  const result = await referees.modelReferee(
     req.body.tournamentID,
     req.body.name,
     req.body.finals
@@ -121,7 +123,7 @@ const newPlayer = async (req, res, next) => {
     res.status(400).send("Team not found");
     return;
   }
-  const result = await playerModel(
+  const result = await players.modelPlayer(
     req.body.name,
     req.body.teamID,
     req.body.number,
@@ -186,7 +188,7 @@ const newGame = async (req, res, next) => {
     res.status(400).send("Tournament not found");
     return;
   }
-  const result = await game.modelGame(
+  const result = await games.modelGame(
     req.body.team1ID,
     req.body.team2ID,
     0,
@@ -216,13 +218,11 @@ const newGame = async (req, res, next) => {
 };
 
 const updateGame = async (req, res, next) => {
-  /* put /api/games/update/:id */
+  /* PUT /api/games/update/:id */
   const values = [
-    req.params.gameID,
+    req.params.id,
     req.body.team1Points,
     req.body.team2Points,
-    req.body.refereeIDs,
-    req.body.date,
     req.body.team1Blocks,
     req.body.team13points,
     req.body.team1LostPoints,
@@ -240,72 +240,45 @@ const updateGame = async (req, res, next) => {
     req.body.team1BestPlayers,
     req.body.team2BestPlayers,
   ];
-
-  const refereeIDs = req.body.refereeIDs.split(",");
-  for (let i = 0; i < refereeIDs.length; i++) {
-    const refereeID = await helpers.verifyRefereeID(refereeIDs[i]);
-    if (!refereeID) {
-      res.status(400).send("Referee not found");
-      return;
-    }
-  }
-  await game.updateGame(...values);
+  await games.updateGame(...values);
   res.status(200).send("Game updated");
 };
 
+
+
+// GET requests
+
 const getGame = async (req, res, next) => {
   /* GET /api/games/:id */
-  const gameID = await helpers.verifyGameID(req.params.id);
-  if (!gameID) {
-    res.status(400).send("Game not found");
-    return;
-  }
-  const result = await game.getGame(gameID);
+  const result = await games.getGame(req.params.id);
   res.status(200).send(result[0]);
-};
+}
 
 const getTournament = async (req, res, next) => {
   /* GET /api/tournaments/:id */
-  const tournamentID = await helpers.verifyTournamentID(req.params.id);
-  if (!tournamentID) {
-    res.status(400).send("Tournament not found");
-    return;
-  }
-  const result = await tournamentModel.getTournament(tournamentID);
+  const result = await tournaments.getTournament(req.params.id);
   res.status(200).send(result[0]);
-};
+}
 
 const getReferee = async (req, res, next) => {
   /* GET /api/referees/:id */
-  const refereeID = await helpers.verifyRefereeID(req.params.id);
-  if (!refereeID) {
-    res.status(400).send("Referee not found");
-    return;
-  }
-  const result = await refereeModel.getReferee(refereeID);
+  const result = await referees.getReferee(req.params.id);
   res.status(200).send(result[0]);
-};
+}
+
 const getTeam = async (req, res, next) => {
   /* GET /api/teams/:id */
-  const teamID = await helpers.verifyTeamID(req.params.id);
-  if (!teamID) {
-    res.status(400).send("Team not found");
-    return;
-  }
-  const result = await teamModel.getTeam(teamID);
+  const result = await teams.getTeam(req.params.id);
   res.status(200).send(result[0]);
-};
+}
 
 const getPlayer = async (req, res, next) => {
   /* GET /api/players/:id */
-  const playerID = await helpers.verifyPlayerID(req.params.id);
-  if (!playerID) {
-    res.status(400).send("Player not found");
-    return;
-  }
-  const result = await playerModel.getPlayer(playerID);
+  const result = await players.getPlayer(req.params.id);
   res.status(200).send(result[0]);
-};
+}
+
+
 
 module.exports = {
   newTournament,

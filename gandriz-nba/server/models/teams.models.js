@@ -28,7 +28,7 @@ const modelTeam = async (
   tournamentID
 ) => {
   const text =
-    "INSERT INTO teams (name, points, tournamentPoints, wins, losses, ties, avgPoints, avgBlocks, avg3points, AvgLostPoints, tournamentID) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
+    "INSERT INTO teams (name, allpoints, tournamentPoints, wins, losses, ties, avgPoints, avgBlocks, avg3points, AvgLostPoints, tournamentID) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
   const values = [
     name,
     points,
@@ -45,4 +45,10 @@ const modelTeam = async (
   return await db.query(text, values);
 };
 
-module.exports = modelTeam;
+const getTeam = async teamID => {
+  const text = "SELECT * FROM teams WHERE id = $1";
+  const values = [teamID];
+  return await db.query(text, values);
+}
+
+module.exports = {modelTeam, getTeam};

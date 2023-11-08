@@ -15,4 +15,10 @@ const modelPlayer = async (name, teamID, number, points, blocks) => {
   return await db.query(text, values);
 };
 
-module.exports = modelPlayer;
+const getPlayer =  async playerID => {
+  const text = "SELECT * FROM players WHERE id = $1";
+  const values = [playerID];
+  return await db.query(text, values);
+}
+
+module.exports = {modelPlayer, getPlayer};

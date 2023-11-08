@@ -20,7 +20,7 @@ const verifyUserID = async (userID) => {
 
 const verifyTournamentID = async (tournamentID) => {
   const result = await db
-    .query("SELECT * FROM tournaments WHERE id = $1", [tournamentID])
+    .query("SELECT * FROM tournaments WHERE id=$1", [tournamentID])
     .then((result) => {
       if (result.length === 0) {
         return false;

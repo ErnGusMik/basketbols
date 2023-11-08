@@ -9,9 +9,9 @@ Date  (varchar 'hh:mm dd/mm/yyyy')
 TournamentID
 
 team1Blocks
-team13points
-team1LostPoints
-team12points
+team13points (count not points)
+team1LostPoints (points not count)
+team12points (count not points)
 
 team2Blocks
 team23points
@@ -58,7 +58,7 @@ const modelGame = async (
   finals
 ) => {
   const text =
-    "INSERT INTO games (team1ID, team2ID, team1Points, team2Points, refereeIDs, date, tournamentID, team1Blocks, team13points, team1LostPoints, team12points, team2Blocks, team23points, team2LostPoints, team22points, timesTied, timesLeadChanged, team2BiggestLead, team1BiggestLead, team1MostPointsInRow, team2MostPointsInRow, team1BestPlayers, team2BestPlayers, finals) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 , $11, $12, $13, $14, $15, $16, $17, $18, $19, $20 , $21, $22, $23, $24, $25) RETURNING id";
+    "INSERT INTO games (team1ID, team2ID, team1Points, team2Points, refereeIDs, date, tournamentID, team1Blocks, team13points, team1LostPoints, team12points, team2Blocks, team23points, team2LostPoints, team22points, timesTied, timesLeadChanged, team2BiggestLead, team1BiggestLead, team1MostPointsInRow, team2MostPointsInRow, team1BestPlayers, team2BestPlayers, finals) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24) RETURNING id";
   const values = [
     team1ID,
     team2ID,
@@ -85,15 +85,13 @@ const modelGame = async (
     team2BestPlayers,
     finals,
   ];
-  return await db(text, values);
+  return await db.query(text, values);
 };
 
 const updateGame = async (
   gameID,
   team1Points,
   team2Points,
-  refereeIDs,
-  date,
   team1Blocks,
   team13points,
   team1LostPoints,
@@ -111,14 +109,11 @@ const updateGame = async (
   team1BestPlayers,
   team2BestPlayers
 ) => {
-  const text =
-    "UPDATE games SET team1Points = $2, team2Points = $3, refereeIDs = $4, date = $5, team1Blocks = $6, team13points = $7, team1LostPoints = $8, team12points = $9, team2Blocks = $10, team23points = $11, team2LostPoints = $12, team22points = $13, timesTied = $14, timesLeadChanged = $15, team2BiggestLead = $16, team1BiggestLead = $17, team1MostPointsInRow = $18, team2MostPointsInRow = $19, team1BestPlayers = $20, team2BestPlayers = $21 WHERE gameID = $1";
+  const text = "UPDATE games SET team1Points = $2, team2Points = $3, team1Blocks = $4, team13points = $5, team1LostPoints = $6, team12points = $7, team2Blocks = $8, team23points = $9, team2LostPoints = $10, team22points = $11, timesTied = $12, timesLeadChanged = $13, team2BiggestLead = $14, team1BiggestLead = $15, team1MostPointsInRow = $16, team2MostPointsInRow = $17, team1BestPlayers = $18, team2BestPlayers = $19 WHERE id = $1"
   const values = [
     gameID,
     team1Points,
     team2Points,
-    refereeIDs,
-    date,
     team1Blocks,
     team13points,
     team1LostPoints,
@@ -139,4 +134,10 @@ const updateGame = async (
   return await db.query(text, values);
 };
 
-module.exports = {modelGame, updateGame};
+const getGame = async (gameID) => {
+  const text = "SELECT * FROM games WHERE id = $1";
+  const values = [gameID];
+  return await db.query(text, values);
+};
+
+module.exports = { modelGame, updateGame, getGame };
