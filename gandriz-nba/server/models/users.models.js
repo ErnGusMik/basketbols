@@ -16,10 +16,16 @@ const modelUser = async (id, name, surname, email, password) => {
   return await db.query(text, values);
 };
 
-const getUser = async userID => {
+const getUser = async (userID) => {
   const text = "SELECT * FROM users WHERE id = $1";
   const values = [userID];
   return await db.query(text, values);
+};
+
+const getUserByEmail = async (email) => {
+  const text = "SELECT * FROM users WHERE email = $1";
+  const values = [email];
+  return await db.query(text, values);
 }
 
-module.exports = {modelUser, getUser};
+module.exports = { modelUser, getUser, getUserByEmail };

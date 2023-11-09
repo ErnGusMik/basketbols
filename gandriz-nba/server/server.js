@@ -23,6 +23,9 @@ app.get('/test', async (req, res) => {
 const apiRouter = require('./controllers/app.controllers')
 app.use('/api', apiRouter)
 
+const authRouter = require('./controllers/auth.controllers')
+app.use('/auth', authRouter)
+
 
 
 
