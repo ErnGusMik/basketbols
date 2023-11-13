@@ -1,0 +1,138 @@
+.login {
+  display: flex;
+  height: 100vh;
+  font-family: Montserrat;
+}
+
+.loginImage {
+  max-width: 70%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.login h1 {
+  font-weight: 800;
+  font-size: 48px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.loginContainer {
+  width: 70%;
+  margin: auto;
+}
+
+.sideContainer {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.loginInput {
+  background: #fff;
+  border: 3px solid black;
+  border-radius: 50px;
+  padding: 10px 0;
+  font-size: 20px;
+  font-weight: 200;
+  width: 100%;
+  margin: 40px auto 0;
+  padding: 15px;
+  font-family: Montserrat;
+}
+
+.loginSubmit {
+  cursor: pointer;
+  background: #fff;
+  border: 3px solid black;
+  border-radius: 50px;
+  padding: 10px 30px;
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  font-weight: 900;
+  font-family: Montserrat;
+  float: right;
+}
+
+.loginSubmit p {
+  margin: 0;
+  padding: 0;
+}
+
+.forgotPassword {
+  margin: 5px 10px 50px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.noAccount {
+  position: absolute;
+  bottom: 3%;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+}
+
+.noAccount a,
+.forgotPassword a {
+  text-decoration: underline;
+  color: black;
+}
+
+.copy {
+  position: absolute;
+  bottom: 0;
+  font-size: 8px;
+  width: 100%;
+  text-align: center;
+  color: #303030;
+}
+
+
+@media screen and (max-width: 1150px) {
+  .loginContainer {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .loginImage {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .loginImage {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .loginImage {
+    width: 0;
+  }
+  .loginContainer {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .loginContainer {
+    width: 80%;
+  }
+  .loginSubmit {
+    width: 100%;
+  }
+  .loginSubmit p {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .loginContainer {
+    width: 90%;
+  }
+}
