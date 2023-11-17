@@ -1,10 +1,11 @@
 const helpers = require("./../helpers/auth.helpers");
 const model = require("./../models/users.models");
+const db = require("./../database/postgres.database");
 
 const loginVerify = async (req, res, next) => {
   // POST /api/auth/login/verify
   if (
-    !req.body.username ||
+    !req.body.email ||
     !req.body.password ||
     !req.body.state ||
     !req.body.code_challenge ||
@@ -16,7 +17,7 @@ const loginVerify = async (req, res, next) => {
     });
   }
   const access_granted = await helpers.verifyUser(
-    req.body.username,
+    req.body.email,
     req.body.password
   );
   if (!access_granted) {
@@ -25,9 +26,9 @@ const loginVerify = async (req, res, next) => {
       error: "access_denied",
     });
   } else if (access_granted) {
-    const user = await model.getUserByEmail(req.body.username);
-    const checkCodeStatus = helpers.checkUser(user[0].id);
-    if (!checkCodeStatus) {
+    const user = await model.getUserByEmail(req.body.email);
+    const checkCodeStatus = await helpers.checkUser(user[0].id);
+    if (checkCodeStatus) {
       helpers.removeCode(user[0].id);
     }
     let code;
@@ -48,53 +49,39 @@ const loginVerify = async (req, res, next) => {
         error: "server_error",
       });
     }
-    console.log(code);
-    return res.redirect(
-      301,
-      `http://localhost:3000?code=${encodeURIComponent(
-        // TODO: change to req.body.redirect_uri
-        code
-      )}&state=${encodeURIComponent(req.body.state)}`
-    );
+    return res.send({
+      code,
+      state: req.body.state,
+    });
   }
 };
-
 
 const token = async (req, res) => {
   if (
     !req.body.grant_type ||
     !req.body.code ||
-    !req.body.code_verifier ||
-    !req.body.client_secret
+    !req.body.code_verifier
   ) {
-    return res
-      .status(400)
-      .send({
-        error_description: "Invalid request. Missing body parameters",
-        error: "invalid_request",
-      });
+    return res.status(400).send({
+      error_description: "Invalid request. Missing body parameters",
+      error: "invalid_request",
+    });
   }
 
   if (req.body.grant_type !== "authorization_code") {
-    return res
-      .status(400)
-      .send({
-        error_description: "Unsupported grant_type",
+    return res.status(400).send({
+      error_description: "Unsupported grant_type",
+      error: "invalid_request",
+    });
+  } else if (req.body.grant_type == "authorization_code") {
+    const codeArray = await helpers.validateCode(req.body.code, Date.now());
+    const code = codeArray[0];
+    console.log(code);
+    if (!code) {
+      return res.status(400).send({
+        error_description: "Invalid parameters or code timeout",
         error: "invalid_request",
       });
-  } else if (req.body.grant_type == "authorization_code") {
-
-    const code = await helpers.validateCode(
-      req.body.code,
-      Date.now(),
-    );
-    if (!code) {
-      return res
-        .status(400)
-        .send({
-          error_description: "Invalid parameters or code timeout",
-          error: "invalid_request",
-        });
     } else {
       const code_verifier = await helpers.validateCodeVerifier(
         code.code_challenge,
@@ -102,13 +89,11 @@ const token = async (req, res) => {
         code.code_challenge_method
       );
       if (!code_verifier) {
-        return res
-          .status(400)
-          .send({
-            error_description:
-              "code_verifier does not match encoded code_challenge or invalid method",
-            error: "invalid_request",
-          });
+        return res.status(400).send({
+          error_description:
+            "code_verifier does not match encoded code_challenge or invalid method",
+          error: "invalid_request",
+        });
       }
       const accessToken = Jwt.sign(
         {
@@ -123,13 +108,11 @@ const token = async (req, res) => {
       );
       const user = helpers.getUser(code.user_id);
       if (!user) {
-        return res
-          .status(500)
-          .send({
-            error_description:
-              "We're having trouble finding you on our end. Something went wrong. Please try again later.",
-            error: "server_error",
-          });
+        return res.status(500).send({
+          error_description:
+            "We're having trouble finding you on our end. Something went wrong. Please try again later.",
+          error: "server_error",
+        });
       }
       const refresh_token = Jwt.sign(
         {
@@ -151,9 +134,7 @@ const token = async (req, res) => {
           iat: Date.now(),
           name: user.name,
           email: user.email,
-          last_name: user.last_name,
-          gender: user.gender,
-          birthdate: user.birthdate,
+          last_name: user.surname,
         },
         process.env.JWT_SECRET_KEY
       );
@@ -168,4 +149,54 @@ const token = async (req, res) => {
   }
 };
 
-module.exports = { loginVerify, token };
+const signUp = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const testEmail =
+    /^(([a-zA-Z0-9]+)|([a-zA-Z0-9]+((?:\_[a-zA-Z0-9]+)|(?:\.[a-zA-Z0-9]+))*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-zA-Z]{2,6}(?:\.[a-zA-Z]{2})?)$)/;
+  if (!testEmail.test(email)) {
+    return res.status(400).send({
+      error_description: "Invalid email",
+      error: "invalid_request",
+    });
+  }
+  if (!password || password.length < 8) {
+    return res.status(400).send({
+      error_description: "Invalid password",
+      error: "invalid_request",
+    });
+  }
+  if (!name) {
+    return res.status(400).send({
+      error_description: "Invalid name",
+      error: "invalid_request",
+    });
+  }
+  if (!surname) {
+    return res.status(400).send({
+      error_description: "Invalid surname",
+      error: "invalid_request",
+    });
+  }
+  const hash = await helpers.generateHash(password);
+  const testUser = await helpers.getUserByEmail(email);
+  if (testUser.error === "not_found") {
+    const query = await db.query(
+      "INSERT INTO users (email, password, name, surname) VALUES ($1, $2, $3, $4) RETURNING email, id ",
+      [email, hash, name, surname]
+    );
+    const result = query[0];
+    const user = {
+      email: result.email
+    };
+    return res.status(201).send(user);
+  }
+  return res.status(400).send({
+    error_description: "Email already exists",
+    error: "user_exists",
+  });
+};
+
+module.exports = { loginVerify, token, signUp };

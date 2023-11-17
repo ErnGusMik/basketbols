@@ -7,7 +7,6 @@ const crypto = require("crypto-js/sha256");
 
 // Access-Control-Allow-Origin header not present!!
 
-
 export default function Email() {
   function makeRandom(length) {
     let result = "";
@@ -25,29 +24,43 @@ export default function Email() {
     const state = makeRandom(10);
     const codeChallenge = makeRandom(64);
     const codeChallengeMethod = "S256";
-    const codeVerifier = await btoa(await crypto(codeChallenge));
+    const codeVerifier = btoa(crypto(codeChallenge));
     return { state, codeChallenge, codeChallengeMethod, codeVerifier };
   };
   const manageCredentials = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const loginParams = createLoginParams();
-    const request = await fetch("http://localhost:8080/login", {
+    const loginParams = await createLoginParams();
+    const body = {
+      email,
+      password,
+      state: loginParams.state,
+      code_challenge: loginParams.codeChallenge,
+      code_challenge_method: loginParams.codeChallengeMethod,
+    };
+    const request = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const response = await request.json();
+    console.log(response);
+    const tokenRequest = await fetch("http://localhost:8080/auth/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
-        password,
-        state: loginParams.state,
-        codeChallenge: loginParams.codeChallenge,
-        codeChallengeMethod: loginParams.codeChallengeMethod,
+        code: response.code,
+        code_verifier: loginParams.codeVerifier,
+        grant_type: "authorization_code",
       }),
     });
-    const response = await request.json();
-    console.log(response);
+    const tokenResponse = await tokenRequest.json();
+    console.log(tokenResponse);
   };
 
   return (

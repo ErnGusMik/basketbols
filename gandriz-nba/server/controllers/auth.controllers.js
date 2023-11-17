@@ -7,4 +7,6 @@ router.post("/login", routes.loginVerify);
 
 router.post("/token", routes.token)
 
+router.post("/signup", routes.signUp);
+
 module.exports = router;

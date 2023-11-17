@@ -1,11 +1,16 @@
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 const dbClient = require('./database/postgres.database')
 
-express.json()
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}))
 
 
 // test connection to db
