@@ -22,9 +22,9 @@ export default function Email() {
   }
   const createLoginParams = async () => {
     const state = makeRandom(10);
-    const codeChallenge = makeRandom(64);
+    const codeVerifier = makeRandom(64);
     const codeChallengeMethod = "S256";
-    const codeVerifier = btoa(crypto(codeChallenge));
+    const codeChallenge = btoa(crypto(codeVerifier));
     return { state, codeChallenge, codeChallengeMethod, codeVerifier };
   };
   const manageCredentials = async (e) => {
@@ -47,7 +47,10 @@ export default function Email() {
       body: JSON.stringify(body),
     });
     const response = await request.json();
-    console.log(response);
+    if (response.state !== loginParams.state) {
+      alert("Something went wrong");
+      return;
+    }
     const tokenRequest = await fetch("http://localhost:8080/auth/token", {
       method: "POST",
       headers: {
@@ -60,7 +63,10 @@ export default function Email() {
       }),
     });
     const tokenResponse = await tokenRequest.json();
-    console.log(tokenResponse);
+    localStorage.setItem("refresh_token", tokenResponse.refresh_token);
+    localStorage.setItem("access_token", tokenResponse.access_token);
+    localStorage.setItem("id_token", tokenResponse.id_token)
+    window.location.href = "/app";
   };
 
   return (

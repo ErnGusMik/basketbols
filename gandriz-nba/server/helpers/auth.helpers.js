@@ -76,13 +76,11 @@ const validateCode = async (code, timestamp) => {
 };
 
 const validateCodeVerifier = async (code_challenge, code_verifier, code_challenge_method) => {
-  const crypto = require("node:crypto");
+  const crypto = require("crypto-js/sha256");
   // Checks if code_challenge_method is S256
   if (code_challenge_method.toUpperCase() !== "S256") return false;
-  // Encodes the code_verifier into a buffer
-  const buff = await crypto.createHash("sha256").update(code_verifier).digest();
-  // Encodes the buffer into a base64url string (MAGIC) (DOESNT WORK)
-  const code_verifier_encoded = await base64url.encode(buff);
+  // Encodes the code_verifier
+  const code_verifier_encoded = btoa(crypto(code_verifier));
   // Returns true if they match, false if not
   if (code_verifier_encoded !== code_challenge) return false;
   return true;
@@ -116,6 +114,29 @@ const getUserByEmail = async (email) => {
   }
 };
 
+const getUserByID = async (id) => {
+  const result = await db.query("SELECT * FROM users WHERE id = $1", [
+    id,
+  ]);
+  if (result.err) {
+    console.log(result.err.stack);
+  } else {
+    if (!result[0]) {
+      return {
+        error: "not_found",
+      };
+    }
+    const response = {
+      name: result[0].name,
+      surname: result[0].surname,
+      email: result[0].email,
+      tournamentids: result[0].tournamentids,
+      id: result[0].id,
+    };
+    return response;
+  }
+};
+
 module.exports = {
   insertCode,
   removeCode,
@@ -125,4 +146,5 @@ module.exports = {
   verifyUser,
   generateHash,
   getUserByEmail,
+  getUserByID,
 };

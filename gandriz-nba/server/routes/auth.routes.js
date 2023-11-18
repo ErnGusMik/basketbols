@@ -1,6 +1,7 @@
 const helpers = require("./../helpers/auth.helpers");
 const model = require("./../models/users.models");
 const db = require("./../database/postgres.database");
+const Jwt = require("jsonwebtoken");
 
 const loginVerify = async (req, res, next) => {
   // POST /api/auth/login/verify
@@ -57,11 +58,7 @@ const loginVerify = async (req, res, next) => {
 };
 
 const token = async (req, res) => {
-  if (
-    !req.body.grant_type ||
-    !req.body.code ||
-    !req.body.code_verifier
-  ) {
+  if (!req.body.grant_type || !req.body.code || !req.body.code_verifier) {
     return res.status(400).send({
       error_description: "Invalid request. Missing body parameters",
       error: "invalid_request",
@@ -76,7 +73,6 @@ const token = async (req, res) => {
   } else if (req.body.grant_type == "authorization_code") {
     const codeArray = await helpers.validateCode(req.body.code, Date.now());
     const code = codeArray[0];
-    console.log(code);
     if (!code) {
       return res.status(400).send({
         error_description: "Invalid parameters or code timeout",
@@ -95,18 +91,7 @@ const token = async (req, res) => {
           error: "invalid_request",
         });
       }
-      const accessToken = Jwt.sign(
-        {
-          sub: code.user_id,
-          aud: req.body.client_id,
-          iss: "http://localhost:8080",
-          exp: Date.now() + 3600000,
-          iat: Date.now(),
-          scope: req.body.scope ? req.body.scope : 0,
-        },
-        process.env.JWT_SECRET_KEY
-      );
-      const user = helpers.getUser(code.user_id);
+      const user = await helpers.getUserByID(code.user_id);
       if (!user) {
         return res.status(500).send({
           error_description:
@@ -114,10 +99,22 @@ const token = async (req, res) => {
           error: "server_error",
         });
       }
+      console.log(user);
+      const accessToken = Jwt.sign(
+        {
+          sub: code.user_id,
+          aud: "GandrizNBA",
+          iss: "http://localhost:8080",
+          exp: Date.now() + 3600000,
+          iat: Date.now(),
+          scope: req.body.scope ? req.body.scope : 0,
+        },
+        process.env.JWT_SECRET_KEY
+      );
       const refresh_token = Jwt.sign(
         {
           sub: code.user_id,
-          aud: req.body.client_id,
+          aud: "GandrizNBA",
           iss: "http://localhost:8080",
           exp: Date.now() + 1000 * 60 * 60 * 24,
           iat: Date.now(),
@@ -128,7 +125,7 @@ const token = async (req, res) => {
       const IDtoken = Jwt.sign(
         {
           sub: code.user_id,
-          aud: req.body.client_id,
+          aud: "GandrizNBA",
           iss: "http://localhost:8080",
           exp: Date.now() + 3600000,
           iat: Date.now(),
@@ -182,6 +179,7 @@ const signUp = async (req, res, next) => {
   }
   const hash = await helpers.generateHash(password);
   const testUser = await helpers.getUserByEmail(email);
+  console.log(testUser);
   if (testUser.error === "not_found") {
     const query = await db.query(
       "INSERT INTO users (email, password, name, surname) VALUES ($1, $2, $3, $4) RETURNING email, id ",
@@ -189,7 +187,7 @@ const signUp = async (req, res, next) => {
     );
     const result = query[0];
     const user = {
-      email: result.email
+      email: result.email,
     };
     return res.status(201).send(user);
   }
@@ -199,4 +197,72 @@ const signUp = async (req, res, next) => {
   });
 };
 
-module.exports = { loginVerify, token, signUp };
+const refresh = async (req, res, next) => {
+  const refresh_token = req.body.refresh_token;
+  if (!refresh_token) {
+    return res.status(400).send({
+      error_description: "Invalid request. Missing body parameters",
+      error: "invalid_request",
+    });
+  }
+  const verify = Jwt.verify(refresh_token, process.env.JWT_SECRET_KEY);
+  console.log(verify);
+  if (!verify) {
+    return res.status(400).send({
+      error_description: "Invalid refresh token",
+      error: "invalid_request",
+    });
+  }
+  const token = Jwt.decode(refresh_token);
+  const user = await helpers.getUserByID(token.sub);
+  if (!user) {
+    return res.status(400).send({
+      error_description: "Invalid refresh token",
+      error: "invalid_request",
+    });
+  }
+  const accessToken = Jwt.sign(
+    {
+      sub: token.sub,
+      aud: "GandrizNBA",
+      iss: "http://localhost:8080",
+      exp: Date.now() + 3600000,
+      iat: Date.now(),
+      scope: token.scope ? token.scope : 0,
+    },
+    process.env.JWT_SECRET_KEY
+  );
+  const IDtoken = Jwt.sign(
+    {
+      sub: token.sub,
+      aud: "GandrizNBA",
+      iss: "http://localhost:8080",
+      exp: Date.now() + 3600000,
+      iat: Date.now(),
+      name: user.name,
+      email: user.email,
+      last_name: user.surname,
+    },
+    process.env.JWT_SECRET_KEY
+  );
+  const refresh = Jwt.sign(
+    {
+      sub: token.sub,
+      aud: "GandrizNBA",
+      iss: "http://localhost:8080",
+      exp: Date.now() + 1000 * 60 * 60 * 24,
+      iat: Date.now(),
+      scope: token.scope ? token.scope : 0,
+    },
+    process.env.JWT_SECRET_KEY
+  );
+  return res.status(200).send({
+    access_token: accessToken,
+    id_token: IDtoken,
+    token_type: "Bearer",
+    expires_in: 3600,
+    refresh_token: refresh,
+  });
+};
+
+module.exports = { loginVerify, token, signUp, refresh };

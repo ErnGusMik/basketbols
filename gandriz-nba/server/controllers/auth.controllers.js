@@ -9,4 +9,6 @@ router.post("/token", routes.token)
 
 router.post("/signup", routes.signUp);
 
+router.post("/refresh", routes.refresh);
+
 module.exports = router;
