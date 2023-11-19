@@ -1,7 +1,10 @@
+const nodemailer = require("nodemailer");
 const helpers = require("./../helpers/auth.helpers");
 const model = require("./../models/users.models");
 const db = require("./../database/postgres.database");
 const Jwt = require("jsonwebtoken");
+const path = require("node:path");
+const fs = require("node:fs");
 
 const loginVerify = async (req, res, next) => {
   // POST /api/auth/login/verify
@@ -13,7 +16,8 @@ const loginVerify = async (req, res, next) => {
     !req.body.code_challenge_method
   ) {
     return res.status(400).send({
-      error_description: "Invalid request. Missing body parameters",
+      error_technical_description: "Invalid request. Missing body parameters",
+      error_description: "Kaut kas nogāja greizi (E1)",
       error: "invalid_request",
     });
   }
@@ -23,7 +27,8 @@ const loginVerify = async (req, res, next) => {
   );
   if (!access_granted) {
     return res.status(401).send({
-      error_description: "Invalid credentials",
+      error_technical_description: "Invalid credentials",
+      error_description: "Nepareizs lietotājvārds vai parole (E2)",
       error: "access_denied",
     });
   } else if (access_granted) {
@@ -46,7 +51,8 @@ const loginVerify = async (req, res, next) => {
     } catch (e) {
       console.log(e);
       return res.status(500).send({
-        error_description: "Unable to generate authorization code",
+        error_technical_description: "Unable to generate authorization code",
+        error_description: "Kaut kas nogāja greizi (E3)",
         error: "server_error",
       });
     }
@@ -60,14 +66,16 @@ const loginVerify = async (req, res, next) => {
 const token = async (req, res) => {
   if (!req.body.grant_type || !req.body.code || !req.body.code_verifier) {
     return res.status(400).send({
-      error_description: "Invalid request. Missing body parameters",
+      error_techincal_description: "Invalid request. Missing body parameters",
+      error_description: "Kaut kas nogāja greizi (E1)",
       error: "invalid_request",
     });
   }
 
   if (req.body.grant_type !== "authorization_code") {
     return res.status(400).send({
-      error_description: "Unsupported grant_type",
+      error_technical_description: "Unsupported grant_type",
+      error_description: "Kaut kas nogāja greizi (E4)",
       error: "invalid_request",
     });
   } else if (req.body.grant_type == "authorization_code") {
@@ -75,7 +83,9 @@ const token = async (req, res) => {
     const code = codeArray[0];
     if (!code) {
       return res.status(400).send({
-        error_description: "Invalid parameters or code timeout",
+        error_technical_description: "Invalid parameters or code timeout",
+        error_description:
+          "Drošības apsvērumu dēļ, nevarējām Jūs autorizēt (E5)",
         error: "invalid_request",
       });
     } else {
@@ -86,20 +96,23 @@ const token = async (req, res) => {
       );
       if (!code_verifier) {
         return res.status(400).send({
-          error_description:
+          error_technical_description:
             "code_verifier does not match encoded code_challenge or invalid method",
+          error_description: "Kaut kas nogāja greizi (E6)",
+
           error: "invalid_request",
         });
       }
       const user = await helpers.getUserByID(code.user_id);
       if (!user) {
         return res.status(500).send({
-          error_description:
+          error_techincal_description:
             "We're having trouble finding you on our end. Something went wrong. Please try again later.",
+          error_description: "Kaut kas nogāja greizi (E7)",
+
           error: "server_error",
         });
       }
-      console.log(user);
       const accessToken = Jwt.sign(
         {
           sub: code.user_id,
@@ -155,31 +168,34 @@ const signUp = async (req, res, next) => {
     /^(([a-zA-Z0-9]+)|([a-zA-Z0-9]+((?:\_[a-zA-Z0-9]+)|(?:\.[a-zA-Z0-9]+))*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-zA-Z]{2,6}(?:\.[a-zA-Z]{2})?)$)/;
   if (!testEmail.test(email)) {
     return res.status(400).send({
-      error_description: "Invalid email",
+      error_techincal_description: "Invalid email",
+      error_description: "Nederīgs e-pasts (E8)",
       error: "invalid_request",
     });
   }
   if (!password || password.length < 8) {
     return res.status(400).send({
-      error_description: "Invalid password",
+      error_technical_description: "Invalid password",
+      error_description: "Nederīga parole (E9)",
       error: "invalid_request",
     });
   }
   if (!name) {
     return res.status(400).send({
-      error_description: "Invalid name",
+      error_technical_description: "Invalid name",
+      error_description: "Vārds pārāk īss (E10)",
       error: "invalid_request",
     });
   }
   if (!surname) {
     return res.status(400).send({
-      error_description: "Invalid surname",
+      error_techincal_description: "Invalid surname",
+      error_description: "Uzvārds pārāk īss (E10)",
       error: "invalid_request",
     });
   }
   const hash = await helpers.generateHash(password);
   const testUser = await helpers.getUserByEmail(email);
-  console.log(testUser);
   if (testUser.error === "not_found") {
     const query = await db.query(
       "INSERT INTO users (email, password, name, surname) VALUES ($1, $2, $3, $4) RETURNING email, id ",
@@ -192,7 +208,8 @@ const signUp = async (req, res, next) => {
     return res.status(201).send(user);
   }
   return res.status(400).send({
-    error_description: "Email already exists",
+    error_techincal_description: "Email already exists",
+    error_description: "Konts ar šādu e-pastu jau eksistē (E11)",
     error: "user_exists",
   });
 };
@@ -201,15 +218,16 @@ const refresh = async (req, res, next) => {
   const refresh_token = req.body.refresh_token;
   if (!refresh_token) {
     return res.status(400).send({
-      error_description: "Invalid request. Missing body parameters",
+      error_techincal_description: "Invalid request. Missing body parameters",
+      error_description: "Kaut kas nogāja greizi (E1)",
       error: "invalid_request",
     });
   }
   const verify = Jwt.verify(refresh_token, process.env.JWT_SECRET_KEY);
-  console.log(verify);
   if (!verify) {
     return res.status(400).send({
-      error_description: "Invalid refresh token",
+      error_techincal_description: "Invalid refresh token",
+      error_description: "Nevarējām Jūs autentificēt (E12)",
       error: "invalid_request",
     });
   }
@@ -217,7 +235,8 @@ const refresh = async (req, res, next) => {
   const user = await helpers.getUserByID(token.sub);
   if (!user) {
     return res.status(400).send({
-      error_description: "Invalid refresh token",
+      error_technical_description: "Invalid refresh token",
+      error_description: "Nevarējām Jūs autentificēt (E12)",
       error: "invalid_request",
     });
   }
@@ -265,4 +284,82 @@ const refresh = async (req, res, next) => {
   });
 };
 
-module.exports = { loginVerify, token, signUp, refresh };
+const forgotPassword = async (req, res, next) => {
+  // POST /auth/forgot-password
+  const serverEmail = process.env.EMAIL;
+  const serverPassword = process.env.EMAIL_PASSWORD;
+  const email = req.body.email;
+  const testEmail =
+    /^(([a-zA-Z0-9]+)|([a-zA-Z0-9]+((?:\_[a-zA-Z0-9]+)|(?:\.[a-zA-Z0-9]+))*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-zA-Z]{2,6}(?:\.[a-zA-Z]{2})?)$)/;
+
+  if (!email || !testEmail.test(email)) {
+    return res.status(400).send({
+      error_technical_description:
+        "Invalid request. Missing or invalid body parameters",
+      error_description: "Kaut kas nogāja greizi (E1)",
+      error: "invalid_request",
+    });
+  }
+
+  const user = await helpers.getUserByEmail(email);
+  if (user.error === "not_found") {
+    return res.status(400).send({
+      error_technical_description: "Invalid email",
+      error_description: "Konts ar šādu e-pastu neeksistē (E11)",
+      error: "user_not_found",
+    });
+  }
+  const test = await db.query("SELECT * FROM auth_codes WHERE user_id = $1 AND code_challenge = $2", [user.id, "0"])
+  if (test[0]) {
+    db.query("DELETE FROM auth_codes WHERE user_id = $1 AND code_challenge = $2", [user.id, "0"])
+  }
+
+  const code = helpers.makeRandom(64);
+  const dbText =
+    "INSERT INTO auth_codes (code, code_challenge, code_challenge_method, timestamp, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING code, timestamp, user_id";
+  const values = [code, "0", "0", Date.now(), user.id];
+
+  const query = await db.query(dbText, values);
+
+  const transporter = nodemailer.createTransport(
+    `smtps://${serverEmail}:${serverPassword}@smtp.gmail.com`
+  );
+
+  const mailOptions = {
+    from: `GandrīzNBA Palīdzība <${serverEmail}>`,
+    to: email,
+    subject: "Atjauno savu GandrīzNBA konta paroli",
+    // text:
+    //   "Aizmirsāt paroli?\n\n" +
+    //   "Lai atjaunotu savu paroli nospiediet uz šīs saites: http://localhost:3000/reset-password?code=" +
+    //   code +
+    //   "\n\nJa Jūs neesat pieprasījis paroles maiņu, tad ignorējiet šo e-pastu.\n\nAr cieņu,\nGandrīzNBA",
+    html:
+      "<style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');*{font-family:'Montserrat';}.button:hover{background-color: #ECC2B1}</style>" +
+      "<div style='background-color: #d3d3d3; width: 100%; height: 100%; text-align: center;'><div style='max-width: 80%; background-color: #fff; border-radius: 20px; display: inline-block; margin: 40px auto; padding: 30px;'><h1 style='font-weight: 900; font-size: 30px; text-align: center;'>Aizmirsāt paroli? Uztaisīsim jaunu!</h1>" +
+      "<p style='font-weight: 300; text-align: left;'>Mēs saņēmām pieprasījumu nomainīt paroli uz kontu ar epastu <a href='mailto://ernests.mikuts@gmail.com' style='color: #EE6730'>" +
+      email +
+      "</a>.</p><p style='font-weight: 300; text-align: left;'>Ja Jūs neesat pieprasījis paroles maiņu, tad ignorējiet šo e-pastu.</p>" +
+      "<div style='text-align: center'><a class='button' href='http://localhost:3000/reset-password?code=" +
+      code +
+      "' style='text-decoration: none; color: black; margin: 20px auto; cursor: pointer; display: inline-block; text-align: center; font-size: 20px; background-color: #f9cdbb; border-radius: 50px; font-weight: 300; padding: 15px 30px;'>Nomainīt paroli</a></div>" +
+      "<p style='font-weight: 300; text-align: left;'>Ar cieņu,<br>GandrīzNBA</p></div></div>",
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send({
+        error_technical_description: "Unable to send email",
+        error_description: "Kaut kas nogāja greizi (E13)",
+        error: "server_error",
+      });
+    } else {
+      return res.status(200).send({
+        message: "Email sent",
+      });
+    }
+  });
+};
+
+module.exports = { loginVerify, token, signUp, refresh, forgotPassword };

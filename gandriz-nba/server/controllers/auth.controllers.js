@@ -11,4 +11,6 @@ router.post("/signup", routes.signUp);
 
 router.post("/refresh", routes.refresh);
 
+router.post("/forgot-password", routes.forgotPassword);
+
 module.exports = router;

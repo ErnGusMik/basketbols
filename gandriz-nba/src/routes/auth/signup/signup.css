@@ -135,3 +135,25 @@
     width: 90%;
   }
 }
+
+.error-cont {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: red;
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  transition: visibility 0.2s linear, opacity 0.2s linear;
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+}
+.error-cont i {
+  margin-right: 10px;
+  font-size: 20px;
+}

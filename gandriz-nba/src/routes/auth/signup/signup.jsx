@@ -47,7 +47,14 @@ export default function Email() {
     });
     const response = await request.json();
     if (response.error) {
-      alert(response.error_description);
+      document.getElementById("error-desc").innerHTML =
+        response.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
       return;
     }
     const loginRequest = await fetch("http://localhost:8080/auth/login", {
@@ -60,16 +67,30 @@ export default function Email() {
         password,
         state: loginParams.state,
         code_challenge: loginParams.codeChallenge,
-        code_challenge_method: loginParams.codeChallengeMethod, 
+        code_challenge_method: loginParams.codeChallengeMethod,
       }),
     });
     const loginResponse = await loginRequest.json();
-    if (loginResponse.state !== loginParams.state) {
-      alert("Something went wrong");
+    if (loginResponse.error) {
+      document.getElementById("error-desc").innerHTML =
+        loginResponse.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
       return;
     }
-    if (loginResponse.error) {
-      alert(loginResponse.error_description);
+    if (loginResponse.state !== loginParams.state) {
+      document.getElementById("error-desc").innerHTML =
+        "Nevarējām jūs autorizēt (E13)";
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
       return;
     }
     const tokenRequest = await fetch("http://localhost:8080/auth/token", {
@@ -84,17 +105,33 @@ export default function Email() {
       }),
     });
     const tokenResponse = await tokenRequest.json();
+    if (tokenResponse.error) {
+      document.getElementById("error-desc").innerHTML =
+        tokenResponse.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
+      return;
+    }
     localStorage.setItem("refresh_token", tokenResponse.refresh_token);
     localStorage.setItem("access_token", tokenResponse.access_token);
     localStorage.setItem("id_token", tokenResponse.id_token);
     window.location.href = "/app";
     return;
-  }
+  };
   return (
     <div className="login">
       <img src={login} alt="Image of a basketball" className="loginImage" />
       <div className="sideContainer">
-        <form className="loginContainer" action="#" method="GET" onSubmit={manageSignup}>
+        <form
+          className="loginContainer"
+          action="#"
+          method="GET"
+          onSubmit={manageSignup}
+        >
           <h1>Reģistrēties</h1>
           <label className="label" htmlFor="name">
             Vārds
@@ -147,6 +184,12 @@ export default function Email() {
           Ir konts? Ienāc <Link to="/login">šeit</Link>.
         </p>
         <p className="copy">&copy; Gandrīz NBA 2023</p>
+      </div>
+      <div className="error-cont" id="error-cont">
+        <i className="fa-solid fa-triangle-exclamation"></i>
+        <p className="error-desc" id="error-desc">
+          Kaut kas nogāja greizi
+        </p>
       </div>
     </div>
   );

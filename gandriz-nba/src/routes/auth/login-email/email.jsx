@@ -47,8 +47,25 @@ export default function Email() {
       body: JSON.stringify(body),
     });
     const response = await request.json();
+    if (response.error) {
+      document.getElementById("error-desc").innerHTML = response.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
+      return;
+    }
     if (response.state !== loginParams.state) {
-      alert("Something went wrong");
+      document.getElementById("error-desc").innerHTML =
+        "Nevarējām Jūs autorizēt (E13)";
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
       return;
     }
     const tokenRequest = await fetch("http://localhost:8080/auth/token", {
@@ -63,9 +80,20 @@ export default function Email() {
       }),
     });
     const tokenResponse = await tokenRequest.json();
+    if (tokenResponse.error) {
+      document.getElementById("error-desc").innerHTML =
+        tokenResponse.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
+      return;
+    }
     localStorage.setItem("refresh_token", tokenResponse.refresh_token);
     localStorage.setItem("access_token", tokenResponse.access_token);
-    localStorage.setItem("id_token", tokenResponse.id_token)
+    localStorage.setItem("id_token", tokenResponse.id_token);
     window.location.href = "/app";
   };
 
@@ -103,6 +131,12 @@ export default function Email() {
           Nav konta? Reģistrējies <Link to="/signup">šeit</Link>.
         </p>
         <p className="copy">&copy; Gandrīz NBA 2023</p>
+      </div>
+      <div className="error-cont" id="error-cont">
+        <i className="fa-solid fa-triangle-exclamation"></i>
+        <p className="error-desc" id="error-desc">
+          Kaut kas nogāja greizi
+        </p>
       </div>
     </div>
   );
