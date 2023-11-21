@@ -2,7 +2,7 @@ const helpers = require("./../helpers/auth.helpers");
 const model = require("./../models/users.models");
 
 const loginVerify = async (req, res, next) => {
-  // POST /api/auth/login/verify
+  // POST /api/auth/login
   if (
     !req.body.username ||
     !req.body.password ||
@@ -49,13 +49,17 @@ const loginVerify = async (req, res, next) => {
       });
     }
     console.log(code);
-    return res.redirect(
-      301,
-      `http://localhost:3000?code=${encodeURIComponent(
-        // TODO: change to req.body.redirect_uri
-        code
-      )}&state=${encodeURIComponent(req.body.state)}`
-    );
+    return res.send({
+      code: code,
+      state: req.body.state,
+    });
+    // return res.redirect(
+    //   301,
+    //   `http://localhost:3000?code=${encodeURIComponent(
+    //     // TODO: change to req.body.redirect_uri
+    //     code
+    //   )}&state=${encodeURIComponent(req.body.state)}`
+    // );
   }
 };
 

@@ -7,7 +7,6 @@ const crypto = require("crypto-js/sha256");
 
 // Access-Control-Allow-Origin header not present!!
 
-
 export default function Email() {
   function makeRandom(length) {
     let result = "";
@@ -33,21 +32,31 @@ export default function Email() {
     const email = e.target.email.value;
     const password = e.target.password.value;
     const loginParams = createLoginParams();
-    const request = await fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        state: loginParams.state,
-        codeChallenge: loginParams.codeChallenge,
-        codeChallengeMethod: loginParams.codeChallengeMethod,
-      }),
-    });
-    const response = await request.json();
-    console.log(response);
+    console.log("requesting");
+    try {
+      const request = await fetch(
+        "https://automatic-succotash-9xq5jv45qxg27w57-8080.app.github.dev/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Referrer-Policy": "cross-origin",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            state: loginParams.state,
+            codeChallenge: loginParams.codeChallenge,
+            codeChallengeMethod: loginParams.codeChallengeMethod,
+          }),
+        }
+      );
+      const response = await request.json();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
