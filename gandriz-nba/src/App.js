@@ -4,6 +4,7 @@ import Login from "./routes/auth/login/login";
 import Email from "./routes/auth/login-email/email";
 import Signup from "./routes/auth/signup/signup";
 import ForgotPassword from "./routes/auth/forgot-password/forgot-password";
+import ResetPassword from "./routes/auth/reset-password/reset-password";
 
 function App() {
   const router = createBrowserRouter([
@@ -40,7 +41,13 @@ function App() {
     {
       path: "/forgot-password",
       element: <ForgotPassword />,
-      errorElement: <div>Not found error</div>,
+      errorElement: <div>Forgot password error</div>,
+      children: [],
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPassword />,
+      errorElement: <div>Reset password error</div>,
       children: [],
     }
   ]);

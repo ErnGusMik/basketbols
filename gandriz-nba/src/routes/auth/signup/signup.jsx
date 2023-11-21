@@ -5,7 +5,7 @@ import login from "./../main.jpg";
 
 const crypto = require("crypto-js/sha256");
 
-export default function Email() {
+export default function Signup() {
   function makeRandom(length) {
     let result = "";
     const characters =
@@ -178,7 +178,7 @@ export default function Email() {
             required
             min="8"
           />
-          <input type="submit" className="loginSubmit" value="Ienākt" />
+          <input type="submit" className="loginSubmit" value="Reģistrēties" />
         </form>
         <p className="noAccount">
           Ir konts? Ienāc <Link to="/login">šeit</Link>.

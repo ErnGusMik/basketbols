@@ -13,4 +13,6 @@ router.post("/refresh", routes.refresh);
 
 router.post("/forgot-password", routes.forgotPassword);
 
+router.put("/reset-password", routes.resetPassword);
+
 module.exports = router;

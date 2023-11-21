@@ -362,4 +362,48 @@ const forgotPassword = async (req, res, next) => {
   });
 };
 
-module.exports = { loginVerify, token, signUp, refresh, forgotPassword };
+const resetPassword = async (req, res, next) => {
+  // PUT /auth/reset-password
+  const code = req.body.code;
+  const password = req.body.password;
+  if (!code || !password || password.length < 8) {
+    return res.status(400).send({
+      error_technical_description:
+        "Invalid request. Missing or invalid body parameters",
+      error_description: "Kaut kas nogāja greizi (E1)",
+      error: "invalid_request",
+    });
+  }
+  const test = await db.query("SELECT * FROM auth_codes WHERE code = $1 AND code_challenge = $2", [code, "0"]);
+  if (!test[0]) {
+    return res.status(400).send({
+      error_technical_description: "Invalid code",
+      error_description: "Autorizācijas kods nav atrasts (E15)",
+      error: "invalid_request",
+    });
+  }
+  if (Date.now() > test[0].timestamp + 900) {
+    return res.status(400).send({
+      error_technical_description: "Code timeout",
+      error_description: "Kods ir novecojis (E14)",
+      error: "invalid_request",
+    });
+  }
+
+  const user = await db.query("SELECT * FROM users WHERE id = $1", [test[0].user_id]);
+  if (!user[0]) {
+    return res.status(500).send({
+      error_technical_description: "Unable to find user",
+      error_description: "Kaut kas nogāja greizi (E16)",
+      error: "server_error",
+    });
+  }
+  const hash = await helpers.generateHash(password);
+  db.query("UPDATE users SET password = $1 WHERE id = $2", [hash, user[0].id]);
+  db.query("DELETE FROM auth_codes WHERE user_id = $1", [user[0].id]);
+  return res.status(200).send({
+    status: 204
+  });
+}
+
+module.exports = { loginVerify, token, signUp, refresh, forgotPassword, resetPassword };
