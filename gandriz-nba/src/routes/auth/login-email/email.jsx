@@ -22,41 +22,79 @@ export default function Email() {
   }
   const createLoginParams = async () => {
     const state = makeRandom(10);
-    const codeChallenge = makeRandom(64);
+    const codeVerifier = makeRandom(64);
     const codeChallengeMethod = "S256";
-    const codeVerifier = await btoa(await crypto(codeChallenge));
+    const codeChallenge = btoa(crypto(codeVerifier));
     return { state, codeChallenge, codeChallengeMethod, codeVerifier };
   };
   const manageCredentials = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const loginParams = createLoginParams();
-    console.log("requesting");
-    try {
-      const request = await fetch(
-        "https://automatic-succotash-9xq5jv45qxg27w57-8080.app.github.dev/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Referrer-Policy": "cross-origin",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            state: loginParams.state,
-            codeChallenge: loginParams.codeChallenge,
-            codeChallengeMethod: loginParams.codeChallengeMethod,
-          }),
-        }
-      );
-      const response = await request.json();
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+    const loginParams = await createLoginParams();
+    const body = {
+      email,
+      password,
+      state: loginParams.state,
+      code_challenge: loginParams.codeChallenge,
+      code_challenge_method: loginParams.codeChallengeMethod,
+    };
+    const request = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const response = await request.json();
+    if (response.error) {
+      document.getElementById("error-desc").innerHTML = response.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
+      return;
     }
+    if (response.state !== loginParams.state) {
+      document.getElementById("error-desc").innerHTML =
+        "Nevarējām Jūs autorizēt (E13)";
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
+      return;
+    }
+    const tokenRequest = await fetch("http://localhost:8080/auth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: response.code,
+        code_verifier: loginParams.codeVerifier,
+        grant_type: "authorization_code",
+      }),
+    });
+    const tokenResponse = await tokenRequest.json();
+    if (tokenResponse.error) {
+      document.getElementById("error-desc").innerHTML =
+        tokenResponse.error_description;
+      document.getElementById("error-cont").style.visibility = "visible";
+      document.getElementById("error-cont").style.opacity = "1";
+      setTimeout(() => {
+        document.getElementById("error-cont").style.visibility = "hidden";
+        document.getElementById("error-cont").style.opacity = "0";
+      }, 3000);
+      return;
+    }
+    localStorage.setItem("refresh_token", tokenResponse.refresh_token);
+    localStorage.setItem("access_token", tokenResponse.access_token);
+    localStorage.setItem("id_token", tokenResponse.id_token);
+    window.location.href = "/app";
   };
 
   return (
@@ -93,6 +131,12 @@ export default function Email() {
           Nav konta? Reģistrējies <Link to="/signup">šeit</Link>.
         </p>
         <p className="copy">&copy; Gandrīz NBA 2023</p>
+      </div>
+      <div className="error-cont" id="error-cont">
+        <i className="fa-solid fa-triangle-exclamation"></i>
+        <p className="error-desc" id="error-desc">
+          Kaut kas nogāja greizi
+        </p>
       </div>
     </div>
   );
