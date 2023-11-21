@@ -4,8 +4,8 @@ Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitīt
 ### Darba plānojums
 | Darbs                        | Nodošanas datums | Statuss            |
 | ---------------------------- | ---------------- | ------------------ |
-| Serveris, Datubāze           | 10/11/23         | 🕔 Gaida testēšanu |
-| Jauna turnīra lapa, login    | 17/11/23         | 🟢 Procesā         |
+| Serveris, Datubāze           | 10/11/23         | 🧪 Testēšana       |
+| Jauna turnīra lapa, login    | 17/11/23         | ⏰ Kavējās         |
 | Spēles, turnīra lapa         | 01/12/23         | 🟡 Nav uzsākts     |
 | Pēcspēles analīze            | 08/12/23         | 🟡 Nav uzsākts     |
 | Publiskās funkcijas          | 15/12/23         | 🟡 Nav uzsākts     |

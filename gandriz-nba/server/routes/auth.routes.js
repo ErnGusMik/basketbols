@@ -7,7 +7,7 @@ const path = require("node:path");
 const fs = require("node:fs");
 
 const loginVerify = async (req, res, next) => {
-  // POST /api/auth/login/verify
+  // POST /api/auth/login
   if (
     !req.body.email ||
     !req.body.password ||
