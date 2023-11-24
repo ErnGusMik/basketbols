@@ -5,7 +5,8 @@ import Email from "./routes/auth/login-email/email";
 import Signup from "./routes/auth/signup/signup";
 import ForgotPassword from "./routes/auth/forgot-password/forgot-password";
 import ResetPassword from "./routes/auth/reset-password/reset-password";
-import Root from './routes/app/root';
+import Root from "./routes/app/root";
+import NewTournament from "./routes/app/new-tournament/new-tournament";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,7 +20,12 @@ function App() {
       path: "/app",
       element: <Root />,
       errorElement: <div>App error</div>,
-      children: [],
+      children: [
+        {
+          path: "/app/tournaments/new",
+          element: <NewTournament />,
+        },
+      ],
     },
     {
       path: "login",
@@ -50,7 +56,7 @@ function App() {
       element: <ResetPassword />,
       errorElement: <div>Reset password error</div>,
       children: [],
-    }
+    },
   ]);
   return (
     <div className="App">
