@@ -1,7 +1,7 @@
 const client = require("./../config/db.conf");
 
 const openConnection = async () => {
-client.connect((err) => {
+  client.connect((err) => {
     if (err) {
       console.log(err);
       return err;

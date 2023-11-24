@@ -23,7 +23,7 @@ const loginVerify = async (req, res, next) => {
   }
   const access_granted = await helpers.verifyUser(
     req.body.email,
-    req.body.password
+    req.body.password,
   );
   if (!access_granted) {
     return res.status(401).send({
@@ -92,7 +92,7 @@ const token = async (req, res) => {
       const code_verifier = await helpers.validateCodeVerifier(
         code.code_challenge,
         req.body.code_verifier,
-        code.code_challenge_method
+        code.code_challenge_method,
       );
       if (!code_verifier) {
         return res.status(400).send({
@@ -122,7 +122,7 @@ const token = async (req, res) => {
           iat: Date.now(),
           scope: req.body.scope ? req.body.scope : 0,
         },
-        process.env.JWT_SECRET_KEY
+        process.env.JWT_SECRET_KEY,
       );
       const refresh_token = Jwt.sign(
         {
@@ -133,7 +133,7 @@ const token = async (req, res) => {
           iat: Date.now(),
           scope: req.body.scope ? req.body.scope : 0,
         },
-        process.env.JWT_SECRET_KEY
+        process.env.JWT_SECRET_KEY,
       );
       const IDtoken = Jwt.sign(
         {
@@ -146,7 +146,7 @@ const token = async (req, res) => {
           email: user.email,
           last_name: user.surname,
         },
-        process.env.JWT_SECRET_KEY
+        process.env.JWT_SECRET_KEY,
       );
       return res.status(200).send({
         access_token: accessToken,
@@ -199,7 +199,7 @@ const signUp = async (req, res, next) => {
   if (testUser.error === "not_found") {
     const query = await db.query(
       "INSERT INTO users (email, password, name, surname) VALUES ($1, $2, $3, $4) RETURNING email, id ",
-      [email, hash, name, surname]
+      [email, hash, name, surname],
     );
     const result = query[0];
     const user = {
@@ -249,7 +249,7 @@ const refresh = async (req, res, next) => {
       iat: Date.now(),
       scope: token.scope ? token.scope : 0,
     },
-    process.env.JWT_SECRET_KEY
+    process.env.JWT_SECRET_KEY,
   );
   const IDtoken = Jwt.sign(
     {
@@ -262,7 +262,7 @@ const refresh = async (req, res, next) => {
       email: user.email,
       last_name: user.surname,
     },
-    process.env.JWT_SECRET_KEY
+    process.env.JWT_SECRET_KEY,
   );
   const refresh = Jwt.sign(
     {
@@ -273,7 +273,7 @@ const refresh = async (req, res, next) => {
       iat: Date.now(),
       scope: token.scope ? token.scope : 0,
     },
-    process.env.JWT_SECRET_KEY
+    process.env.JWT_SECRET_KEY,
   );
   return res.status(200).send({
     access_token: accessToken,
@@ -309,9 +309,15 @@ const forgotPassword = async (req, res, next) => {
       error: "user_not_found",
     });
   }
-  const test = await db.query("SELECT * FROM auth_codes WHERE user_id = $1 AND code_challenge = $2", [user.id, "0"])
+  const test = await db.query(
+    "SELECT * FROM auth_codes WHERE user_id = $1 AND code_challenge = $2",
+    [user.id, "0"],
+  );
   if (test[0]) {
-    db.query("DELETE FROM auth_codes WHERE user_id = $1 AND code_challenge = $2", [user.id, "0"])
+    db.query(
+      "DELETE FROM auth_codes WHERE user_id = $1 AND code_challenge = $2",
+      [user.id, "0"],
+    );
   }
 
   const code = helpers.makeRandom(64);
@@ -322,7 +328,7 @@ const forgotPassword = async (req, res, next) => {
   const query = await db.query(dbText, values);
 
   const transporter = nodemailer.createTransport(
-    `smtps://${serverEmail}:${serverPassword}@smtp.gmail.com`
+    `smtps://${serverEmail}:${serverPassword}@smtp.gmail.com`,
   );
 
   const mailOptions = {
@@ -374,7 +380,10 @@ const resetPassword = async (req, res, next) => {
       error: "invalid_request",
     });
   }
-  const test = await db.query("SELECT * FROM auth_codes WHERE code = $1 AND code_challenge = $2", [code, "0"]);
+  const test = await db.query(
+    "SELECT * FROM auth_codes WHERE code = $1 AND code_challenge = $2",
+    [code, "0"],
+  );
   if (!test[0]) {
     return res.status(400).send({
       error_technical_description: "Invalid code",
@@ -390,7 +399,9 @@ const resetPassword = async (req, res, next) => {
     });
   }
 
-  const user = await db.query("SELECT * FROM users WHERE id = $1", [test[0].user_id]);
+  const user = await db.query("SELECT * FROM users WHERE id = $1", [
+    test[0].user_id,
+  ]);
   if (!user[0]) {
     return res.status(500).send({
       error_technical_description: "Unable to find user",
@@ -402,8 +413,15 @@ const resetPassword = async (req, res, next) => {
   db.query("UPDATE users SET password = $1 WHERE id = $2", [hash, user[0].id]);
   db.query("DELETE FROM auth_codes WHERE user_id = $1", [user[0].id]);
   return res.status(200).send({
-    status: 204
+    status: 204,
   });
-}
+};
 
-module.exports = { loginVerify, token, signUp, refresh, forgotPassword, resetPassword };
+module.exports = {
+  loginVerify,
+  token,
+  signUp,
+  refresh,
+  forgotPassword,
+  resetPassword,
+};

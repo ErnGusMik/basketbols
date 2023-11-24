@@ -49,7 +49,7 @@ const newTournament = async (req, res, next) => {
     req.body.dates,
     req.body.groups,
     req.body.finalsNum,
-    req.body.refereeNum
+    req.body.refereeNum,
   );
   res.status(201).send(result[0].id.toString()); // !! result.rows[0].id.toString() or result[0].id.toString() ??
 };
@@ -84,7 +84,7 @@ const newTeam = async (req, res, next) => {
     0,
     0,
     0,
-    req.body.tournamentID
+    req.body.tournamentID,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -104,7 +104,7 @@ const newReferee = async (req, res, next) => {
   const result = await referees.modelReferee(
     req.body.tournamentID,
     req.body.name,
-    req.body.finals
+    req.body.finals,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -128,7 +128,7 @@ const newPlayer = async (req, res, next) => {
     req.body.teamID,
     req.body.number,
     0,
-    0
+    0,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -212,7 +212,7 @@ const newGame = async (req, res, next) => {
     0,
     0,
     0,
-    req.body.finals
+    req.body.finals,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -244,41 +244,37 @@ const updateGame = async (req, res, next) => {
   res.status(200).send("Game updated");
 };
 
-
-
 // GET requests
 
 const getGame = async (req, res, next) => {
   /* GET /api/games/:id */
   const result = await games.getGame(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getTournament = async (req, res, next) => {
   /* GET /api/tournaments/:id */
   const result = await tournaments.getTournament(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getReferee = async (req, res, next) => {
   /* GET /api/referees/:id */
   const result = await referees.getReferee(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getTeam = async (req, res, next) => {
   /* GET /api/teams/:id */
   const result = await teams.getTeam(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getPlayer = async (req, res, next) => {
   /* GET /api/players/:id */
   const result = await players.getPlayer(req.params.id);
   res.status(200).send(result[0]);
-}
-
-
+};
 
 module.exports = {
   newTournament,
@@ -291,5 +287,5 @@ module.exports = {
   getTournament,
   getReferee,
   getTeam,
-  getPlayer
+  getPlayer,
 };

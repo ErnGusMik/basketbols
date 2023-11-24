@@ -13,10 +13,10 @@ const modelReferee = async (tournamentID, name, finals) => {
   return await db.query(text, values);
 };
 
-const getReferee = async refereeID => {
+const getReferee = async (refereeID) => {
   const text = "SELECT * FROM referees WHERE id = $1";
   const values = [refereeID];
   return await db.query(text, values);
-}
+};
 
-module.exports = {modelReferee, getReferee};
+module.exports = { modelReferee, getReferee };

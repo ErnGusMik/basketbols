@@ -26,6 +26,6 @@ const getUserByEmail = async (email) => {
   const text = "SELECT * FROM users WHERE email = $1";
   const values = [email];
   return await db.query(text, values);
-}
+};
 
 module.exports = { modelUser, getUser, getUserByEmail };

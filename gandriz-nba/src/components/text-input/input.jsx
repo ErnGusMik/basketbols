@@ -10,7 +10,13 @@ export default function TextInput({
   return (
     <div className="textInput-container">
       <label htmlFor={inputID}>{label}</label>
-      <input type={type} id={inputID} name={inputID} value={value} placeholder={placeholder} />
+      <input
+        type={type}
+        id={inputID}
+        name={inputID}
+        value={value}
+        placeholder={placeholder}
+      />
     </div>
   );
 }

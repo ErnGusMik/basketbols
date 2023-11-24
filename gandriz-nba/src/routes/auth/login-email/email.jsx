@@ -48,7 +48,8 @@ export default function Email() {
     });
     const response = await request.json();
     if (response.error) {
-      document.getElementById("error-desc").innerHTML = response.error_description;
+      document.getElementById("error-desc").innerHTML =
+        response.error_description;
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
       setTimeout(() => {

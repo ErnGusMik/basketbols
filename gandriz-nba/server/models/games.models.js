@@ -55,7 +55,7 @@ const modelGame = async (
   team2MostPointsInRow,
   team1BestPlayers,
   team2BestPlayers,
-  finals
+  finals,
 ) => {
   const text =
     "INSERT INTO games (team1ID, team2ID, team1Points, team2Points, refereeIDs, date, tournamentID, team1Blocks, team13points, team1LostPoints, team12points, team2Blocks, team23points, team2LostPoints, team22points, timesTied, timesLeadChanged, team2BiggestLead, team1BiggestLead, team1MostPointsInRow, team2MostPointsInRow, team1BestPlayers, team2BestPlayers, finals) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24) RETURNING id";
@@ -107,9 +107,10 @@ const updateGame = async (
   team1MostPointsInRow,
   team2MostPointsInRow,
   team1BestPlayers,
-  team2BestPlayers
+  team2BestPlayers,
 ) => {
-  const text = "UPDATE games SET team1Points = $2, team2Points = $3, team1Blocks = $4, team13points = $5, team1LostPoints = $6, team12points = $7, team2Blocks = $8, team23points = $9, team2LostPoints = $10, team22points = $11, timesTied = $12, timesLeadChanged = $13, team2BiggestLead = $14, team1BiggestLead = $15, team1MostPointsInRow = $16, team2MostPointsInRow = $17, team1BestPlayers = $18, team2BestPlayers = $19 WHERE id = $1"
+  const text =
+    "UPDATE games SET team1Points = $2, team2Points = $3, team1Blocks = $4, team13points = $5, team1LostPoints = $6, team12points = $7, team2Blocks = $8, team23points = $9, team2LostPoints = $10, team22points = $11, timesTied = $12, timesLeadChanged = $13, team2BiggestLead = $14, team1BiggestLead = $15, team1MostPointsInRow = $16, team2MostPointsInRow = $17, team1BestPlayers = $18, team2BestPlayers = $19 WHERE id = $1";
   const values = [
     gameID,
     team1Points,

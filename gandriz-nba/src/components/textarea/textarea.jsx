@@ -4,7 +4,7 @@ export default function Textarea(
   inputID,
   label = "",
   value = "",
-  placeholder = ""
+  placeholder = "",
 ) {
   return (
     <div className="textarea-container">

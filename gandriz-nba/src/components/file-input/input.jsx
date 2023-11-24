@@ -1,7 +1,6 @@
 import "./input.css";
 import React from "react";
-import logo from './../../../public/main.jpg'
-
+import logo from "./../../../public/main.jpg";
 
 export default function FileInput({
   label = "",
@@ -17,7 +16,7 @@ export default function FileInput({
       "&#9432; Šis lauks ir obligāts";
     document.getElementById(inputID).attributes.className = "input-error";
   };
-  let file = '';
+  let file = "";
   const manageChange = (e) => {
     e.preventDefault();
     if (file) {
@@ -46,11 +45,7 @@ export default function FileInput({
         <p id={inputID + "-warning"}></p>
       </div>
       <div className="fileInput-image">
-        <img
-          className={inputID + "-image"}
-          src={file}
-          alt='Turnīra logo'
-        />
+        <img className={inputID + "-image"} src={file} alt="Turnīra logo" />
       </div>
     </div>
   );
