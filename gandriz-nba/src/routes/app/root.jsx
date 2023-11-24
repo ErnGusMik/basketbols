@@ -13,12 +13,14 @@ export default function Root() {
   const showMenu = () => {
     if (!menuOpen) {
       document.querySelector(".verticalNav-main").style.left = "0px";
-      document.querySelector(".verticalNav-overlay").style.visibility = "visible";
+      document.querySelector(".verticalNav-overlay").style.visibility =
+        "visible";
       document.querySelector(".verticalNav-overlay").style.opacity = "1";
       menuOpen = true;
     } else {
       document.querySelector(".verticalNav-main").style.left = "-300px";
-      document.querySelector(".verticalNav-overlay").style.visibility = "hidden";
+      document.querySelector(".verticalNav-overlay").style.visibility =
+        "hidden";
       document.querySelector(".verticalNav-overlay").style.opacity = "0";
       menuOpen = false;
     }
@@ -42,7 +44,7 @@ export default function Root() {
       </div>
       <div className="verticalNav-main">
         <div className="verticalNav-content">
-        <div className="verticalNav-menuButtonClose" onClick={showMenu}>
+          <div className="verticalNav-menuButtonClose" onClick={showMenu}>
             <i className="fa-solid fa-xmark"></i>
           </div>
           <div className="verticalNav-home">

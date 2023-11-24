@@ -1,60 +1,60 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .radioInput-container {
-    width: fit-content;
+  width: fit-content;
 }
 
 .radioInput-container input {
-    display: none;
+  display: none;
 }
 
 .radioInput-container label span {
-    display: inline-block;
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 50px;
-    cursor: pointer;
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 20px;
-    font-weight: 300;
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 50px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 .radioInput-container input:checked + label span {
-    background-color: #fbcdbb;
-    border: 1px solid #fbcdbb;
+  background-color: #fbcdbb;
+  border: 1px solid #fbcdbb;
 }
 
 .radio-cont {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .radioInput-container .main-label {
-    font-size: 14px;
-    font-weight: 300;
-    margin-left: 20px;
-    margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 300;
+  margin-left: 20px;
+  margin-bottom: 0;
 }
 
 .radioInput-container .label-sub {
-    font-size: 12px;
-    font-weight: 300;
-    margin-left: 20px;
-    margin-top: 0;
+  font-size: 12px;
+  font-weight: 300;
+  margin-left: 20px;
+  margin-top: 0;
 }
 
 .error {
-    /* display: none; */
+  /* display: none; */
 }
 
 .error-show {
-    display: block !important;
-    color: red;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 0px 20px 10px;
+  display: block !important;
+  color: red;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0px 20px 10px;
 }

@@ -82,7 +82,7 @@ export default function NewTournament() {
         labelSub="Katra komanda spēlēs ar visām pārējām savā grupā."
         inputID="groupNum"
         value={groupNum.slice(0, 4)}
-        error = "Komandu skaitam ir jādalās ar 2, 4, 16, 32, 64 vai 128!"
+        error="Komandu skaitam ir jādalās ar 2, 4, 16, 32, 64 vai 128!"
       />
     </div>
   );
