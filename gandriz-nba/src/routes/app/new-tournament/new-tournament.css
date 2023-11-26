@@ -1,0 +1,31 @@
+.horizontalCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.new-tournament {
+  max-width: 80%;
+  margin: auto;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+}
+
+.submitContainer p {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 300;
+}
+
+.submitContainer div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}

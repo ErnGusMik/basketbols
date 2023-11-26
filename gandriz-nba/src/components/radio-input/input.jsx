@@ -8,40 +8,46 @@ export default function RadioInput({
   valueSub = [],
   inputID,
   error = "",
+  onChange = () => {},
 }) {
   const errorhandler = () => {
     if (value.length == 0) {
-      console.log('error');
-      document.getElementById('radio-error').classList.add('error-show');
+      document.getElementById(inputID + "-error").classList.add("error-show");
+    } else {
+      document
+        .getElementById(inputID + "-error")
+        .classList.remove("error-show");
     }
-  }
+  };
   React.useEffect(() => {
     errorhandler();
-  }, []);
+  }, [value]);
   return (
     <div className="radioInput-container">
-      <label htmlFor={inputID} className="main-label">{label}</label>
+      <label htmlFor={inputID} className="main-label">
+        {label}
+      </label>
       <p className="label-sub">{labelSub}</p>
       <div className="radio-cont">
         {value.map((item, index) => (
-          <div className="radio-item" id={'radio-item'+index}>
+          <div className="radio-item" id={"radio-item" + index}>
             <input
               type="radio"
-              id={inputID+'-'+index}
+              id={inputID + "-" + index}
               name={inputID}
               value={item}
-              onChange={errorhandler}
+              onChange={onChange}
             />
-            <label htmlFor={inputID+'-'+index}>
-              <span className="labelButton">
-                {item}
-              </span>
-              <p>{valueSub[index]}</p>
+            <label htmlFor={inputID + "-" + index}>
+              <span className="labelButton">{item}</span>
+              <p className="value-subheading">{valueSub[index]}</p>
             </label>
           </div>
         ))}
       </div>
-      <p className="error" id="radio-error">{error}</p>
+      <p className="error error-show" id={inputID + "-error"}>
+        {error}
+      </p>
     </div>
   );
 }

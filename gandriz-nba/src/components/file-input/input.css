@@ -55,3 +55,12 @@
 .flexCont {
     width: fit-content;
 }
+
+.fileInput-warning {
+    color: #f44336;
+    font-size: 12px;
+    font-weight: 300;
+    font-family: Montserrat;
+    margin: 2px;
+    margin-left: 10px;
+}

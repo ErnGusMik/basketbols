@@ -12,19 +12,23 @@ export default function FileInput({
 }) {
   const manageCancel = (e) => {
     e.preventDefault();
-    document.getElementById(`${inputID}-warning`).value =
+    document.getElementById(`${inputID}-warning`).innerHTML =
       "&#9432; Šis lauks ir obligāts";
-    document.getElementById(inputID).attributes.className = "input-error";
+    document.getElementById(inputID+"-warning").classList.add = "input-error";
   };
   let file = image;
   const manageChange = (e) => {
     e.preventDefault();
-    if (file) {
+    if (e.target.files[0]) {
       let reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById(inputID + "-image").src = e.target.result;
-      };
+      let file = e.target.files[0];
       reader.readAsDataURL(file);
+      reader.onloadend = function (e) {
+        document.getElementById(inputID + "-image").src =
+          reader.result;
+      };
+    } else {
+      document.getElementById(inputID + "-image").src = image;
     }
   };
   return (
@@ -52,10 +56,10 @@ export default function FileInput({
             <br />
             {notes2}
           </p>
-          <p id={inputID + "-warning"}></p>
+          <p id={inputID + "-warning"} className="fileInput-warning"></p>
         </div>
         <div className="fileInput-image">
-          <img className={inputID + "-image"} src={file} alt="Turnīra logo" />
+          <img id={inputID + "-image"} src={file} alt="Turnīra logo" />
         </div>
       </div>
     </div>

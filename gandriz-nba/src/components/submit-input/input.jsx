@@ -6,20 +6,29 @@ export default function SubmitInput({
   backValue = "Atpakaļ",
   inputID,
   backInputID = "",
-  onClick = {function() {}},
-  onBackClick = {function() {}},
+  onClick = { function() {} },
+  onBackClick = { function() {} },
 }) {
   return (
-    <div className="submitInput-container">
-      <input type="submit" value={value} id={inputID} onClick={onClick} />
-      {includeBack && (
+    <div className="flexCont">
+      <div className="submitInput-container">
         <input
-          type="button"
-          value={backValue}
-          id={backInputID}
-          onClick={onBackClick}
+          type="submit"
+          value={value}
+          id={inputID}
+          onClick={onClick}
+          className="btn primaryBtn"
         />
-      )}
+        {includeBack && (
+          <input
+            type="button"
+            value={backValue}
+            id={backInputID}
+            onClick={onBackClick}
+            className="btn"
+          />
+        )}
+      </div>
     </div>
   );
 }

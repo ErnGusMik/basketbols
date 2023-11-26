@@ -48,7 +48,8 @@
 }
 
 .error {
-    /* display: none; */
+    /* ERROR MAYBE??? */
+    display: none; 
 }
 
 .error-show {
@@ -57,4 +58,11 @@
     font-size: 12px;
     font-weight: 600;
     padding: 0px 20px 10px;
+}
+
+.radioInput-container .value-subheading {
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 0;
 }
