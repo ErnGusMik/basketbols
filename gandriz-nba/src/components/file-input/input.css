@@ -22,45 +22,45 @@
 }
 
 .fileInput-container label p {
-    margin: 5px;
-    margin-left: 10px;
-    font-size: 14px;
-    font-weight: 300;
+  margin: 5px;
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .fileInput-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fileInput-image img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
-    margin-left: 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  margin-left: 20px;
 }
 
 .fileInput-notes {
-    margin: 2px;
-    margin-left: 10px;
-    font-size: 12px;
-    font-weight: 300;
-    color: #333;
-    font-family: Montserrat;
+  margin: 2px;
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #333;
+  font-family: Montserrat;
 }
 
 .flexCont {
-    width: fit-content;
+  width: fit-content;
 }
 
 .fileInput-warning {
-    color: #f44336;
-    font-size: 12px;
-    font-weight: 300;
-    font-family: Montserrat;
-    margin: 2px;
-    margin-left: 10px;
+  color: #f44336;
+  font-size: 12px;
+  font-weight: 300;
+  font-family: Montserrat;
+  margin: 2px;
+  margin-left: 10px;
 }
