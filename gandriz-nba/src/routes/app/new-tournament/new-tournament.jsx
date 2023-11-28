@@ -29,40 +29,26 @@ export default function NewTournament() {
     setTeamNum(e.target.value);
   };
   const groupNumChange = (e) => {
-    const allowed = [16, 8, 4, 2];
+    const allowedFinals = [16, 8, 4, 2];
+    const allowedGroups = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
     const allowedSub = ["Astotdaļ.", "Ceturtdaļ.", "Pusfināli", "Fināls"];
-    const groupNums = e.target.value;
-    if (groupNums === "NaN" || groupNums === "Infinity") {
+    const selectedGroup = e.target.value;
+    if (selectedGroup === "NaN" || selectedGroup === "Infinity") {
       setSelectedGroup(0);
     } else {
-      const selectedGroup = teamNum / groupNums;
-      console.log(selectedGroup);
       setSelectedGroup(selectedGroup);
     }
-    const teamsInGroup = teamNum / groupNums;
+    const teamsInGroup = teamNum / selectedGroup;
     let possibleFinals = [];
     let possibleFinalsSub = [];
-    // only 16, 8, 4, or 2 teams can go forward. make sure from each team an equal amount goes forward.
-    for (let i = 0; i < allowed.length; i++) {
-      if (teamsInGroup % allowed[i] === 0) {
-        possibleFinals.push((teamsInGroup / allowed[i]) * groupNums);
-        switch ((teamsInGroup / allowed[i]) * groupNums) {
-          case 2:
-            possibleFinalsSub.push(allowedSub[3]);
-            break;
-          case 4:
-            possibleFinalsSub.push(allowedSub[2]);
-            break;
-          case 8:
-            possibleFinalsSub.push(allowedSub[1]);
-            break;
-          case 16:
-            possibleFinalsSub.push(allowedSub[0]);
-            break;
-          default:
-            break;
+    // only 16, 8, 4, or 2 teams can go forward. make sure from each team an equal amount goes forward. DOESNT WORK COMPLETELY!
+    for (let i = 0; i < allowedFinals.length; i++) {
+        if (allowedFinals[i] % selectedGroup === 0) {
+            if (teamsInGroup >= allowedFinals[i]) {
+                possibleFinals.push(allowedFinals[i]);
+                possibleFinalsSub.push(allowedSub[i]);
+            }
         }
-      }
     }
     setFinalsNum(possibleFinals);
     setFinalsSub(possibleFinalsSub);
@@ -150,7 +136,7 @@ export default function NewTournament() {
             label="Izslēgšanas spēles"
             labelSub="Cik komandas tiek izslēgšanas spēlēs?"
             inputID="finalsNum"
-            error="Izvēlietes grupu skaitu!"
+            error="Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"
             value={finalsNum}
             valueSub={finalsSub}
             onChange={handleFinalsNum}
@@ -158,7 +144,7 @@ export default function NewTournament() {
           <div className="submitContainer">
             <div>
               <p>
-                Katrā grupā spēlēs <b>{selectedGroup}</b> komandas.
+                Katrā grupā spēlēs <b>{teamNum / selectedGroup}</b> komandas.
               </p>
               <p>
                 Katras grupas <b>{finalsNumValue}</b> labākās komandas spēlēs izslēgšanas
