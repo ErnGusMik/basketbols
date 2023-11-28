@@ -43,12 +43,12 @@ export default function NewTournament() {
     let possibleFinalsSub = [];
     // only 16, 8, 4, or 2 teams can go forward. make sure from each team an equal amount goes forward. DOESNT WORK COMPLETELY!
     for (let i = 0; i < allowedFinals.length; i++) {
-        if (allowedFinals[i] % selectedGroup === 0) {
-            if (teamsInGroup >= allowedFinals[i]) {
-                possibleFinals.push(allowedFinals[i]);
-                possibleFinalsSub.push(allowedSub[i]);
-            }
+      if (allowedFinals[i] % selectedGroup === 0) {
+        if (teamsInGroup >= allowedFinals[i]) {
+          possibleFinals.push(allowedFinals[i]);
+          possibleFinalsSub.push(allowedSub[i]);
         }
+      }
     }
     setFinalsNum(possibleFinals);
     setFinalsSub(possibleFinalsSub);
@@ -56,7 +56,7 @@ export default function NewTournament() {
   const [finalsNumValue, setFinalsNumValue] = React.useState(0);
   const handleFinalsNum = (e) => {
     setFinalsNumValue(teamNum / e.target.value);
-  }
+  };
 
   React.useEffect(() => {
     const allowed = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
@@ -147,8 +147,8 @@ export default function NewTournament() {
                 Katrā grupā spēlēs <b>{teamNum / selectedGroup}</b> komandas.
               </p>
               <p>
-                Katras grupas <b>{finalsNumValue}</b> labākās komandas spēlēs izslēgšanas
-                spēlēs.
+                Katras grupas <b>{finalsNumValue}</b> labākās komandas spēlēs
+                izslēgšanas spēlēs.
               </p>
             </div>
             <SubmitInput inputID="submit" />

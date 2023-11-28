@@ -1,33 +1,33 @@
 .btn {
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 50px;
-    color: #000;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 300;
-    padding: 15px 30px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 50px;
+  color: #000;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 300;
+  padding: 15px 30px;
 }
 
 .btn:hover {
-    background-color: #eee;
-    color: #000;
-    transition: all 0.1s ease-in-out;
+  background-color: #eee;
+  color: #000;
+  transition: all 0.1s ease-in-out;
 }
 
 .primaryBtn {
-    background-color: #fbcdbb;
-    border: 1px solid #fbcdbb;
-    transition: all 0.1s ease-in-out;
+  background-color: #fbcdbb;
+  border: 1px solid #fbcdbb;
+  transition: all 0.1s ease-in-out;
 }
 
 .primaryBtn:hover {
-    background-color: #F2C6B4;
-    border: 1px solid #F2C6B4;
+  background-color: #f2c6b4;
+  border: 1px solid #f2c6b4;
 }
 
 .submitInput-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

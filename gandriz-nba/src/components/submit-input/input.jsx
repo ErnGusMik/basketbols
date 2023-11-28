@@ -6,8 +6,8 @@ export default function SubmitInput({
   backValue = "Atpakaļ",
   inputID,
   backInputID = "",
-  onClick = function() {},
-  onBackClick = function() {},
+  onClick = function () {},
+  onBackClick = function () {},
 }) {
   return (
     <div className="flexCont">
