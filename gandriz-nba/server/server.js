@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const routes = require('./routes/app.routes')
 
 const dbClient = require('./database/postgres.database')
 
@@ -31,7 +32,7 @@ app.use('/api', apiRouter)
 const authRouter = require('./controllers/auth.controllers')
 app.use('/auth', authRouter)
 
-
+app.get('/:pageName', routes.getTournamentPage)
 
 
 

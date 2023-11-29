@@ -9,6 +9,7 @@ export default function FileInput({
   accept = "image/*",
   notes = "",
   notes2 = "",
+  required = false,
 }) {
   const manageCancel = (e) => {
     e.preventDefault();
@@ -50,6 +51,7 @@ export default function FileInput({
             accept={accept}
             onCancel={manageCancel}
             onChange={manageChange}
+            required={required}
           />
           <p className="fileInput-notes">
             {notes}

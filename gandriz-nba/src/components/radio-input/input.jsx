@@ -9,6 +9,7 @@ export default function RadioInput({
   inputID,
   error = "",
   onChange = () => {},
+  required = false,
 }) {
   const errorhandler = () => {
     if (value.length == 0) {
@@ -37,6 +38,7 @@ export default function RadioInput({
               name={inputID}
               value={item}
               onChange={onChange}
+              required={required}
             />
             <label htmlFor={inputID + "-" + index}>
               <span className="labelButton">{item}</span>

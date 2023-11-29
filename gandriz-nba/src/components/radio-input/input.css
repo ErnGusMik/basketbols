@@ -4,6 +4,7 @@
 
 .radioInput-container {
     width: fit-content;
+    max-width: 100%;
 }
 
 .radioInput-container input {
@@ -66,3 +67,14 @@
     text-align: center;
     margin-top: 0;
 }
+
+@media screen and (max-width: 500px) {
+    .radioInput-container {
+      width: 300px;
+      text-align: center;
+    }
+    .radio-cont {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+  }

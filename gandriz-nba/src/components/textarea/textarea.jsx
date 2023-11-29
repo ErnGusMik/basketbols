@@ -4,6 +4,7 @@ export default function Textarea({
   inputID = "",
   label = "",
   placeholder = "",
+  required = false,
 }) {
   return (
     <div className="textarea-container">
@@ -12,6 +13,7 @@ export default function Textarea({
         id={inputID}
         name={inputID}
         placeholder={placeholder}
+        required={required}
       ></textarea>
     </div>
   );

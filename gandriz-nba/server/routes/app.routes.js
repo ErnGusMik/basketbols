@@ -244,41 +244,44 @@ const updateGame = async (req, res, next) => {
   res.status(200).send("Game updated");
 };
 
-
-
 // GET requests
 
 const getGame = async (req, res, next) => {
   /* GET /api/games/:id */
   const result = await games.getGame(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getTournament = async (req, res, next) => {
   /* GET /api/tournaments/:id */
   const result = await tournaments.getTournament(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getReferee = async (req, res, next) => {
   /* GET /api/referees/:id */
   const result = await referees.getReferee(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getTeam = async (req, res, next) => {
   /* GET /api/teams/:id */
   const result = await teams.getTeam(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
 const getPlayer = async (req, res, next) => {
   /* GET /api/players/:id */
   const result = await players.getPlayer(req.params.id);
   res.status(200).send(result[0]);
-}
+};
 
-
+const getTournamentPage = async (req, res, next) => {
+  /* GET /:pageName */
+  const result = await tournaments.getTournamentPage(req.params.pageName);
+  res.send({ result: result[0] ? result[0] : 0 });
+  return;
+};
 
 module.exports = {
   newTournament,
@@ -291,5 +294,6 @@ module.exports = {
   getTournament,
   getReferee,
   getTeam,
-  getPlayer
+  getPlayer,
+  getTournamentPage,
 };

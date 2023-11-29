@@ -50,5 +50,11 @@ const getTournament = async tournamentID => {
   return await db.query(text, values);
 }
 
+const getTournamentPage = (pageName) => {
+  const text = "SELECT * FROM tournaments WHERE pagename = $1";
+  const values = [pageName];
+  return db.query(text, values);
+}
 
-module.exports = {modelTournament, getTournament};
+
+module.exports = {modelTournament, getTournament, getTournamentPage};

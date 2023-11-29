@@ -11,6 +11,7 @@
 .textInput-container input {
   display: block;
   width: 400px;
+  max-width: 100%;
   height: 50px;
   padding: 0 20px;
   border: 0;
@@ -30,4 +31,10 @@
   font-weight: 300;
   color: #333;
   font-family: Montserrat;
+}
+
+@media screen and (max-width: 500px) {
+  .textInput-container input {
+    width: 300px;
+  }
 }

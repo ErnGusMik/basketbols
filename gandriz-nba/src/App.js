@@ -5,8 +5,11 @@ import Email from "./routes/auth/login-email/email";
 import Signup from "./routes/auth/signup/signup";
 import ForgotPassword from "./routes/auth/forgot-password/forgot-password";
 import ResetPassword from "./routes/auth/reset-password/reset-password";
+
 import Root from "./routes/app/root";
+
 import NewTournament from "./routes/app/new-tournament/new-tournament";
+import NewTournament2 from "./routes/app/new-tournament/2/new-tournament-2";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +27,10 @@ function App() {
         {
           path: "/app/tournaments/new",
           element: <NewTournament />,
+        },
+        {
+          path: "/app/tournaments/new/2",
+          element: <NewTournament2 />,
         },
       ],
     },

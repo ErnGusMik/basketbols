@@ -9,6 +9,8 @@ export default function TextInput({
   notes = "",
   notesValue = false,
   onChange = null,
+  required = false,
+  error = false,
 }) {
   const [value, setValue] = useState(notes);
   const originalValue = notes;
@@ -22,15 +24,30 @@ export default function TextInput({
   useEffect(() => {
     document.getElementById(inputID + "-notes").innerHTML = value;
   }, [value]);
+  useEffect(() => {
+    if (!error) {
+      document.getElementById(inputID + "-label").style.color = "black";
+      document.getElementById(inputID).style.border = "0";
+    } else {
+      document.getElementById(inputID + "-label").style.color = "red";
+      document.getElementById(inputID).style.border = "1px solid red";
+    }
+  }, [error]);
   return (
     <div className="textInput-container">
-      <label htmlFor={inputID}>{label}</label>
+      <label htmlFor={inputID} id={inputID + "-label"}>
+        {label}{"   "}
+        {error ? <i class="fa-solid fa-triangle-exclamation"></i> : ""}
+        {" "}
+        {error ? error : ""}        
+      </label>
       <input
         type={type}
         id={inputID}
         name={inputID}
         placeholder={placeholder}
         onChange={onChange ? onChange : replaceWithValue}
+        required={required}
       />
       <p id={inputID + "-notes"}>{notes}</p>
     </div>
