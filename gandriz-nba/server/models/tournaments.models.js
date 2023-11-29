@@ -14,7 +14,6 @@ RefereeNum
 */
 const db = require("../database/postgres.database");
 
-
 const modelTournament = async (
   userID,
   name,
@@ -25,7 +24,7 @@ const modelTournament = async (
   dates,
   groups,
   finalsNum,
-  refereeNum
+  refereeNum,
 ) => {
   const text =
     "INSERT INTO tournaments (userid, name, description, location, organizer, logo, dates, groups, finalsNum, refereeNum) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id";
@@ -44,17 +43,16 @@ const modelTournament = async (
   return await db.query(text, values);
 };
 
-const getTournament = async tournamentID => {
+const getTournament = async (tournamentID) => {
   const text = "SELECT * FROM tournaments WHERE id = $1";
   const values = [tournamentID];
   return await db.query(text, values);
-}
+};
 
 const getTournamentPage = (pageName) => {
   const text = "SELECT * FROM tournaments WHERE pagename = $1";
   const values = [pageName];
   return db.query(text, values);
-}
+};
 
-
-module.exports = {modelTournament, getTournament, getTournamentPage};
+module.exports = { modelTournament, getTournament, getTournamentPage };

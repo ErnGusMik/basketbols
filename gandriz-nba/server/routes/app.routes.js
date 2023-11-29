@@ -49,7 +49,7 @@ const newTournament = async (req, res, next) => {
     req.body.dates,
     req.body.groups,
     req.body.finalsNum,
-    req.body.refereeNum
+    req.body.refereeNum,
   );
   res.status(201).send(result[0].id.toString()); // !! result.rows[0].id.toString() or result[0].id.toString() ??
 };
@@ -84,7 +84,7 @@ const newTeam = async (req, res, next) => {
     0,
     0,
     0,
-    req.body.tournamentID
+    req.body.tournamentID,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -104,7 +104,7 @@ const newReferee = async (req, res, next) => {
   const result = await referees.modelReferee(
     req.body.tournamentID,
     req.body.name,
-    req.body.finals
+    req.body.finals,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -128,7 +128,7 @@ const newPlayer = async (req, res, next) => {
     req.body.teamID,
     req.body.number,
     0,
-    0
+    0,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -212,7 +212,7 @@ const newGame = async (req, res, next) => {
     0,
     0,
     0,
-    req.body.finals
+    req.body.finals,
   );
   res.status(201).send(result[0].id.toString());
 };

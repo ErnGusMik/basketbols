@@ -15,7 +15,7 @@ export default function FileInput({
     e.preventDefault();
     document.getElementById(`${inputID}-warning`).innerHTML =
       "&#9432; Šis lauks ir obligāts";
-    document.getElementById(inputID+"-warning").classList.add = "input-error";
+    document.getElementById(inputID + "-warning").classList.add = "input-error";
   };
   let file = image;
   const manageChange = (e) => {
@@ -25,8 +25,7 @@ export default function FileInput({
       let file = e.target.files[0];
       reader.readAsDataURL(file);
       reader.onloadend = function (e) {
-        document.getElementById(inputID + "-image").src =
-          reader.result;
+        document.getElementById(inputID + "-image").src = reader.result;
       };
     } else {
       document.getElementById(inputID + "-image").src = image;
