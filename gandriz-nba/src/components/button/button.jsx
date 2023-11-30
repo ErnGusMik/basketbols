@@ -4,12 +4,14 @@ import "./button.css";
 
 export default function Button({
   text = "",
+  icon = "",
   onClick = () => {},
   disabled = false,
 }) {
   return (
     <button className="button" onClick={onClick} disabled={disabled}>
-      {text}
+      {icon}
+      <p>{text}</p>
     </button>
   );
 }

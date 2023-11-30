@@ -1,0 +1,49 @@
+.groupLink {
+    margin-right: 5px;
+    color: #EE6730;
+    text-decoration: underline;
+    font-weight: 300;
+}
+
+.groupLinks {
+    display: flex;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.new-tournament-2 {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+.new-tournament-2 .tournamentInfo__container {
+    width: 50%;
+    text-align: center;
+    position: relative;
+}
+
+.new-tournament-2 .tournamentInfo {
+    position: sticky;
+    margin: auto;
+    display: block;
+    top: 100px;
+    left: 0;
+}
+
+.submitCont {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+
+.tableLabel {
+    margin-bottom: 5px;
+    margin-left: 10px;
+    font-weight: 300;
+}

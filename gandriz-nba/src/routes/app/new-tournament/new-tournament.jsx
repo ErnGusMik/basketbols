@@ -110,11 +110,11 @@ export default function NewTournament() {
     let reader = new FileReader();
     let file = obj.logo;
     reader.readAsDataURL(file);
-    reader.onloadend = function (e) {
+    reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
+      setNavigate(true);
     };
-    setNavigate(true);
     return;
   };
   const navigate = useNavigate();

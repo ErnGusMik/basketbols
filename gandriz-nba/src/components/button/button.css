@@ -1,0 +1,24 @@
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+  background-color: #fbcdbb;
+  outline: none;
+  font-family: Montserrat;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.1s ease-in-out;
+}
+
+.button p {
+  display: inline;
+  margin-left: 5px;
+}
+
+.button:hover {
+  background-color: #F2C6B4;
+}

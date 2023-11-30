@@ -12,6 +12,15 @@ export default function SubmitInput({
   return (
     <div className="flexCont">
       <div className="submitInput-container">
+      {includeBack && (
+          <input
+            type="button"
+            value={backValue}
+            id={backInputID}
+            onClick={onBackClick}
+            className="btn backBtn"
+          />
+        )}
         <input
           type="submit"
           value={value}
@@ -19,15 +28,6 @@ export default function SubmitInput({
           onClick={onClick}
           className="btn primaryBtn"
         />
-        {includeBack && (
-          <input
-            type="button"
-            value={backValue}
-            id={backInputID}
-            onClick={onBackClick}
-            className="btn"
-          />
-        )}
       </div>
     </div>
   );

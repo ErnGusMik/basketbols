@@ -1,13 +1,19 @@
 import React from "react";
 import "./tables.css";
 
-export default function Table({ cols = [], content = [] }) {
+export default function Table({
+  cols = [],
+  content = [],
+  setColWidth = false,
+}) {
   return (
     <table className="table">
       <thead>
         <tr>
           {cols.map((col, index) => (
-            <th key={index}>{col}</th>
+            <th key={index} style={setColWidth ? {width: setColWidth} : {}}>
+              {col}
+            </th>
           ))}
         </tr>
       </thead>
@@ -15,7 +21,12 @@ export default function Table({ cols = [], content = [] }) {
         {content.map((row, index) => (
           <tr key={index}>
             {row.map((cell, index) => (
-              <td key={index}>{cell}</td>
+              <td
+                key={index}
+                style={setColWidth ? {width: setColWidth} : {}}
+              >
+                {cell}
+              </td>
             ))}
           </tr>
         ))}
