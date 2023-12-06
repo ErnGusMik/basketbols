@@ -47,3 +47,51 @@
     margin-left: 10px;
     font-weight: 300;
 }
+
+
+.addTeam {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    z-index: 3;
+    max-height: 90%;
+    overflow-y: scroll;
+  }
+  
+  .overlay {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 2;
+  }
+  
+  .addTeam .buttonCont {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .addTeam .buttonCont .tableError {
+    font-weight: 300;
+    font-size: 12px;
+    margin-right: 20px;
+    color: red;
+    max-width: 50%;
+  }
+  
+  .teamSubmitCont {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+  }

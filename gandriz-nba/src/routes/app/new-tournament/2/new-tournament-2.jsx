@@ -26,6 +26,8 @@ export default function NewTournament2() {
 
   const [name, setName] = React.useState("");
 
+  const [tableError, setTableError] = React.useState("");
+
   const setGroups = (num) => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     if (num > alphabet.length) {
@@ -88,11 +90,134 @@ export default function NewTournament2() {
     }
   }, []);
 
-  const inputName = <input placeholder="Vārds" type="text" required />;
-  const inputSurname = <input placeholder="Uzvārds" type="text" required />;
-  const inputNumber = (
-    <input placeholder="Nr." type="number" min="0" required />
-  );
+  const inputName = <input placeholder="Vārds" type="text" />;
+  const inputSurname = <input placeholder="Uzvārds" type="text" />;
+  const inputNumber = <input placeholder="Nr." type="number" min="0" />;
+
+  const [playerNum, setPlayerNum] = React.useState([
+    [inputName, inputSurname, inputNumber],
+    [inputName, inputSurname, inputNumber],
+    [inputName, inputSurname, inputNumber],
+    [inputName, inputSurname, inputNumber],
+    [inputName, inputSurname, inputNumber],
+  ]);
+
+  // Pievienot komandu poga
+  const addTeam = () => {
+    const overlay = document.getElementById("overlay");
+    const addTeam = document.getElementById("addTeam");
+    addTeam.style = "display: inline-block;";
+    overlay.style = "display: block;";
+  };
+
+  // Pievienot rindu poga
+  const addPlayer = (e) => {
+    e.preventDefault();
+    setPlayerNum([...playerNum, [inputName, inputSurname, inputNumber]]);
+  };
+
+  // Atcelt poga komandas pievienošanai
+  const cancelTeam = (e) => {
+    e.preventDefault();
+    const overlay = document.getElementById("overlay");
+    const addTeam = document.getElementById("addTeam");
+    addTeam.style = "display: none;";
+    overlay.style = "display: none;";
+    setPlayerNum([
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+    ]);
+  };
+
+  // Pievienot komandas pievienošanas poga
+  // Error handling
+  const [teamNameError, setTeamNameError] = React.useState(false);
+  const [headCoachError, setHeadCoachError] = React.useState(false);
+
+  const submitTeam = (e) => {
+    e.preventDefault();
+
+    // extract values from inputs
+    const teamName = document.getElementById("teamName").value;
+    const headCoach = document.getElementById("headCoach").value;
+    // Get players
+    const players = [];
+    const table = document.getElementById("addTeamTable");
+    // Loop through rows of table
+    for (let i = 1; i < table.rows.length; i++) {
+      const player = [];
+      // Loop through cells of row
+      for (let j = 0; j < table.rows[i].cells.length; j++) {
+        // Push value of input to player array
+        player.push(table.rows[i].cells[j].children[0].value);
+      }
+      players.push(player);
+    }
+
+    // Check if all inputs are filled
+    if (!teamName) {
+      setTeamNameError("nedrīkst būt tukšs!");
+      return;
+    } else {
+      setTeamNameError(false);
+    }
+    if (!headCoach) {
+      setHeadCoachError("nedrīkst būt tukšs!");
+      return;
+    } else {
+      setHeadCoachError(false);
+    }
+    let error = false;
+    let numbers = [];
+    for (let i = 0; i < 5; i++) {
+      if (!players[i][0] || !players[i][1] || !players[i][2]) {
+        setTableError("Katrai komandai vajag vismaz 5 spēlētājus!");
+        error = true;
+        break;
+      }
+      if (numbers.includes(players[i][2])) {
+        setTableError("Spēlētāju numuri nedrīkst būt vienādi!");
+        error = true;
+        break;
+      } else {
+        numbers.push(players[i][2]);
+      }
+    }
+    if (error) {
+      return;
+    } else {
+      setTableError("");
+    }
+    const team = [
+      teamName,
+      headCoach,
+      players,
+    ];
+    // Get teams from local storage
+    const teams = JSON.parse(localStorage.getItem("teams"));
+    if (teams) {
+      teams.push(team);
+      localStorage.setItem("teams", JSON.stringify(teams));
+    } else {
+      localStorage.setItem("teams", JSON.stringify([team]));
+    }
+    const overlay = document.getElementById("overlay");
+    const addTeam = document.getElementById("addTeam");
+    addTeam.style = "display: none;";
+    overlay.style = "display: none;";
+    setPlayerNum([
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+      [inputName, inputSurname, inputNumber],
+    ]);
+  };
+
+  // TODO: update table on local storage change.
 
   return (
     <div className="new-tournament-2__container">
@@ -102,6 +227,7 @@ export default function NewTournament2() {
           <Button
             text="Pievienot komandu"
             icon={<i className="fa-solid fa-plus"></i>}
+            onClick={addTeam}
           />
           <p className="teamNum">
             Komandas{" "}
@@ -124,7 +250,7 @@ export default function NewTournament2() {
                 <p className="tableLabel">
                   <b>{group}</b> grupa
                 </p>
-                <Table cols={cols} content={[]} setColWidth="300px" />
+                <Table cols={cols} content={localStorage.getItem('teams') ? localStorage.getItem('teams') : []} setColWidth="300px" />
               </div>
             );
           })}
@@ -151,32 +277,49 @@ export default function NewTournament2() {
           </div>
         </div>
       </div>
-      <div className="overlay"></div>
-      {/* TODO: make visible on click. style. show overlay on click. */}
-      <div className="addTeam">
+      <div className="overlay" id="overlay"></div>
+      <div className="addTeam" id="addTeam">
         <form className="addTeamForm">
           <h1>Pievienot komandu</h1>
+          <TextInput
+            label="Komandas nosaukums"
+            placeholder="Čempionu komanda!"
+            required={true}
+            inputID="teamName"
+            error={teamNameError}
+          />
           <Table
             cols={["Vārds", "Uzvārds", "Nr."]}
-            content={[
-              [inputName, inputSurname, inputNumber],
-              [inputName, inputSurname, inputNumber],
-              [inputName, inputSurname, inputNumber],
-              [inputName, inputSurname, inputNumber],
-              [inputName, inputSurname, inputNumber],
-            ]}
+            content={playerNum}
             setColWidth="150px"
+            id="addTeamTable"
           />
-          <Button 
-            text="Pievienot rindu"
-            icon={<i className="fa-solid fa-plus"></i>}
-          />
+          <div className="buttonCont">
+            <Button
+              text="Pievienot rindu"
+              icon={<i className="fa-solid fa-plus"></i>}
+              onClick={addPlayer}
+            />
+            <p className="tableError">{tableError}</p>
+          </div>
           <TextInput
             placeholder="Luka Banki"
-            label="Galvenais Treneris"
+            label="Galvenais treneris"
             required={true}
             inputID="headCoach"
+            error={headCoachError}
           />
+          <div className="teamSubmitCont">
+            <SubmitInput
+              value="Pievienot"
+              backValue="Atcelt"
+              inputID="addTeamSubmit"
+              backInputID="addTeamCancel"
+              includeBack={true}
+              onBackClick={cancelTeam}
+              onClick={submitTeam}
+            />
+          </div>
         </form>
       </div>
     </div>
