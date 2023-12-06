@@ -1,97 +1,96 @@
 .groupLink {
-    margin-right: 5px;
-    color: #EE6730;
-    text-decoration: underline;
-    font-weight: 300;
+  margin-right: 5px;
+  color: #ee6730;
+  text-decoration: underline;
+  font-weight: 300;
 }
 
 .groupLinks {
-    display: flex;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .new-tournament-2 {
-    width: 80%;
-    display: flex;
-    justify-content: space-evenly;
-    margin: auto;
-    margin-bottom: 30px;
+  width: 80%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: auto;
+  margin-bottom: 30px;
 }
 
 .new-tournament-2 .tournamentInfo__container {
-    width: 50%;
-    text-align: center;
-    position: relative;
+  width: 50%;
+  text-align: center;
+  position: relative;
 }
 
 .new-tournament-2 .tournamentInfo {
-    position: sticky;
-    margin: auto;
-    display: block;
-    top: 100px;
-    left: 0;
+  position: sticky;
+  margin: auto;
+  display: block;
+  top: 100px;
+  left: 0;
 }
 
 .submitCont {
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    align-items: center;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
 }
 
 .tableLabel {
-    margin-bottom: 5px;
-    margin-left: 10px;
-    font-weight: 300;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  font-weight: 300;
 }
 
-
 .addTeam {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 20px;
-    z-index: 3;
-    max-height: 90%;
-    overflow-y: scroll;
-  }
-  
-  .overlay {
-    display: none;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(0,0,0,.5);
-    z-index: 2;
-  }
-  
-  .addTeam .buttonCont {
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  z-index: 3;
+  max-height: 90%;
+  overflow-y: scroll;
+}
 
-  .addTeam .buttonCont .tableError {
-    font-weight: 300;
-    font-size: 12px;
-    margin-right: 20px;
-    color: red;
-    max-width: 50%;
-  }
-  
-  .teamSubmitCont {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-top: 20px;
-  }
+.overlay {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.addTeam .buttonCont {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addTeam .buttonCont .tableError {
+  font-weight: 300;
+  font-size: 12px;
+  margin-right: 20px;
+  color: red;
+  max-width: 50%;
+}
+
+.teamSubmitCont {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
