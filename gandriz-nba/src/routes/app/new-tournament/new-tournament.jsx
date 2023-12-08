@@ -101,7 +101,7 @@ export default function NewTournament() {
     });
     const response = await request.json();
     if (response.result) {
-      setPageError("Lapa eksistē!");
+      setPageError("eksistē!");
       document.getElementById("submit-page1").disabled = false;
       return;
     } else {

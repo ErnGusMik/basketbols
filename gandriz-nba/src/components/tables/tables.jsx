@@ -5,13 +5,14 @@ export default function Table({
   cols = [],
   content = [],
   setColWidth = false,
+  id = "",
 }) {
   return (
-    <table className="table">
+    <table className="table" id={id}>
       <thead>
         <tr>
           {cols.map((col, index) => (
-            <th key={index} style={setColWidth ? {width: setColWidth} : {}}>
+            <th key={index} style={setColWidth ? {width: setColWidth} : {}} >
               {col}
             </th>
           ))}
@@ -19,11 +20,12 @@ export default function Table({
       </thead>
       <tbody>
         {content.map((row, index) => (
-          <tr key={index}>
-            {row.map((cell, index) => (
+          <tr key={index} id={id+'-row-'+index}>
+            {row.map((cell, indx) => (
               <td
-                key={index}
+                key={indx}
                 style={setColWidth ? {width: setColWidth} : {}}
+                id={id+'-row-'+index+'-cell-'+indx}
               >
                 {cell}
               </td>

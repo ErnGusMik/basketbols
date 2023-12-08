@@ -36,10 +36,11 @@ export default function TextInput({
   return (
     <div className="textInput-container">
       <label htmlFor={inputID} id={inputID + "-label"}>
-        {label}{"   "}
         {error ? <i class="fa-solid fa-triangle-exclamation"></i> : ""}
-        {" "}
-        {error ? error : ""}        
+        {"   "}
+        {label}
+        {"   "}
+        {error ? error : ""}
       </label>
       <input
         type={type}
