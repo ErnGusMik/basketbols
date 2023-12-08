@@ -113,7 +113,7 @@ export default function NewTournament() {
     reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
-      setNavigate(true);
+      // setNavigate(true);
     };
     return;
   };

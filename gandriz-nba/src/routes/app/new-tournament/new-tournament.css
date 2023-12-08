@@ -4,11 +4,28 @@
   justify-content: space-between;
   align-items: center;
   margin: 5px;
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.flexCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 5px;
+  height: 100%;
 }
 
 .new-tournament {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.new-tournament-1 {
   max-width: 80%;
   margin: auto;
+  flex: 1 1 auto;
+  height: 80%;
 }
 
 .submitContainer {
