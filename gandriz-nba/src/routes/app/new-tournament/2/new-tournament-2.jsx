@@ -106,8 +106,9 @@ export default function NewTournament2() {
   const addTeam = () => {
     const overlay = document.getElementById("overlay");
     const addTeam = document.getElementById("addTeam");
-    addTeam.style = "display: inline-block;";
-    overlay.style = "display: block;";
+    addTeam.classList.remove("close");
+    addTeam.classList.add("active");
+    overlay.style = "display: block; opacity: 1;";
   };
 
   // Pievienot rindu poga
@@ -121,8 +122,8 @@ export default function NewTournament2() {
     e.preventDefault();
     const overlay = document.getElementById("overlay");
     const addTeam = document.getElementById("addTeam");
-    addTeam.style = "display: none;";
-    overlay.style = "display: none;";
+    addTeam.classList.remove("active");
+    overlay.style = "display: none; opacity: 0;";
     setPlayerNum([
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
@@ -217,7 +218,6 @@ export default function NewTournament2() {
     ]);
   };
 
-  // TODO: update table on local storage change.
 
   return (
     <div className="new-tournament-2__container">
@@ -238,9 +238,9 @@ export default function NewTournament2() {
           <p className="groupLinks" id="groupLinks">
             {groupNum.map((group, index) => {
               return (
-                <Link to={`#${group}`} className="groupLink">
+                <a href={`#${group}`} className="groupLink">
                   <b>{group}</b> grupa
-                </Link>
+                </a>
               );
             })}
           </p>
@@ -262,7 +262,7 @@ export default function NewTournament2() {
             </div>
             <h2>{name}</h2>
             <p>
-              {groupNum.length} grupas {teamNum} komandas
+              {groupNum.length} grupas, {teamNum} komandas
             </p>
             <p>{finals ? finals : ""}</p>
           </div>

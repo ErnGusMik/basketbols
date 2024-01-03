@@ -20,6 +20,10 @@ export default function NewTournament() {
     }
     return factors;
   };
+
+  // create ref
+  const topRef = React.useRef()
+
   // set most states
   const [teamNum, setTeamNum] = React.useState(0);
   const [groupNum, setGroupNum] = React.useState([]);
@@ -33,6 +37,7 @@ export default function NewTournament() {
   const teamNumChnage = (e) => {
     setTeamNum(e.target.value);
     setFinalsNumValue(0);
+    setSelectedGroup(0)
   };
   // handle change of group number (on change)
   const groupNumChange = (e) => {
@@ -103,6 +108,7 @@ export default function NewTournament() {
     if (response.result) {
       setPageError("eksistē!");
       document.getElementById("submit-page1").disabled = false;
+      topRef.current.scrollTo(0, 0);
       return;
     } else {
       setPageError(false);
@@ -113,7 +119,7 @@ export default function NewTournament() {
     reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
-      // setNavigate(true);
+      setNavigate(true);
     };
     return;
   };
@@ -125,7 +131,7 @@ export default function NewTournament() {
   }, [readyForNavigate]);
 
   return (
-    <div className="new-tournament">
+    <div className="new-tournament" ref={topRef}>
       <Progress progress={1} />
       <form onSubmit={handleSubmit} className="new-tournament-1">
         <div className="horizontalCont">

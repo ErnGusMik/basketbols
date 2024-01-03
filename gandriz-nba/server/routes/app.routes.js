@@ -278,7 +278,9 @@ const getPlayer = async (req, res, next) => {
 
 const getTournamentPage = async (req, res, next) => {
   /* GET /:pageName */
-  const result = await tournaments.getTournamentPage(req.params.pageName);
+  const pageID = req.params.pageName.toString()
+  const lowercase = pageID.toLowerCase()
+  const result = await tournaments.getTournamentPage(lowercase);
   res.send({ result: result[0] ? result[0] : 0 });
   return;
 };
