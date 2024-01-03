@@ -49,11 +49,11 @@
   margin-bottom: 20px;
 }
 
-input:disabled, input:disabled:hover {
+input:disabled,
+input:disabled:hover {
   background-color: #eaeaea;
   border: 1px solid #eaeaea;
 }
-
 
 @media screen and (max-width: 1100px) {
   .horizontalCont {
@@ -80,4 +80,3 @@ input:disabled, input:disabled:hover {
     margin-bottom: 10px;
   }
 }
-

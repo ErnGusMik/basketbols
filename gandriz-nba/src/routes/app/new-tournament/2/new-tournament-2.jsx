@@ -192,11 +192,7 @@ export default function NewTournament2() {
     } else {
       setTableError("");
     }
-    const team = [
-      teamName,
-      headCoach,
-      players,
-    ];
+    const team = [teamName, headCoach, players];
     // Get teams from local storage
     const teams = JSON.parse(localStorage.getItem("teams"));
     if (teams) {
@@ -217,7 +213,6 @@ export default function NewTournament2() {
       [inputName, inputSurname, inputNumber],
     ]);
   };
-
 
   return (
     <div className="new-tournament-2__container">
@@ -250,7 +245,15 @@ export default function NewTournament2() {
                 <p className="tableLabel">
                   <b>{group}</b> grupa
                 </p>
-                <Table cols={cols} content={localStorage.getItem('teams') ? localStorage.getItem('teams') : []} setColWidth="300px" />
+                <Table
+                  cols={cols}
+                  content={
+                    localStorage.getItem("teams")
+                      ? localStorage.getItem("teams")
+                      : []
+                  }
+                  setColWidth="300px"
+                />
               </div>
             );
           })}

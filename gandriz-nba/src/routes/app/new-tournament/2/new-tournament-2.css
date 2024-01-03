@@ -114,7 +114,7 @@
 @-webkit-keyframes slit-in {
   0% {
     -webkit-transform: translateZ(-800px) rotateY(90deg) translate(-50%, -50%);
-            transform: translateZ(-800px) rotateY(90deg) translate(-50%, -50%);
+    transform: translateZ(-800px) rotateY(90deg) translate(-50%, -50%);
     opacity: 0;
   }
   /* 54% {
@@ -124,13 +124,13 @@
   } */
   100% {
     -webkit-transform: translateZ(0) rotateY(0) translate(-50%, -50%);
-            transform: translateZ(0) rotateY(0) translate(-50%, -50%);
+    transform: translateZ(0) rotateY(0) translate(-50%, -50%);
   }
 }
 @keyframes slit-in {
   0% {
     -webkit-transform: translateZ(-800px) rotateY(90deg) translate(-50%, -50%);
-            transform: translateZ(-800px) rotateY(90deg) translate(-50%, -50%);
+    transform: translateZ(-800px) rotateY(90deg) translate(-50%, -50%);
     opacity: 0;
   }
   /* 54% {
@@ -140,10 +140,9 @@
   } */
   100% {
     -webkit-transform: translateZ(0) rotateY(0) translate(-50%, -50%);
-            transform: translateZ(0) rotateY(0) translate(-50%, -50%);
+    transform: translateZ(0) rotateY(0) translate(-50%, -50%);
   }
 }
-
 
 /* ----------------------------------------------
  * Animation 'slit-in'
