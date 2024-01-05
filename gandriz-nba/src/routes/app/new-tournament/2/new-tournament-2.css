@@ -1,3 +1,5 @@
+/* TODO: RESPONSIVE DESIGN */
+
 /* LINKS */
 .groupLink {
   margin-right: 5px;
@@ -14,16 +16,17 @@
 
 /* CONTAINER */
 .new-tournament-2__container {
-  height: 100%;
+  min-height: 100%;
 }
 
 .new-tournament-2 {
-  width: 80%;
+  max-width: 100%;
   min-height: 95%;
   display: flex;
   justify-content: space-evenly;
   margin: auto;
   padding-bottom: 30px;
+  margin: 0 30px;
 }
 /* SIDE ELEMENT */
 .new-tournament-2 .tournamentInfo__container {
@@ -53,6 +56,10 @@
   margin-bottom: 5px;
   margin-left: 10px;
   font-weight: 300;
+}
+
+.img-center img {
+  margin: 0 !important;
 }
 
 /* ONCLICK ELEMENTS */
@@ -152,3 +159,6 @@
  * See http://animista.net/license for more info. 
  * w: http://animista.net, t: @cssanimista
  * ---------------------------------------------- */
+
+@media screen and (max-width: 1300px) {
+}

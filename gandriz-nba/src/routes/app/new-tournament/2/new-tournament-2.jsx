@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./new-tournament-2.css";
 import Progress from "../../../../components/progress/progress";
@@ -14,9 +14,14 @@ import logoImg from "./../../../../main.jpg";
 export default function NewTournament2() {
   const cols = ["Nosaukums", "Spēlētāji"];
   document.title = "Solis 2 | Jauns turnīrs | Gandriz NBA";
+  const navigate = useNavigate();
 
   const [teamNum, setTeamNum] = React.useState(0);
-  const [addedTeamNum, setAddedTeamNum] = React.useState(0);
+  const [addedTeamNum, setAddedTeamNum] = React.useState(
+    JSON.parse(localStorage.getItem("teams"))
+      ? JSON.parse(localStorage.getItem("teams")).length
+      : 0
+  );
 
   const [groupNum, setGroupNum] = React.useState([]);
 
@@ -27,6 +32,10 @@ export default function NewTournament2() {
   const [name, setName] = React.useState("");
 
   const [tableError, setTableError] = React.useState("");
+
+  const [teamsInGroups, setTeamsInGroups] = React.useState([]);
+
+  const [backClicked, setBackClicked] = React.useState(false);
 
   const setGroups = (num) => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -65,6 +74,7 @@ export default function NewTournament2() {
     const [data, logoData] = getData();
     setTeamNum(data.teamNum);
     setGroupNum(setGroups(data.groupNum));
+    setTeamsInGroups(Array(data.groupNum).fill(0));
     setName(data.name);
     switch (data.finalsNum) {
       case "16":
@@ -192,23 +202,28 @@ export default function NewTournament2() {
     } else {
       setTableError("");
     }
-    const team = [
-      teamName,
-      headCoach,
-      players,
-    ];
+
     // Get teams from local storage
     const teams = JSON.parse(localStorage.getItem("teams"));
+    let group = Math.floor(Math.random() * groupNum.length);
+    while (teamsInGroups[group] >= teamNum / groupNum.length) {
+      group = Math.floor(Math.random() * groupNum.length);
+    }
+
+    const team = [teamName, headCoach, players, group];
+
     if (teams) {
       teams.push(team);
+      console.log(teams);
       localStorage.setItem("teams", JSON.stringify(teams));
     } else {
       localStorage.setItem("teams", JSON.stringify([team]));
     }
     const overlay = document.getElementById("overlay");
     const addTeam = document.getElementById("addTeam");
-    addTeam.style = "display: none;";
-    overlay.style = "display: none;";
+    addTeam.classList.remove("active");
+    overlay.style = "display: none; opacity: 0;";
+    // reset table
     setPlayerNum([
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
@@ -216,8 +231,20 @@ export default function NewTournament2() {
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
     ]);
+    setAddedTeamNum(addedTeamNum++);
   };
 
+  // sets table content
+  const setTeamTables = (index) => {
+    const result = [];
+    const teams = JSON.parse(localStorage.getItem("teams"));
+    for (let i = 0; i < teams.length; i++) {
+      if (index === teams[i][3]) {
+        result.push([teams[i][0], <a href="#">skatīt</a>]);
+      }
+    }
+    return result;
+  };
 
   return (
     <div className="new-tournament-2__container">
@@ -250,14 +277,22 @@ export default function NewTournament2() {
                 <p className="tableLabel">
                   <b>{group}</b> grupa
                 </p>
-                <Table cols={cols} content={localStorage.getItem('teams') ? localStorage.getItem('teams') : []} setColWidth="300px" />
+                <Table
+                  cols={cols}
+                  content={
+                    JSON.parse(localStorage.getItem("teams"))
+                      ? setTeamTables(index)
+                      : []
+                  }
+                  setColWidth="300px"
+                />
               </div>
             );
           })}
         </div>
         <div className="tournamentInfo__container">
           <div className="tournamentInfo">
-            <div className="fileInput-image">
+            <div className="fileInput-image img-center">
               <img src={logo ? logo : logoImg} alt="Turnīra logo" />
             </div>
             <h2>{name}</h2>
@@ -273,6 +308,9 @@ export default function NewTournament2() {
               inputID="continueFrom2"
               backInputID="backFrom2"
               includeBack={true}
+              onBackClick={() => {
+                navigate("/app/tournaments/new");
+              }}
             />
           </div>
         </div>
