@@ -20,7 +20,7 @@ export default function NewTournament2() {
   const [addedTeamNum, setAddedTeamNum] = React.useState(
     JSON.parse(localStorage.getItem("teams"))
       ? JSON.parse(localStorage.getItem("teams")).length
-      : 0
+      : 0,
   );
 
   const [groupNum, setGroupNum] = React.useState([]);
