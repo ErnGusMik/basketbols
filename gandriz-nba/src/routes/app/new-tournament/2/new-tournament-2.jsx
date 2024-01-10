@@ -17,7 +17,11 @@ export default function NewTournament2() {
   const navigate = useNavigate();
 
   const [teamNum, setTeamNum] = React.useState(0);
-  const [addedTeamNum, setAddedTeamNum] = React.useState(JSON.parse(localStorage.getItem("teams")) ? JSON.parse(localStorage.getItem("teams")).length : 0);
+  const [addedTeamNum, setAddedTeamNum] = React.useState(
+    JSON.parse(localStorage.getItem("teams"))
+      ? JSON.parse(localStorage.getItem("teams")).length
+      : 0,
+  );
 
   const [groupNum, setGroupNum] = React.useState([]);
 
@@ -30,7 +34,6 @@ export default function NewTournament2() {
   const [tableError, setTableError] = React.useState("");
 
   const [teamsInGroups, setTeamsInGroups] = React.useState([]);
-
 
   const setGroups = (num) => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -97,9 +100,21 @@ export default function NewTournament2() {
     }
   }, []);
 
-  const inputName = <input placeholder="Vārds" type="text" defaultValue='' name="firstName" />;
-  const inputSurname = <input placeholder="Uzvārds" type="text" name="surname" defaultValue='' />;
-  const inputNumber = <input placeholder="Nr." type="number" min="0" name="number" defaultValue='' />;
+  const inputName = (
+    <input placeholder="Vārds" type="text" defaultValue="" name="firstName" />
+  );
+  const inputSurname = (
+    <input placeholder="Uzvārds" type="text" name="surname" defaultValue="" />
+  );
+  const inputNumber = (
+    <input
+      placeholder="Nr."
+      type="number"
+      min="0"
+      name="number"
+      defaultValue=""
+    />
+  );
 
   const [playerNum, setPlayerNum] = React.useState([
     [inputName, inputSurname, inputNumber],
@@ -167,7 +182,6 @@ export default function NewTournament2() {
       players.push(player);
     }
 
-
     // Check if all inputs are filled
     if (!teamName) {
       setTeamNameError("nedrīkst būt tukšs!");
@@ -184,7 +198,11 @@ export default function NewTournament2() {
 
     let numbers = [];
     for (let i = 0; i < 5; i++) {
-      if (!players[i][0] || !players[i][1] || !players[i][2] && players[i][2]) {
+      if (
+        !players[i][0] ||
+        !players[i][1] ||
+        (!players[i][2] && players[i][2])
+      ) {
         setTableError("Katrai komandai vajag vismaz 5 spēlētājus!");
         console.log(players[i]);
         error = true;
