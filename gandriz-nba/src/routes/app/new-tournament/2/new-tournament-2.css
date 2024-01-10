@@ -1,4 +1,8 @@
-/* TODO: RESPONSIVE DESIGN */
+/* !IMPORTANT! */
+.flexCont {
+  max-width: 100% !important;
+}
+/* !---------! */
 
 /* LINKS */
 .groupLink {
@@ -21,7 +25,8 @@
 
 .new-tournament-2 {
   max-width: 100%;
-  min-height: 95%;
+  min-height: calc(100vh - 70px);
+  height: auto;
   display: flex;
   justify-content: space-evenly;
   margin: auto;
@@ -33,6 +38,7 @@
   width: 50%;
   text-align: center;
   position: relative;
+  min-height: 100%;
 }
 
 .new-tournament-2 .tournamentInfo {
@@ -43,7 +49,7 @@
   left: 0;
 }
 
-.submitCont {
+.new-tournament-2 .submitCont {
   position: absolute;
   bottom: 0;
   display: flex;
@@ -93,6 +99,7 @@
   z-index: 2;
   opacity: 0;
   transition: opacity 2s ease-in-out;
+  overflow: hidden;
 }
 
 .addTeam .buttonCont {
@@ -160,5 +167,46 @@
  * w: http://animista.net, t: @cssanimista
  * ---------------------------------------------- */
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1050px) {
+  .new-tournament-2 {
+    flex-direction: column;
+  }
+  .new-tournament-2 .tournamentInfo__container {
+    min-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 10px;
+  }
+  .new-tournament-2 .submitCont {
+    position: relative;
+  }
+  .new-tournament-2 .tournamentInfo {
+    display: flex;
+    position: static;
+    min-width: 50%;
+  }
+  .new-tournament-2 .tournamentInfo .img-center {
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .new-tournament-2 .tournamentInfo__container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .new-tournament-2 .submitCont {
+    margin-top: 40px;
+  }
+  .new-tournament-2 {
+    margin: 0 10px;
+  }
+  .new-tournament-2 .tournamentInfo {
+    font-size: 0.9rem;
+  }
+  .new-tournament-2 .tournamentInfo .img-center img {
+    width: 130px;
+    height: 130px;
+  }
 }

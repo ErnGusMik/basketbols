@@ -17,11 +17,7 @@ export default function NewTournament2() {
   const navigate = useNavigate();
 
   const [teamNum, setTeamNum] = React.useState(0);
-  const [addedTeamNum, setAddedTeamNum] = React.useState(
-    JSON.parse(localStorage.getItem("teams"))
-      ? JSON.parse(localStorage.getItem("teams")).length
-      : 0
-  );
+  const [addedTeamNum, setAddedTeamNum] = React.useState(JSON.parse(localStorage.getItem("teams")) ? JSON.parse(localStorage.getItem("teams")).length : 0);
 
   const [groupNum, setGroupNum] = React.useState([]);
 
@@ -35,7 +31,6 @@ export default function NewTournament2() {
 
   const [teamsInGroups, setTeamsInGroups] = React.useState([]);
 
-  const [backClicked, setBackClicked] = React.useState(false);
 
   const setGroups = (num) => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -62,7 +57,8 @@ export default function NewTournament2() {
 
     if (!unparsedData) {
       alert("Kaut kas nogāja greizi! (404 nav datu)");
-      return;
+      navigate("/app/tournaments/new");
+      return [null, null];
     }
 
     const data = JSON.parse(unparsedData);
@@ -72,6 +68,7 @@ export default function NewTournament2() {
 
   React.useEffect(() => {
     const [data, logoData] = getData();
+    if (data == [null, null]) return;
     setTeamNum(data.teamNum);
     setGroupNum(setGroups(data.groupNum));
     setTeamsInGroups(Array(data.groupNum).fill(0));
@@ -100,9 +97,9 @@ export default function NewTournament2() {
     }
   }, []);
 
-  const inputName = <input placeholder="Vārds" type="text" />;
-  const inputSurname = <input placeholder="Uzvārds" type="text" />;
-  const inputNumber = <input placeholder="Nr." type="number" min="0" />;
+  const inputName = <input placeholder="Vārds" type="text" defaultValue='' name="firstName" />;
+  const inputSurname = <input placeholder="Uzvārds" type="text" name="surname" defaultValue='' />;
+  const inputNumber = <input placeholder="Nr." type="number" min="0" name="number" defaultValue='' />;
 
   const [playerNum, setPlayerNum] = React.useState([
     [inputName, inputSurname, inputNumber],
@@ -156,6 +153,7 @@ export default function NewTournament2() {
     const headCoach = document.getElementById("headCoach").value;
     // Get players
     const players = [];
+    let error = false;
     const table = document.getElementById("addTeamTable");
     // Loop through rows of table
     for (let i = 1; i < table.rows.length; i++) {
@@ -165,8 +163,10 @@ export default function NewTournament2() {
         // Push value of input to player array
         player.push(table.rows[i].cells[j].children[0].value);
       }
+      player[2] = parseInt(player[2]);
       players.push(player);
     }
+
 
     // Check if all inputs are filled
     if (!teamName) {
@@ -181,11 +181,20 @@ export default function NewTournament2() {
     } else {
       setHeadCoachError(false);
     }
-    let error = false;
+
     let numbers = [];
     for (let i = 0; i < 5; i++) {
-      if (!players[i][0] || !players[i][1] || !players[i][2]) {
+      if (!players[i][0] || !players[i][1] || !players[i][2] && players[i][2]) {
         setTableError("Katrai komandai vajag vismaz 5 spēlētājus!");
+        console.log(players[i]);
+        error = true;
+        break;
+      }
+    }
+
+    for (let i = 0; i < players.length; i++) {
+      if (!Number.isInteger(players[i][2])) {
+        setTableError("Spēlētāja numuriem jābūt veseliem skaitļiem!");
         error = true;
         break;
       }
@@ -197,6 +206,7 @@ export default function NewTournament2() {
         numbers.push(players[i][2]);
       }
     }
+
     if (error) {
       return;
     } else {
@@ -231,7 +241,7 @@ export default function NewTournament2() {
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
     ]);
-    setAddedTeamNum(addedTeamNum++);
+    setAddedTeamNum(addedTeamNum + 1);
   };
 
   // sets table content
@@ -295,11 +305,13 @@ export default function NewTournament2() {
             <div className="fileInput-image img-center">
               <img src={logo ? logo : logoImg} alt="Turnīra logo" />
             </div>
-            <h2>{name}</h2>
-            <p>
-              {groupNum.length} grupas, {teamNum} komandas
-            </p>
-            <p>{finals ? finals : ""}</p>
+            <div>
+              <h2>{name}</h2>
+              <p>
+                {groupNum.length} grupas, {teamNum} komandas
+              </p>
+              <p>{finals ? finals : ""}</p>
+            </div>
           </div>
           <div className="submitCont">
             <SubmitInput

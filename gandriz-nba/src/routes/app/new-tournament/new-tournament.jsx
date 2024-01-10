@@ -1,3 +1,6 @@
+// TODO: Remove ability to add teams after max limit is reached
+// TODO: Add abilty to view teams (same modal, with abilty to change team data, incl. delete it)
+
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./new-tournament.css";
@@ -110,6 +113,11 @@ export default function NewTournament() {
       document.getElementById("submit-page1").disabled = false;
       topRef.current.scrollTo(0, 0);
       return;
+    } else if (obj.pageName.includes(" ") || obj.pageName.includes(".")) {
+      setPageError("ir nederīgs!");
+      document.getElementById("submit-page1").disabled = false;
+      topRef.current.scrollTo(0, 0);
+      return;
     } else {
       setPageError(false);
     }
@@ -119,6 +127,7 @@ export default function NewTournament() {
     reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
+      localStorage.removeItem('teams')
       setNavigate(true);
     };
     return;

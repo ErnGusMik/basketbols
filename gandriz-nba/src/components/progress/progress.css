@@ -50,3 +50,13 @@
     z-index: -1;
 }
 
+@media screen and (max-width: 600px) {
+    .progressSection {
+        width: 60px;
+        text-align: center;
+    }
+    .progressText {
+        font-size: 10.5px;
+    }
+    
+}

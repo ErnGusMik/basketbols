@@ -1,6 +1,13 @@
 table {
   border-collapse: separate;
   border-spacing: 0;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+table tr {
+  max-width: 100%;
 }
 
 table tr th,
@@ -9,6 +16,8 @@ table tr td {
   border-bottom: 1px solid #000;
   padding: 7px 10px;
   font-weight: 300;
+  overflow-x: scroll;
+  max-width: 100%;
 }
 
 table tr th:first-child,
