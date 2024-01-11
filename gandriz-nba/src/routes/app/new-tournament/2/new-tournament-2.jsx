@@ -19,7 +19,11 @@ export default function NewTournament2() {
   const navigate = useNavigate();
 
   const [teamNum, setTeamNum] = React.useState(0);
-  const [addedTeamNum, setAddedTeamNum] = React.useState(JSON.parse(localStorage.getItem("teams")) ? JSON.parse(localStorage.getItem("teams")).length : 0);
+  const [addedTeamNum, setAddedTeamNum] = React.useState(
+    JSON.parse(localStorage.getItem("teams"))
+      ? JSON.parse(localStorage.getItem("teams")).length
+      : 0,
+  );
 
   const [groupNum, setGroupNum] = React.useState([]);
 
@@ -32,7 +36,6 @@ export default function NewTournament2() {
   const [tableError, setTableError] = React.useState("");
 
   const [teamsInGroups, setTeamsInGroups] = React.useState([]);
-
 
   const setGroups = (num) => {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -99,9 +102,21 @@ export default function NewTournament2() {
     }
   }, []);
 
-  const inputName = <input placeholder="Vārds" type="text" defaultValue='' name="firstName" />;
-  const inputSurname = <input placeholder="Uzvārds" type="text" name="surname" defaultValue='' />;
-  const inputNumber = <input placeholder="Nr." type="number" min="0" name="number" defaultValue='' />;
+  const inputName = (
+    <input placeholder="Vārds" type="text" defaultValue="" name="firstName" />
+  );
+  const inputSurname = (
+    <input placeholder="Uzvārds" type="text" name="surname" defaultValue="" />
+  );
+  const inputNumber = (
+    <input
+      placeholder="Nr."
+      type="number"
+      min="0"
+      name="number"
+      defaultValue=""
+    />
+  );
 
   const [playerNum, setPlayerNum] = React.useState([
     [inputName, inputSurname, inputNumber],
@@ -171,7 +186,6 @@ export default function NewTournament2() {
       players.push(player);
     }
 
-
     // Check if all inputs are filled
     if (!teamName) {
       setTeamNameError("nedrīkst būt tukšs!");
@@ -188,7 +202,11 @@ export default function NewTournament2() {
 
     let numbers = [];
     for (let i = 0; i < 5; i++) {
-      if (!players[i][0] || !players[i][1] || !players[i][2] && players[i][2]) {
+      if (
+        !players[i][0] ||
+        !players[i][1] ||
+        (!players[i][2] && players[i][2])
+      ) {
         setTableError("Katrai komandai vajag vismaz 5 spēlētājus!");
         error = true;
         break;
@@ -217,7 +235,7 @@ export default function NewTournament2() {
     }
 
     // check if array has empty rows and remove them
-    players.filter(element => element.join("") != "");
+    players.filter((element) => element.join("") != "");
 
     // Get teams from local storage
     const teams = JSON.parse(localStorage.getItem("teams"));
@@ -268,11 +286,22 @@ export default function NewTournament2() {
     const teams = JSON.parse(localStorage.getItem("teams"));
     for (let i = 0; i < teams.length; i++) {
       if (index === teams[i][3]) {
-        result.push([teams[i][0], <a href="#" id={'team-'+teams[i][0]} onClick={function(e) {
-          e.preventDefault();
-          const team = JSON.parse(localStorage.getItem('teams')).filter(team => team[0] == teams[i][0])[0];
-          addTeam();
-        }}>skatīt</a>]);
+        result.push([
+          teams[i][0],
+          <a
+            href="#"
+            id={"team-" + teams[i][0]}
+            onClick={function (e) {
+              e.preventDefault();
+              const team = JSON.parse(localStorage.getItem("teams")).filter(
+                (team) => team[0] == teams[i][0],
+              )[0];
+              addTeam();
+            }}
+          >
+            skatīt
+          </a>,
+        ]);
       }
     }
     return result;

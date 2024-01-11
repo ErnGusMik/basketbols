@@ -22,7 +22,7 @@ export default function NewTournament() {
   };
 
   // create ref
-  const topRef = React.useRef()
+  const topRef = React.useRef();
 
   // set most states
   const [teamNum, setTeamNum] = React.useState(0);
@@ -37,7 +37,7 @@ export default function NewTournament() {
   const teamNumChnage = (e) => {
     setTeamNum(e.target.value);
     setFinalsNumValue(0);
-    setSelectedGroup(0)
+    setSelectedGroup(0);
   };
   // handle change of group number (on change)
   const groupNumChange = (e) => {
@@ -124,7 +124,7 @@ export default function NewTournament() {
     reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
-      localStorage.removeItem('teams')
+      localStorage.removeItem("teams");
       setNavigate(true);
     };
     return;
