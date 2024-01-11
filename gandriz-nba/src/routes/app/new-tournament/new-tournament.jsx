@@ -1,6 +1,3 @@
-// TODO: Remove ability to add teams after max limit is reached
-// TODO: Add abilty to view teams (same modal, with abilty to change team data, incl. delete it)
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./new-tournament.css";

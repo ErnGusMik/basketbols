@@ -1,3 +1,5 @@
+// TODO: MOVE ON TO PAGE 3
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -111,6 +113,7 @@ export default function NewTournament2() {
 
   // Pievienot komandu poga
   const addTeam = () => {
+    if (addedTeamNum >= teamNum) return;
     const overlay = document.getElementById("overlay");
     const addTeam = document.getElementById("addTeam");
     addTeam.classList.remove("close");
@@ -138,6 +141,7 @@ export default function NewTournament2() {
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
     ]);
+    document.getElementById("addTeamForm").reset();
   };
 
   // Pievienot komandas pievienošanas poga
@@ -186,19 +190,18 @@ export default function NewTournament2() {
     for (let i = 0; i < 5; i++) {
       if (!players[i][0] || !players[i][1] || !players[i][2] && players[i][2]) {
         setTableError("Katrai komandai vajag vismaz 5 spēlētājus!");
-        console.log(players[i]);
         error = true;
         break;
       }
     }
 
     for (let i = 0; i < players.length; i++) {
-      if (!Number.isInteger(players[i][2])) {
+      if (!Number.isInteger(players[i][2]) && players[i][2]) {
         setTableError("Spēlētāja numuriem jābūt veseliem skaitļiem!");
         error = true;
         break;
       }
-      if (numbers.includes(players[i][2])) {
+      if (numbers.includes(players[i][2]) && players[i][2]) {
         setTableError("Spēlētāju numuri nedrīkst būt vienādi!");
         error = true;
         break;
@@ -213,6 +216,9 @@ export default function NewTournament2() {
       setTableError("");
     }
 
+    // check if array has empty rows and remove them
+    players.filter(element => element.join("") != "");
+
     // Get teams from local storage
     const teams = JSON.parse(localStorage.getItem("teams"));
     let group = Math.floor(Math.random() * groupNum.length);
@@ -222,9 +228,20 @@ export default function NewTournament2() {
 
     const team = [teamName, headCoach, players, group];
 
+    // check if team exists and replace it if it does
+    let teamExists = false;
+    for (let i = 0; i < teams.length; i++) {
+      if (teams[i][0] === teamName) {
+        teamExists = true;
+        teams[i] = team;
+        break;
+      }
+    }
+
     if (teams) {
-      teams.push(team);
-      console.log(teams);
+      if (!teamExists) {
+        teams.push(team);
+      }
       localStorage.setItem("teams", JSON.stringify(teams));
     } else {
       localStorage.setItem("teams", JSON.stringify([team]));
@@ -233,7 +250,7 @@ export default function NewTournament2() {
     const addTeam = document.getElementById("addTeam");
     addTeam.classList.remove("active");
     overlay.style = "display: none; opacity: 0;";
-    // reset table
+    // reset table & form
     setPlayerNum([
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
@@ -241,6 +258,7 @@ export default function NewTournament2() {
       [inputName, inputSurname, inputNumber],
       [inputName, inputSurname, inputNumber],
     ]);
+    e.target.reset();
     setAddedTeamNum(addedTeamNum + 1);
   };
 
@@ -250,7 +268,11 @@ export default function NewTournament2() {
     const teams = JSON.parse(localStorage.getItem("teams"));
     for (let i = 0; i < teams.length; i++) {
       if (index === teams[i][3]) {
-        result.push([teams[i][0], <a href="#">skatīt</a>]);
+        result.push([teams[i][0], <a href="#" id={'team-'+teams[i][0]} onClick={function(e) {
+          e.preventDefault();
+          const team = JSON.parse(localStorage.getItem('teams')).filter(team => team[0] == teams[i][0])[0];
+          addTeam();
+        }}>skatīt</a>]);
       }
     }
     return result;
@@ -329,7 +351,7 @@ export default function NewTournament2() {
       </div>
       <div className="overlay" id="overlay"></div>
       <div className="addTeam" id="addTeam">
-        <form className="addTeamForm">
+        <form className="addTeamForm" onSubmit={submitTeam} id="addTeamForm">
           <h1>Pievienot komandu</h1>
           <TextInput
             label="Komandas nosaukums"
@@ -367,7 +389,6 @@ export default function NewTournament2() {
               backInputID="addTeamCancel"
               includeBack={true}
               onBackClick={cancelTeam}
-              onClick={submitTeam}
             />
           </div>
         </form>
