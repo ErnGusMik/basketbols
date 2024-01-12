@@ -10,6 +10,7 @@ import Root from "./routes/app/root";
 
 import NewTournament from "./routes/app/new-tournament/new-tournament";
 import NewTournament2 from "./routes/app/new-tournament/2/new-tournament-2";
+import NewTournament3 from "./routes/app/new-tournament/3/new-tournament-3";
 
 function App() {
   const router = createBrowserRouter([
@@ -32,6 +33,10 @@ function App() {
           path: "/app/tournaments/new/2",
           element: <NewTournament2 />,
         },
+        {
+          path: "/app/tournaments/new/3",
+          element: <NewTournament3 />
+        }
       ],
     },
     {
