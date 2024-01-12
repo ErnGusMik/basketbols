@@ -35,8 +35,8 @@ function App() {
         },
         {
           path: "/app/tournaments/new/3",
-          element: <NewTournament3 />
-        }
+          element: <NewTournament3 />,
+        },
       ],
     },
     {
