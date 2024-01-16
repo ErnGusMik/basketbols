@@ -30,7 +30,10 @@ export default function RadioInput({
         {label}
       </label>
       <p className="label-sub">{labelSub}</p>
-      <div className="radio-cont" style={centered ? {justifyContent: "center"} : {}}>
+      <div
+        className="radio-cont"
+        style={centered ? { justifyContent: "center" } : {}}
+      >
         {value.map((item, index) => (
           <div className="radio-item" id={"radio-item" + index}>
             <input
