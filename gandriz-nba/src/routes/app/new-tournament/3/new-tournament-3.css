@@ -1,0 +1,72 @@
+.new-tournament-3__container {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.new-tournament-3 {
+    display: flex;
+    padding: 30px;
+    min-width: 100%;
+    min-height: calc(100vh - 70px);
+    height: auto;
+}
+
+.table__container {
+    display: flex;
+    width: 100%;
+    margin-top: 50px;
+    padding-right: 30px;
+}
+
+.table__container p {
+    max-width: 40%;
+    max-width: 200px;
+    font-weight: 300;
+    margin-left: 10px;
+}
+
+.tournamentInfo {
+    text-align: center;
+    position: sticky;
+    display: block;
+    top: 50px;
+    left: 0;
+    margin: auto;
+    width: 100%;
+}
+
+.tournamentInfo__container {
+    min-height: 100%;
+    position: relative;
+    width: 40%;
+}
+
+.new-tournament-3 .submitCont {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+
+.refereeNum__container {
+    margin-top: 40px;
+}
+
+.refereeOuter {
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+    background-color: #727272;
+    display: flex;
+}
+
+.refereeInner {
+    height: 14px;
+    width: 14px;
+    border-radius: 3px;
+    background-color: #EE6730;
+    margin: auto;
+    display: block;
+}

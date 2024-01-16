@@ -10,6 +10,7 @@ export default function RadioInput({
   error = "",
   onChange = () => {},
   required = false,
+  centered = false,
 }) {
   const errorhandler = () => {
     if (value.length == 0) {
@@ -29,7 +30,7 @@ export default function RadioInput({
         {label}
       </label>
       <p className="label-sub">{labelSub}</p>
-      <div className="radio-cont">
+      <div className="radio-cont" style={centered ? {justifyContent: "center"} : {}}>
         {value.map((item, index) => (
           <div className="radio-item" id={"radio-item" + index}>
             <input
