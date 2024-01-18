@@ -1,5 +1,3 @@
-// TODO: MOVE ON TO PAGE 3
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -73,7 +71,9 @@ export default function NewTournament2() {
     if (data == [null, null]) return;
     setTeamNum(data.teamNum);
     setGroupNum(setGroups(data.groupNum));
-    setTeamsInGroups(Array(data.groupNum).fill(0));
+    // How many teams in each group
+    const teamsInGroupsDefault = Array(Number(data.groupNum)).fill(0);
+    setTeamsInGroups(teamsInGroupsDefault);
     setName(data.name);
     switch (data.finalsNum) {
       case "16":
@@ -113,7 +113,6 @@ export default function NewTournament2() {
 
   // Pievienot komandu poga
   const addTeam = () => {
-    if (addedTeamNum >= teamNum) return;
     const overlay = document.getElementById("overlay");
     const addTeam = document.getElementById("addTeam");
     addTeam.classList.remove("close");
@@ -221,24 +220,52 @@ export default function NewTournament2() {
 
     // Get teams from local storage
     const teams = JSON.parse(localStorage.getItem("teams"));
-    let group = Math.floor(Math.random() * groupNum.length);
-    while (teamsInGroups[group] >= teamNum / groupNum.length) {
-      group = Math.floor(Math.random() * groupNum.length);
-    }
 
-    const team = [teamName, headCoach, players, group];
+    const teamsInGroupsDefault = Array(Number(groupNum.length)).fill(0);
+    setTeamsInGroups(teamsInGroupsDefault);
 
-    // check if team exists and replace it if it does
-    let teamExists = false;
-    for (let i = 0; i < teams.length; i++) {
-      if (teams[i][0] === teamName) {
-        teamExists = true;
-        teams[i] = team;
-        break;
+    // check how many teams are in each group
+    if (teams) {
+      for (let i = 0; i < teams.length; i++) {
+        teamsInGroups[teams[i][3]]++;
       }
     }
 
+    const team = [teamName, headCoach, players];
+
+    // check if team exists and replace it if it does
+    let teamExists = false;
     if (teams) {
+      for (let i = 0; i < teams.length; i++) {
+        if (teams[i][0] === teamName) {
+          teamExists = true;
+          teams[i][0] = team[0];
+          teams[i][1] = team[1];
+          teams[i][2] = team[2];
+          team[3] = teams[i][3];
+          break;
+        }
+      }
+    }
+
+    // if team doesn't exist, add it to a random group
+    if (!teamExists) {
+      let group = Math.floor(Math.random() * groupNum.length);
+      console.log(teamsInGroups);
+      while (teamsInGroups[group] >= teamNum / groupNum.length) {
+        group = Math.floor(Math.random() * groupNum.length);
+        console.log(teamsInGroups[group] >= teamNum / groupNum.length);
+      }
+
+      team.push(group)
+
+    } 
+
+    // add team to local storage
+    if (teams) {
+      if (addedTeamNum >= teamNum) {
+        return;
+      }
       if (!teamExists) {
         teams.push(team);
       }
@@ -246,6 +273,8 @@ export default function NewTournament2() {
     } else {
       localStorage.setItem("teams", JSON.stringify([team]));
     }
+
+    // remove popup
     const overlay = document.getElementById("overlay");
     const addTeam = document.getElementById("addTeam");
     addTeam.classList.remove("active");
@@ -259,7 +288,7 @@ export default function NewTournament2() {
       [inputName, inputSurname, inputNumber],
     ]);
     e.target.reset();
-    setAddedTeamNum(addedTeamNum + 1);
+    setAddedTeamNum(JSON.parse(localStorage.getItem("teams")).length);
   };
 
   // sets table content
@@ -268,9 +297,18 @@ export default function NewTournament2() {
     const teams = JSON.parse(localStorage.getItem("teams"));
     for (let i = 0; i < teams.length; i++) {
       if (index === teams[i][3]) {
-        result.push([teams[i][0], <a href="#" id={'team-'+teams[i][0]} onClick={function(e) {
+        result.push([teams[i][0], <a href="#" id={'team-' + teams[i][0]} onClick={function (e) {
           e.preventDefault();
           const team = JSON.parse(localStorage.getItem('teams')).filter(team => team[0] == teams[i][0])[0];
+          document.getElementById('teamName').value = team[0];
+          document.getElementById('headCoach').value = team[1];
+          setPlayerNum(team[2].map(player => {
+            return [
+              <input placeholder="Vārds" type="text" defaultValue={player[0]} name="firstName" />,
+              <input placeholder="Uzvārds" type="text" defaultValue={player[1]} name="surname" />,
+              <input placeholder="Nr." type="number" min="0" defaultValue={player[2]} name="number" />
+            ]
+          }));
           addTeam();
         }}>skatīt</a>]);
       }
@@ -287,6 +325,7 @@ export default function NewTournament2() {
             text="Pievienot komandu"
             icon={<i className="fa-solid fa-plus"></i>}
             onClick={addTeam}
+            disabled={addedTeamNum >= teamNum}
           />
           <p className="teamNum">
             Komandas{" "}
@@ -344,6 +383,10 @@ export default function NewTournament2() {
               includeBack={true}
               onBackClick={() => {
                 navigate("/app/tournaments/new");
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/app/tournaments/new/3");
               }}
             />
           </div>

@@ -70,3 +70,76 @@
     margin: auto;
     display: block;
 }
+
+@media screen and (max-width: 1050px) {
+    .new-tournament-3 {
+        flex-direction: column;
+    }
+
+    .new-tournament-3 .tournamentInfo__container {
+        min-width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .new-tournament-3 .submitCont {
+        position: relative;
+        margin-top: 40px;
+    }
+
+    .new-tournament-3 .tournamentInfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: static;
+        min-width: 50%;
+    }
+
+    .new-tournament-3 .tournamentInfo .img-center {
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .new-tournament-3 {
+        padding: 20px 10px;
+    }
+    .new-tournament-3 .tournamentInfo__container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-tournament-3 .submitCont {
+        margin-top: 40px;
+    }
+
+    .new-tournament-3 .tournamentInfo {
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+    }
+
+    .new-tournament-3 .tournamentInfo .img-center img {
+        width: 130px;
+        height: 130px;
+    }
+    .new-tournament-3 .table__container {
+        flex-direction: column;
+    }
+    .new-tournament-3 .table__container p {
+        max-width: 100%;
+        margin: 10px 0;
+        margin-left: 10px;
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    .addTeam .teamSubmitCont {
+        position: absolute;
+        bottom: 30px;
+        width: 90%;
+    }
+}

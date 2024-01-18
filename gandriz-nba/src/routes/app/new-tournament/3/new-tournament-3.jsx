@@ -1,4 +1,4 @@
-//TODO: Update table on submit (line 144), responsive design
+//TODO: Update table on submit (line 144)
 import React from "react";
 import './new-tournament-3.css'
 import Progress from "../../../../components/progress/progress";

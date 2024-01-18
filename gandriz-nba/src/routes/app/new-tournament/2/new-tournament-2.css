@@ -183,6 +183,8 @@
   }
   .new-tournament-2 .tournamentInfo {
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: static;
     min-width: 50%;
   }
@@ -201,6 +203,7 @@
   }
   .new-tournament-2 {
     margin: 0 10px;
+    flex-wrap: wrap;
   }
   .new-tournament-2 .tournamentInfo {
     font-size: 0.9rem;
@@ -208,5 +211,14 @@
   .new-tournament-2 .tournamentInfo .img-center img {
     width: 130px;
     height: 130px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .addTeam {
+    width: 100%;
+    margin: 0;
+    min-height: 100%;
+    border-radius: 0;
   }
 }
