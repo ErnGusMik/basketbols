@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+
 import Login from "./routes/auth/login/login";
 import Email from "./routes/auth/login-email/email";
 import Signup from "./routes/auth/signup/signup";
@@ -11,6 +12,7 @@ import Root from "./routes/app/root";
 import NewTournament from "./routes/app/new-tournament/new-tournament";
 import NewTournament2 from "./routes/app/new-tournament/2/new-tournament-2";
 import NewTournament3 from "./routes/app/new-tournament/3/new-tournament-3";
+import NewTournament4 from "./routes/app/new-tournament/4/new-tournament-4";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,6 +38,10 @@ function App() {
         {
           path: "/app/tournaments/new/3",
           element: <NewTournament3 />
+        },
+        {
+          path: '/app/tournaments/new/4',
+          element: <NewTournament4 />
         }
       ],
     },
