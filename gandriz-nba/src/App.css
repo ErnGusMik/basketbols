@@ -2,9 +2,6 @@
 
 * {
   box-sizing: border-box;
-}
-
-.App {
   font-family: Montserrat, sans-serif;
 }
 
@@ -29,4 +26,8 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+p, a, span, label {
+  font-weight: 300;
 }
