@@ -61,7 +61,6 @@
   align-items: center;
 }
 
-
 .tableLabel {
   margin-bottom: 5px;
   margin-left: 10px;
@@ -164,7 +163,6 @@
     transform: translateZ(0) rotateY(0) translate(-50%, -50%);
   }
 }
-
 
 /* ----------------------------------------------
  * Animation 'slit-in'
