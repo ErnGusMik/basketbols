@@ -22,6 +22,7 @@ export default function NewTournament3() {
     const [refereePlayoffsError, setRefereePlayoffsError] =
         React.useState(false);
     const [tableContent, setTableContent] = React.useState([]);
+    const [refereeNumError, setRefereeNumError] = React.useState(false);
 
     // Get data from local storage
     const getData = () => {
@@ -144,6 +145,7 @@ export default function NewTournament3() {
         const savedData = JSON.parse(localStorage.getItem("referees"));
         if (!savedData) {
             setTableContent([]);
+            return;
         }
         let output = [];
         savedData.forEach((referee) => {
@@ -207,6 +209,7 @@ export default function NewTournament3() {
                                 value={["2", "3", "4"]}
                                 centered={true}
                                 required={true}
+                                error={refereeNumError}
                             />
                         </div>
                     </div>
@@ -240,6 +243,7 @@ export default function NewTournament3() {
                                     navigate("/app/tournaments/new/4");
                                     return;
                                 }
+                                setRefereeNumError('Izvēlies tiesnešu skaitu!');
                             }}
                         />
                     </div>

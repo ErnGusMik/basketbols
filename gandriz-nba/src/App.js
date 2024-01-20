@@ -13,6 +13,7 @@ import NewTournament from "./routes/app/new-tournament/new-tournament";
 import NewTournament2 from "./routes/app/new-tournament/2/new-tournament-2";
 import NewTournament3 from "./routes/app/new-tournament/3/new-tournament-3";
 import NewTournament4 from "./routes/app/new-tournament/4/new-tournament-4";
+import NewTournamentSend from "./routes/app/new-tournament/send/new-tournament-send";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +43,10 @@ function App() {
         {
           path: '/app/tournaments/new/4',
           element: <NewTournament4 />
+        },
+        {
+          path: "/app/tournaments/new/send",
+          element: <NewTournamentSend />,
         }
       ],
     },

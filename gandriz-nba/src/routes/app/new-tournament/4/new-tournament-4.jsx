@@ -1,6 +1,3 @@
-// TODO: Make sure times change correctly with games
-// TODO: Make sure only each groups' games are shown in each table
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Progress from "../../../../components/progress/progress";
@@ -16,9 +13,6 @@ export default function NewTournament4() {
     const navigate = useNavigate();
     const dateOptions = { day: "2-digit", month: "2-digit", year: "2-digit" };
     const timeOptions = { hour: "2-digit", minute: "2-digit" };
-    const defaultDate = new Date();
-    defaultDate.setDate(defaultDate.getDate() + 6);
-    defaultDate.setHours(20, 30, 0, 0);
 
     // Set states
     const [tournament, setTournament] = React.useState([]);
@@ -30,7 +24,6 @@ export default function NewTournament4() {
     const [groups, setGroups] = React.useState([]);
     const [gameSchedule, setGameSchedule] = React.useState([]);
     const [gameScheduleReady, setGameScheduleReady] = React.useState([]);
-    const [lastDate, setLastDate] = React.useState(defaultDate);
 
     const setGroupNum = (num) => {
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -61,6 +54,7 @@ export default function NewTournament4() {
 
         if (!tournamentData || !teamData || !refereeData) {
             navigate("/app/tournaments/new");
+            return;
         }
 
         if (tournamentLogo !== "data:application/octet-stream;base64,") {
@@ -107,22 +101,18 @@ export default function NewTournament4() {
     }, [referees]);
 
     // Sets & prepares game times
-    const getNextGameTime = () => {
-        const date = lastDate;
+    const getNextGameTime = (date) => {
 
         if (date.getHours() === 18) {
             date.setHours(20, 30, 0, 0);
-            setLastDate(date);
             return date;
         } else if (date.getHours() === 20) {
             date.setDate(date.getDate() + 1);
             date.setHours(18, 0, 0, 0);
-            setLastDate(date);
             return date;
         } else {
             date.setDate(date.getDate() + 1);
             date.setHours(18, 0, 0, 0);
-            setLastDate(date);
             return date;
         }
     };
@@ -138,6 +128,10 @@ export default function NewTournament4() {
     // Create game schedule and save to state
     const createGameSchedule = () => {
         setGameSchedule([]);
+
+        let date = new Date();
+        date.setDate(date.getDate() + 6);
+        date.setHours(20, 30, 0, 0);
 
         const groupedTeams = Object.groupBy(teams, (team) => team[3]);
 
@@ -160,20 +154,22 @@ export default function NewTournament4() {
 
                         if (gameExists) continue;
 
-                        const time = getNextGameTime();
+                        date = getNextGameTime(date);
                         const referees = splitRefereeGames();
 
-                        games.push({
+                        const game = {
                             team1: group[j][0],
                             team2: group[k][0],
-                            date: time,
-                            time: time,
+                            date: new Date(date),
+                            time: new Date(date),
                             referees: referees
                                 .map((referee) => referee[0])
                                 .join(", "),
                             venue: tournament.location,
                             group: i,
-                        });
+                        }
+                        games.push(game);
+                        console.log(game.date);
                     }
                 }
             }
@@ -193,10 +189,11 @@ export default function NewTournament4() {
                 readySchedule.push([
                     game.team1,
                     game.team2,
-                    game.date.toLocaleDateString("lv-LV", dateOptions),
-                    game.time.toLocaleTimeString("lv-LV", timeOptions),
+                    game.date.toLocaleDateString("en-GB", dateOptions),
+                    game.time.toLocaleTimeString("en-GB", timeOptions),
                     game.referees,
                     game.venue,
+                    groups[game.group],
                 ]);
             });
         });
@@ -240,13 +237,12 @@ export default function NewTournament4() {
                                         "Laiks",
                                         "Tiesneši",
                                         "Vieta",
+                                        "Grupa",
                                     ]}
                                     id={"gameTable" + group}
-                                    content={
-                                        localStorage.getItem("referees")
-                                            ? gameScheduleReady
-                                            : []
-                                    }
+                                    content={gameScheduleReady.filter(
+                                        (game) => game[6] === group
+                                    )}
                                 />
                             </div>
                         );

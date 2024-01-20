@@ -7,9 +7,7 @@ export default function Table({
     setColWidth = false,
     id = "",
 }) {
-    React.useEffect(() => {
-        console.log(content);
-    }, []);
+    
     return (
         <table className="table" id={id}>
             <thead>

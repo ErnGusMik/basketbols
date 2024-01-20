@@ -13,7 +13,7 @@ export default function RadioInput({
   centered = false,
 }) {
   const errorhandler = () => {
-    if (value.length == 0) {
+    if (value.length == 0 || error) {
       document.getElementById(inputID + "-error").classList.add("error-show");
     } else {
       document

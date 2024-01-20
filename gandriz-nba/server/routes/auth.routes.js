@@ -322,7 +322,18 @@ const forgotPassword = async (req, res, next) => {
   const query = await db.query(dbText, values);
 
   const transporter = nodemailer.createTransport(
-    `smtps://${serverEmail}:${serverPassword}@smtp.gmail.com`
+    {
+      host: "smtp.gmail.com",
+      auth: {
+        user: serverEmail,
+        pass: serverPassword,
+      },
+      secure: true,
+      port: 465,
+      tls: {
+        rejectUnauthorized: false
+      }
+    }
   );
 
   const mailOptions = {
@@ -335,7 +346,7 @@ const forgotPassword = async (req, res, next) => {
     //   code +
     //   "\n\nJa Jūs neesat pieprasījis paroles maiņu, tad ignorējiet šo e-pastu.\n\nAr cieņu,\nGandrīzNBA",
     html:
-      "<style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');*{font-family:'Montserrat';}.button:hover{background-color: #ECC2B1}</style>" +
+      "<style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');*{font-family:'Montserrat'; font-weight: 300;}.button:hover{background-color: #ECC2B1}</style>" +
       "<div style='background-color: #d3d3d3; width: 100%; height: 100%; text-align: center;'><div style='max-width: 80%; background-color: #fff; border-radius: 20px; display: inline-block; margin: 40px auto; padding: 30px;'><h1 style='font-weight: 900; font-size: 30px; text-align: center;'>Aizmirsāt paroli? Uztaisīsim jaunu!</h1>" +
       "<p style='font-weight: 300; text-align: left;'>Mēs saņēmām pieprasījumu nomainīt paroli uz kontu ar epastu <a href='mailto://ernests.mikuts@gmail.com' style='color: #EE6730'>" +
       email +

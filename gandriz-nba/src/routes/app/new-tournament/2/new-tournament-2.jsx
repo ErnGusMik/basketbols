@@ -279,10 +279,8 @@ export default function NewTournament2() {
         // if team doesn't exist, add it to a random group
         if (!teamExists) {
             let group = Math.floor(Math.random() * groupNum.length);
-            console.log(teamsInGroups);
             while (teamsInGroups[group] >= teamNum / groupNum.length) {
                 group = Math.floor(Math.random() * groupNum.length);
-                console.log(teamsInGroups[group] >= teamNum / groupNum.length);
             }
 
             team.push(group);

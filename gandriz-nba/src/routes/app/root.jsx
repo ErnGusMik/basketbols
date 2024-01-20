@@ -1,8 +1,11 @@
 import React from "react";
 import "./root.css";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 export default function Root() {
+
+  const navigate = useNavigate();
+
   const setWidth = (text) => {
     if (text.length > 11) {
       return text.substring(0, 10) + "...";
@@ -23,6 +26,25 @@ export default function Root() {
       menuOpen = false;
     }
   };
+
+  // Check if user is logged in
+  const loggedIn = () => {
+    const accessToken = localStorage.getItem("access_token");
+    const idToken = localStorage.getItem("id_token");
+    const refreshToken = localStorage.getItem("refresh_token");
+    if (!accessToken || !idToken || !refreshToken) {
+      console.log("User is not logged in");
+      return false;
+    }
+    return true;
+  }
+
+  React.useEffect(() => {
+    if (!loggedIn()) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <div className="root">
       <div className="verticalNav-overlay"></div>
