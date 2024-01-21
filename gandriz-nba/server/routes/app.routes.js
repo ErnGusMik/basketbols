@@ -35,7 +35,6 @@ const newTournament = async (req, res, next) => {
     res.status(400).send("Groups, finalsNum and refereeNum must be integers");
     return;
   }
-  
 
   const result = await tournaments.modelTournament(
     req.body.userID,
@@ -48,7 +47,7 @@ const newTournament = async (req, res, next) => {
     req.body.groups,
     req.body.finalsNum,
     req.body.refereeNum,
-    req.body.pageName
+    req.body.pageName,
   );
 
   if (result.error) {
@@ -89,7 +88,7 @@ const newTeam = async (req, res, next) => {
     0,
     0,
     0,
-    req.body.tournamentID
+    req.body.tournamentID,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -109,7 +108,7 @@ const newReferee = async (req, res, next) => {
   const result = await referees.modelReferee(
     req.body.tournamentID,
     req.body.name,
-    req.body.finals
+    req.body.finals,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -133,7 +132,7 @@ const newPlayer = async (req, res, next) => {
     req.body.teamID,
     req.body.number,
     0,
-    0
+    0,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -217,7 +216,7 @@ const newGame = async (req, res, next) => {
     0,
     0,
     0,
-    req.body.finals
+    req.body.finals,
   );
   res.status(201).send(result[0].id.toString());
 };
@@ -283,8 +282,8 @@ const getPlayer = async (req, res, next) => {
 
 const getTournamentPage = async (req, res, next) => {
   /* GET /:pageName */
-  const pageID = req.params.pageName.toString()
-  const lowercase = pageID.toLowerCase()
+  const pageID = req.params.pageName.toString();
+  const lowercase = pageID.toLowerCase();
   const result = await tournaments.getTournamentPage(lowercase);
   res.send({ result: result[0] ? result[0] : 0 });
   return;
