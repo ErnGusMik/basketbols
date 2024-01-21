@@ -35,10 +35,8 @@ const newTournament = async (req, res, next) => {
     res.status(400).send("Groups, finalsNum and refereeNum must be integers");
     return;
   }
-  // if (!req.body.logo.is("img") || !req.body.logo) {
-  //   res.status(400).send("Logo must be an image");
-  //   return;
-  // }
+  
+
   const result = await tournaments.modelTournament(
     req.body.userID,
     req.body.name,
@@ -49,9 +47,16 @@ const newTournament = async (req, res, next) => {
     req.body.dates,
     req.body.groups,
     req.body.finalsNum,
-    req.body.refereeNum
+    req.body.refereeNum,
+    req.body.pageName
   );
-  res.status(201).send(result[0].id.toString()); // !! result.rows[0].id.toString() or result[0].id.toString() ??
+
+  if (result.error) {
+    res.status(400).send(result);
+    return;
+  }
+
+  res.status(201).send(result[0].id.toString());
 };
 
 const newTeam = async (req, res, next) => {

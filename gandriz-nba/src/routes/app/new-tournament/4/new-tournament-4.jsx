@@ -175,6 +175,7 @@ export default function NewTournament4() {
             }
             gameSchedule.push(games);
         }
+        localStorage.setItem("gameSchedule", JSON.stringify(gameSchedule));
         return gameSchedule;
     };
 
