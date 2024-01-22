@@ -5,7 +5,7 @@ const router = express.Router()
 
 
 router.post('/tournaments/new', routes.newTournament)
-router.post('/teams/new', routes.newTeam)
+router.post('/teams/new/batch', routes.newTeam)
 router.post('/referees/new', routes.newReferee)
 router.post('/players/new', routes.newPlayer)
 router.post('/games/new', routes.newGame)

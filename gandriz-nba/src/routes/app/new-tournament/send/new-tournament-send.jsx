@@ -12,8 +12,7 @@ export default function NewTournamentSend() {
     const idToken = localStorage.getItem("id_token");
 
     // Set states
-    //
-    //
+    const [sentOnce, setSentOnce] = React.useState(false);
 
     // Set refs
     const sendingNotes = React.useRef();
@@ -32,8 +31,6 @@ export default function NewTournamentSend() {
             month: "2-digit",
             day: "2-digit",
         };
-
-        console.log(startDate, endDate);
 
         for (let i = 0; i < gameSchedule.length; i++) {
             for (let j = 0; j < gameSchedule[i].length; j++) {
@@ -115,7 +112,8 @@ export default function NewTournamentSend() {
         const response = await request.json();
 
         // If response contains error, set UI to error state and redirect to new tournament page
-        if (response.error) {
+        if (response.error && !sentOnce) {
+            setSentOnce(true);
             mainText.current.innerHTML = "Kļūda!";
 
             sendingNotes.current.innerHTML = response.detail;
@@ -144,26 +142,68 @@ export default function NewTournamentSend() {
                 navigate("/app/tournaments/new");
             }, 10000);
         }
+        
+        setSentOnce(true);
         return response;
     };
 
     // Send teams to server
     const sendTeams = async (tournamentID) => {
-        const jwtData = parseJwt(idToken);
+        // const jwtData = parseJwt(idToken);
 
+        // Get teams from local storage
+        const teams = JSON.parse(localStorage.getItem("teams"));
+        const teamsArray = [];
 
-        // TODO: server-side:
-        // TODO:   - check if user has access to this tournament
-        // TODO:   - add batch team adding (replace the newTeam func?)
+        // For every team, push name, head coach and group to new array
+        teams.forEach((team) => {
+            teamsArray.push({
+                name: team[0],
+                headCoach: team[1],
+                group: team[3],
+            });
+        });
 
-        // TODO: client-side:
-        // TODO:   - send teams to server
-        // TODO:   - etc.
+        // Set request body
+        const bodyData = {
+            tournamentID,
+            teams: teamsArray,
+        };
+        console.log(bodyData);
+        // Make request to server
+        const request = await fetch(
+            "http://localhost:8080/api/teams/new/batch",
+            {
+                method: "POST",
+                body: JSON.stringify(bodyData),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        );
+
+        // Get response
+        const response = await request.json();
+
+        console.log(response);
+    };
+
+    // Send players to server
+    const sendPlayers = async teamIDs => {
+        // TODO: send players to server
+        // TODO: server: change to batch, verify userID from auth header
+    }
+
+    // Function to run on component mount (useEffect can't be async)
+    const final = async () => {
+        const tournamentID = await createTournament();
+        if (tournamentID.error) return;
+        sendTeams(tournamentID);
     };
 
     React.useEffect(() => {
-        const tournamentID = createTournament();
-        sendTeams(tournamentID);
+        final();
     }, []);
 
     return (

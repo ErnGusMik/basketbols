@@ -8,10 +8,10 @@ Blocks
 */
 const db = require("./../database/postgres.database");
 
-const modelPlayer = async (name, teamID, number, points, blocks) => {
+const modelPlayer = async (firstName, lastName, teamID, number, points, blocks,) => {
   const text =
-    "INSERT INTO players (name, teamID, number, points, blocks) VALUES ($1, $2, $3, $4, $5) RETURNING id";
-  const values = [name, teamID, number, points, blocks];
+    "INSERT INTO players (firstname, teamID, number, points, blocks, lastname) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id";
+  const values = [firstName, teamID, number, points, blocks, lastName];
   return await db.query(text, values);
 };
 
