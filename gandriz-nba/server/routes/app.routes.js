@@ -165,15 +165,24 @@ const newReferee = async (req, res, next) => {
     */
     const tournamentID = helpers.verifyTournamentID(req.body.tournamentID);
     if (!tournamentID) {
-        res.status(400).send("Tournament not found");
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        });
         return;
     }
-    const result = await referees.modelReferee(
-        req.body.tournamentID,
-        req.body.name,
-        req.body.finals
-    );
-    res.status(201).send(result[0].id.toString());
+    const refereeIDs = [];
+    for (let i = 0; i < req.body.referees.length; i++) {
+        const result = await referees.modelReferee(
+            req.body.tournamentID,
+            req.body.referees[i].name,
+            req.body.referees[i].finals
+        );
+        refereeIDs.push(result[0].id.toString());
+    }
+    res.status(201).send(refereeIDs);
 };
 
 const newPlayer = async (req, res, next) => {
@@ -194,6 +203,22 @@ const newPlayer = async (req, res, next) => {
     );
     const userID = token.sub;
 
+    // Check if tournament exists && user has access to it
+    const tournamentVerified = await helpers.verifyTournamentOwner(
+        req.body.tournamentID,
+        userID
+    );
+
+    if (!tournamentVerified) {
+        Response.send({
+            error: "Tournament not found or user does not have access to it",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts vai arī jums nav pieejas šim turnīram!",
+        });
+        return;
+    }
+
     const teamID = helpers.verifyTeamID(req.body.teamID);
     if (!teamID) {
         res.status(400).send({
@@ -204,15 +229,22 @@ const newPlayer = async (req, res, next) => {
         });
         return;
     }
-    const result = await players.modelPlayer(
-        req.body.firstName,
-        req.body.lastName,
-        req.body.teamID,
-        req.body.number,
-        0,
-        0
-    );
-    res.status(201).send(result[0].id.toString());
+    const playerIDs = [];
+
+    for (let i = 0; i < req.body.players.length; i++) {
+        const result = await players.modelPlayer(
+            req.body.players[i].firstName,
+            req.body.players[i].lastName,
+            req.body.players[i].teamID,
+            req.body.players[i].number,
+            0,
+            0,
+            req.body.tournamentID
+        );
+        playerIDs.push(result[0].id.toString());
+    }
+    res.status(201).send(playerIDs);
+    return;
 };
 
 const newGame = async (req, res, next) => {

@@ -142,7 +142,7 @@ export default function NewTournamentSend() {
                 navigate("/app/tournaments/new");
             }, 10000);
         }
-        
+
         setSentOnce(true);
         return response;
     };
@@ -169,7 +169,6 @@ export default function NewTournamentSend() {
             tournamentID,
             teams: teamsArray,
         };
-        console.log(bodyData);
         // Make request to server
         const request = await fetch(
             "http://localhost:8080/api/teams/new/batch",
@@ -186,20 +185,129 @@ export default function NewTournamentSend() {
         // Get response
         const response = await request.json();
 
-        console.log(response);
+        return response;
     };
 
     // Send players to server
-    const sendPlayers = async teamIDs => {
-        // TODO: send players to server
-        // TODO: server: change to batch, verify userID from auth header
+    const sendPlayers = async (teamIDs, tournamentID) => {
+        // Get teams from local storage
+        const teamData = JSON.parse(localStorage.getItem("teams"));
+        const players = [];
+
+        // If teams or teamIDs are not set, set error
+        if (!teamData) return console.log("Error: teams not set");
+        if (!teamIDs)
+            return console.log("Error: teamIDs not received from server");
+
+        if (teamIDs.length !== teamData.length) {
+            return console.log("Error: teamIDs and teamData length mismatch"); // Set error
+        }
+
+        // For each team, push players to object
+        teamData.forEach((team, i) => {
+            team[2].forEach((player) => {
+                if (!player[0] || !player[1] || !player[2]) return;
+                players.push({
+                    teamID: teamIDs[i],
+                    firstName: player[0],
+                    lastName: player[1],
+                    number: player[2],
+                });
+            });
+        });
+
+        // Set request body
+        const bodyData = {
+            players,
+            tournamentID,
+        };
+
+        // Make request to server
+        const request = await fetch(
+            "http://localhost:8080/api/players/new/batch",
+            {
+                method: "POST",
+                body: JSON.stringify(bodyData),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        );
+
+        // Get response
+        const response = await request.json();
+
+        return response;
+    };
+
+    const sendReferees = async (tournamentID) => {
+        // Get referees from local storage
+        const refereeData = JSON.parse(localStorage.getItem("referees"));
+        const refereeNum = localStorage.getItem("refereeNum");
+
+        // Set boilerplate
+        let allowedReferees = 0;
+        const bodyData = {
+            tournamentID,
+            referees: [],
+        };
+
+        // Check if there are enough referees for playoffs
+        refereeData.forEach((referee) => {
+            if (referee[1]) allowedReferees++;
+        });
+
+        // If not, allow all to be referees for playoffs
+        if (allowedReferees < refereeNum) {
+            refereeData.forEach((referee) => {
+                bodyData.referees.push({
+                    name: referee[0],
+                    finals: true,
+                });
+            });
+        } else {
+            refereeData.forEach((referee) => {
+                bodyData.referees.push({
+                    name: referee[0],
+                    finals: referee[1],
+                });
+            });
+        }
+
+        // Make request to server
+        const request = await fetch(
+            "http://localhost:8080/api/referees/new/batch",
+            {
+                method: "POST",
+                body: JSON.stringify(bodyData),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        );
+
+        // Get response
+        const response = await request.json();
+
+        return response;
+    };
+
+    const sendGames = async (tournamentID) => {
+        // TODO: send games to server
+        // TODO: server-side: change to batch, check if user has access to tournament
+        // TODO: server-side: possibly replace ID checks with name & tournament checks for easier use
     }
 
     // Function to run on component mount (useEffect can't be async)
     const final = async () => {
         const tournamentID = await createTournament();
         if (tournamentID.error) return;
-        sendTeams(tournamentID);
+        const teamIDs = await sendTeams(tournamentID);
+        await sendPlayers(teamIDs, tournamentID);
+        await sendReferees(tournamentID);
+        await sendGames(tournamentID);
     };
 
     React.useEffect(() => {
