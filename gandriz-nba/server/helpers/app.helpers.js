@@ -36,7 +36,10 @@ const verifyTournamentID = async (tournamentID) => {
 
 const verifyTournamentOwner = async (tournamentID, userID) => {
     const result = await db
-        .query("SELECT * FROM tournaments WHERE id=$1 AND userid=$2", [tournamentID, userID])
+        .query("SELECT * FROM tournaments WHERE id=$1 AND userid=$2", [
+            tournamentID,
+            userID,
+        ])
         .then((result) => {
             if (result.length === 0) {
                 return false;
@@ -66,6 +69,25 @@ const verifyTeamID = async (teamID) => {
     return result;
 };
 
+const verifyTeamByName = async (teamName, tournamentID) => {
+    const result = await db
+        .query("SELECT id FROM teams WHERE name = $1 AND tournamentid = $2", [
+            teamName,
+            tournamentID,
+        ])
+        .then((result) => {
+            if (result.length === 0) {
+                return false;
+            }
+            return result;
+        })
+        .catch((err) => {
+            console.log(err);
+            return false;
+        });
+    return result;
+};
+
 const verifyRefereeID = async (refereeID) => {
     const result = await db
         .query("SELECT * FROM referees WHERE id = $1", [refereeID])
@@ -82,10 +104,28 @@ const verifyRefereeID = async (refereeID) => {
     return result;
 };
 
+const verifyRefereeByName = async (refereeName, tournamentID) => {
+    const result = await db
+        .query("SELECT id FROM referees WHERE name = $1 AND tournamentid = $2", [refereeName, tournamentID])
+        .then((result) => {
+            if (result.length === 0) {
+                return false;
+            }
+            return result;
+        })
+        .catch((err) => {
+            console.log(err);
+            return false;
+        });
+    return result;
+};
+
 module.exports = {
     verifyUserID,
     verifyTournamentID,
     verifyTeamID,
     verifyRefereeID,
     verifyTournamentOwner,
+    verifyTeamByName,
+    verifyRefereeByName
 };

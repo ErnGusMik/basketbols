@@ -10,6 +10,7 @@ export default function NewTournamentSend() {
     const navigate = useNavigate();
     document.title = "Izveidot | Jauns turnīrs | Gandrīz NBA";
     const idToken = localStorage.getItem("id_token");
+    const accessToken = localStorage.getItem("access_token");
 
     // Set states
     const [sentOnce, setSentOnce] = React.useState(false);
@@ -104,7 +105,7 @@ export default function NewTournamentSend() {
                 body: JSON.stringify(bodyData),
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${idToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                 },
             }
         );
@@ -144,6 +145,11 @@ export default function NewTournamentSend() {
         }
 
         setSentOnce(true);
+
+        console.log(
+            "[INFO] " + Date.now() + ": Tournament successfully created"
+        );
+
         return response;
     };
 
@@ -177,13 +183,15 @@ export default function NewTournamentSend() {
                 body: JSON.stringify(bodyData),
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${idToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                 },
             }
         );
 
         // Get response
         const response = await request.json();
+
+        console.log("[INFO] " + Date.now() + ": Teams successfully created");
 
         return response;
     };
@@ -230,13 +238,15 @@ export default function NewTournamentSend() {
                 body: JSON.stringify(bodyData),
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${idToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                 },
             }
         );
 
         // Get response
         const response = await request.json();
+
+        console.log("[INFO] " + Date.now() + ": Players succesfully stored");
 
         return response;
     };
@@ -283,7 +293,7 @@ export default function NewTournamentSend() {
                 body: JSON.stringify(bodyData),
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${idToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                 },
             }
         );
@@ -291,23 +301,89 @@ export default function NewTournamentSend() {
         // Get response
         const response = await request.json();
 
+        console.log("[INFO] " + Date.now() + ": Referees successfully stored");
+
         return response;
     };
 
     const sendGames = async (tournamentID) => {
-        // TODO: send games to server
-        // TODO: server-side: change to batch, check if user has access to tournament
-        // TODO: server-side: possibly replace ID checks with name & tournament checks for easier use
-    }
+        // Get game schedule from local storage
+        const gameSchedule = JSON.parse(localStorage.getItem("gameSchedule"));
+
+        const bodyData = {
+            tournamentID,
+            games: [],
+        };
+
+        // For each game, push data to object
+        gameSchedule.forEach((group) => {
+            group.forEach((game) => {
+                bodyData.games.push({
+                    group: game.group,
+                    date: game.date,
+                    referees: game.referees.split(", "),
+                    team1Name: game.team1,
+                    team2Name: game.team2,
+                    time: game.time,
+                    venue: game.venue,
+                });
+            });
+        });
+
+        // Make request to server
+        const request = await fetch(
+            "http://localhost:8080/api/games/new/batch",
+            {
+                method: "POST",
+                body: JSON.stringify(bodyData),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        // Get response
+        const response = await request.json();
+
+        console.log("[INFO] " + Date.now() + ": Games successfully created");
+
+        return response;
+    };
 
     // Function to run on component mount (useEffect can't be async)
     const final = async () => {
         const tournamentID = await createTournament();
+
         if (tournamentID.error) return;
+
         const teamIDs = await sendTeams(tournamentID);
+
         await sendPlayers(teamIDs, tournamentID);
+
+        sendingNotes.current.innerHTML = "Gandrīz gatavs!";
+
         await sendReferees(tournamentID);
+
+        setTimeout(() => {
+            sendingNotes.current.innerHTML =
+                "Šis aizņem mazliet vairāk laika nekā parasti...";
+            sendingNotesSub.current.innerHTML = "Lūdzu, neatsvaidziniet lapu!";
+        }, 5000);
+
         await sendGames(tournamentID);
+
+        console.log(
+            "[INFO] " + Date.now() + ": Tournament creation process finalized"
+        );
+        navigate("/app/tournaments/" + tournamentID);
+
+        localStorage.removeItem("tournament");
+        localStorage.removeItem("teams");
+        localStorage.removeItem("gameSchedule");
+        localStorage.removeItem("tournamentLogo");
+        localStorage.removeItem("referees");
+        localStorage.removeItem("refereeNum");
     };
 
     React.useEffect(() => {

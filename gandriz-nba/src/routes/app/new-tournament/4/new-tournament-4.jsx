@@ -102,7 +102,6 @@ export default function NewTournament4() {
 
     // Sets & prepares game times
     const getNextGameTime = (date) => {
-
         if (date.getHours() === 18) {
             date.setHours(20, 30, 0, 0);
             return date;
@@ -167,9 +166,8 @@ export default function NewTournament4() {
                                 .join(", "),
                             venue: tournament.location,
                             group: i,
-                        }
+                        };
                         games.push(game);
-                        console.log(game.date);
                     }
                 }
             }
@@ -190,16 +188,122 @@ export default function NewTournament4() {
                 readySchedule.push([
                     game.team1,
                     game.team2,
-                    game.date.toLocaleDateString("en-GB", dateOptions),
-                    game.time.toLocaleTimeString("en-GB", timeOptions),
+                    <input
+                        className="invisibleInput"
+                        defaultValue={game.date.toLocaleDateString(
+                            "en-GB",
+                            dateOptions
+                        )}
+                    />,
+                    <input
+                        className="invisibleInput"
+                        defaultValue={game.time.toLocaleTimeString(
+                            "en-GB",
+                            timeOptions
+                        )}
+                    />,
                     game.referees,
-                    game.venue,
+                    <input
+                        className="invisibleInput"
+                        defaultValue={game.venue}
+                    />,
                     groups[game.group],
                 ]);
             });
         });
 
         setGameScheduleReady(readySchedule);
+    };
+
+    // Replace localStorage data with new data
+    const submitData = (e) => {
+        const container = document.getElementById("gameTableCont");
+        const totalData = [];
+        let dateError = false;
+
+        for (let j = 0; j < container.children.length; j++) {
+            const table = document.getElementById("gameTable-" + groups[j]);
+            const tableRows = table.getElementsByTagName("tr");
+            const tableData = [];
+            for (let i = 0; i < tableRows.length; i++) {
+                const row = tableRows[i];
+                const rowData = [];
+
+                for (let j = 0; j < row.cells.length; j++) {
+                    const cell = row.cells[j];
+                    const input = cell.getElementsByTagName("input")[0];
+
+                    if (!input) continue;
+
+                    rowData.push(input.value);
+                }
+
+                if (rowData.length === 0) continue;
+
+                try {
+                    const dateSplit = rowData[0].split("/");
+
+                    if (dateSplit.length !== 3 || dateSplit[1] > 12)
+                        throw new Error("Date error");
+
+                    const date = new Date(
+                        "20" + dateSplit[2],
+                        dateSplit[1]-1,
+                        dateSplit[0]
+                    );
+
+                    rowData[0] = date;
+
+                    const timeSplit = rowData[1].split(":");
+
+                    if (timeSplit.length !== 2 || Number(timeSplit[0]) > 60)
+                        throw new Error("Time error");
+
+                    const time = new Date(
+                        "20" + dateSplit[2],
+                        dateSplit[1],
+                        dateSplit[0],
+                        timeSplit[0],
+                        timeSplit[1]
+                    );
+
+                    rowData[1] = time;
+
+                    // document.getElementById(
+                    //     "tableError-" + groups[j]
+                    // ).innerHTML = "";
+                } catch (error) {
+                    console.log(error);
+
+                    dateError = true;
+
+                    document.getElementById(
+                        "tableError-" + groups[j]
+                    ).innerHTML =
+                        "Datuma formāts: dd/mm/yy, laika formāts: hh:mm";
+                }
+
+                tableData.push(rowData);
+            }
+            totalData.push(tableData);
+        }
+
+        if (dateError) return false;
+
+        const data = JSON.parse(localStorage.getItem("gameSchedule"));
+
+        for (let i = 0; i < data.length; i++) {
+            const updatedData = totalData[i];
+            for (let j = 0; j < data[i].length; j++) {
+                data[i][j].date = updatedData[j][0];
+                data[i][j].time = updatedData[j][1];
+                data[i][j].venue = updatedData[j][2];
+            }
+        }
+
+        localStorage.setItem("gameSchedule", JSON.stringify(data));
+
+        return true;
     };
 
     return (
@@ -220,34 +324,39 @@ export default function NewTournament4() {
                             );
                         })}
                     </p>
-
-                    {groups.map((group, index) => {
-                        return (
-                            <div
-                                className={"gameTable-" + group}
-                                id={"gameTable-" + group}
-                            >
-                                <p className="tableLabel">
-                                    <b>{group}</b> grupa
-                                </p>
-                                <Table
-                                    cols={[
-                                        "Komanda",
-                                        "Komanda",
-                                        "Datums",
-                                        "Laiks",
-                                        "Tiesneši",
-                                        "Vieta",
-                                        "Grupa",
-                                    ]}
-                                    id={"gameTable" + group}
-                                    content={gameScheduleReady.filter(
-                                        (game) => game[6] === group
-                                    )}
-                                />
-                            </div>
-                        );
-                    })}
+                    <div id="gameTableCont">
+                        {groups.map((group, index) => {
+                            return (
+                                <div
+                                    className={"gameTable-" + group}
+                                    id={"gameTable-" + group}
+                                >
+                                    <p className="tableLabel">
+                                        <b>{group}</b> grupa
+                                        <span
+                                            className="tableError"
+                                            id={"tableError-" + group}
+                                        ></span>
+                                    </p>
+                                    <Table
+                                        cols={[
+                                            "Komanda",
+                                            "Komanda",
+                                            "Datums",
+                                            "Laiks",
+                                            "Tiesneši",
+                                            "Vieta",
+                                            "Grupa",
+                                        ]}
+                                        id={"gameTable" + group}
+                                        content={gameScheduleReady.filter(
+                                            (game) => game[6] === group
+                                        )}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
                 <div className="tournamentInfo__container">
                     <div className="tournamentInfo">
@@ -279,6 +388,8 @@ export default function NewTournament4() {
                             }}
                             onClick={(e) => {
                                 e.preventDefault();
+                                const data = submitData(e);
+                                if (!data) return;
                                 navigate("/app/tournaments/new/send");
                             }}
                         />

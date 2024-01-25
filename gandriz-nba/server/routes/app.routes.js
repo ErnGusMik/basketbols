@@ -279,58 +279,130 @@ const newGame = async (req, res, next) => {
     team2BestPlayers (playerIDs seperated with ',')
     Finals (0 if not, 4 for quarterfinals, 2 for semifinals, 1 for finals, 3 for 3rd place game)
     */
-    const team1ID = await helpers.verifyTeamID(req.body.team1ID);
-    if (!team1ID) {
-        res.status(400).send("Team1 not found");
-        return;
-    }
-    const team2ID = await helpers.verifyTeamID(req.body.team2ID);
-    if (!team2ID) {
-        res.status(400).send("Team2 not found");
-        return;
-    }
-    const refereeIDs = req.body.refereeIDs.split(",");
-    for (let i = 0; i < refereeIDs.length; i++) {
-        const refereeID = await helpers.verifyRefereeID(refereeIDs[i]);
-        if (!refereeID) {
-            res.status(400).send("Referee not found");
-            return;
-        }
-    }
-    const tournamentID = await helpers.verifyTournamentID(
-        req.body.tournamentID
+    const header = req.headers.authorization.split(" ")[1];
+    const token = JSON.parse(
+        Buffer.from(header.split(".")[1], "base64").toString()
+    );
+    const userID = token.sub;
+
+    const tournamentID = await helpers.verifyTournamentOwner(
+        req.body.tournamentID,
+        userID
     );
     if (!tournamentID) {
-        res.status(400).send("Tournament not found");
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs neeksistē!",
+        });
         return;
     }
-    const result = await games.modelGame(
-        req.body.team1ID,
-        req.body.team2ID,
-        0,
-        0,
-        req.body.refereeIDs,
-        req.body.date,
-        req.body.tournamentID,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        req.body.finals
-    );
-    res.status(201).send(result[0].id.toString());
+
+    const gameIDs = [];
+
+    for (let i = 0; i < req.body.games.length; i++) {
+        const team1ID = await helpers.verifyTeamByName(
+            req.body.games[i].team1Name,
+            req.body.tournamentID
+        );
+        if (!team1ID) {
+            res.status(400).send({
+                error: `Team1 (${req.body.games[i].team1Name}) not found`,
+                code: 400,
+                severity: "ERROR",
+                detail: "1. komanda nav atrasta!",
+            });
+            return;
+        }
+
+        const team2ID = await helpers.verifyTeamByName(
+            req.body.games[i].team2Name,
+            req.body.tournamentID
+        );
+        if (!team2ID) {
+            res.status(400).send({
+                error: "Team2 not found",
+                code: 400,
+                severity: "ERROR",
+                detail: "2. komanda nav atrasta!",
+            });
+            return;
+        }
+
+        const refereeIDs = [];
+        let refereeError = false;
+        for (let j = 0; j < req.body.games[i].referees.length; j++) {
+            const refereeID = await helpers.verifyRefereeByName(
+                req.body.games[i].referees[j],
+                req.body.tournamentID
+            );
+            if (!refereeID) {
+                res.status(400).send({
+                    error: "Referee not found",
+                    code: 400,
+                    severity: "ERROR",
+                    detail: "Tiesnesis nav atrasts!",
+                });
+                refereeError = true;
+                return;
+            }
+            refereeIDs.push(refereeID[0].id);
+        }
+
+        if (refereeError) return;
+
+        if (
+            req.body.games[i].finals !== 4 ||
+            req.body.games[i].finals !== 2 ||
+            req.body.games[i].finals !== 1 ||
+            req.body.games[i].finals !== 3
+        )
+            req.body.games[i].finals = 0;
+
+        try {
+            parseInt(req.body.games[i].group);
+        } catch (err) {
+            res.status(400).send({
+                error: "Group must be an integer",
+                code: 400,
+                severity: "ERROR",
+                detail: "Grupai jābūt naturālam skaitlim!",
+            });
+            return;
+        }
+
+        const result = await games.modelGame(
+            team1ID[0].id,
+            team2ID[0].id,
+            0,
+            0,
+            JSON.stringify(refereeIDs),
+            req.body.games[i].date,
+            req.body.tournamentID,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            req.body.games[i].finals,
+            req.body.games[i].group,
+            req.body.games[i].venue
+        );
+        gameIDs.push(result[0].id.toString());
+    }
+    res.status(201).send(gameIDs);
 };
 
 const updateGame = async (req, res, next) => {

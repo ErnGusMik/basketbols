@@ -8,7 +8,7 @@ router.post('/tournaments/new', routes.newTournament)
 router.post('/teams/new/batch', routes.newTeam)
 router.post('/referees/new/batch', routes.newReferee)
 router.post('/players/new/batch', routes.newPlayer)
-router.post('/games/new', routes.newGame)
+router.post('/games/new/batch', routes.newGame)
 
 router.put('/games/update/:id', routes.updateGame)
 

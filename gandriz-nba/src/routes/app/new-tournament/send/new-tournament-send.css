@@ -26,11 +26,11 @@
     background-size: 400% 400%;
     text-align: center;
     margin: 0;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .new-tournament-send span {
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
     margin: 10px;
     display: block;

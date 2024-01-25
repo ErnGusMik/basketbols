@@ -13,6 +13,20 @@
     margin: 0 30px;
 }
 
+.new-tournament-4 .invisibleInput {
+    margin: 0;
+    padding: 0;
+}
+
+.new-tournament-4 .invisibleInput:focus {
+    color: #ee6730;
+}
+
+.new-tournament-4 .tableError {
+    color: red;
+    margin: 10px;
+}
+
 @media screen and (max-width: 1050px) {
     .new-tournament-4 {
         flex-direction: column;
