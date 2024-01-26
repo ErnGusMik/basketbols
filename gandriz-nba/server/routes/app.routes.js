@@ -372,6 +372,19 @@ const newGame = async (req, res, next) => {
             return;
         }
 
+        try {
+            new Date(req.body.games[i].date);
+            new Date(req.body.games[i].time);
+        } catch {
+            res.status(400).send({
+                error: "Date and time must be in correct format",
+                code: 400,
+                severity: "ERROR",
+                detail: "Datums un laiks jābūt pareizā formātā!",
+            });
+            return;
+        }
+
         const result = await games.modelGame(
             team1ID[0].id,
             team2ID[0].id,
@@ -398,7 +411,8 @@ const newGame = async (req, res, next) => {
             0,
             req.body.games[i].finals,
             req.body.games[i].group,
-            req.body.games[i].venue
+            req.body.games[i].venue,
+            req.body.games[i].time
         );
         gameIDs.push(result[0].id.toString());
     }
@@ -473,6 +487,58 @@ const getTournamentPage = async (req, res, next) => {
     return;
 };
 
+const getUserTournaments = async (req, res, next) => {
+    // GET /api/:userID/tournaments
+    const userID = await helpers.verifyUserID(req.params.userID);
+    if (!userID) {
+        res.status(400).send({
+            error: "User not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Lietotājs nav atrasts!",
+        });
+        return;
+    }
+    const result = await tournaments.getUserTournaments(req.params.userID);
+    res.status(200).send(result);
+}
+
+const getRefereesInTournament = async (req, res, next) => {
+    // GET /api/tournaments/:id/referees
+    const tournamentID = await helpers.verifyTournamentID(req.params.id);
+
+    if (!tournamentID) {
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        });
+        return;
+    }
+
+    const result = await referees.getRefereesInTournament(req.params.id);
+    res.status(200).send(result);
+}
+
+const getGamesInTournament = async (req, res, next) => {
+    // GET /api/tournaments/:id/games
+    const tournamentID = await helpers.verifyTournamentID(req.params.id);
+
+    if (!tournamentID) {
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        });
+        return;
+    }
+
+    const result = await games.getGamesInTournament(req.params.id);
+    res.status(200).send(result);
+}
+
 module.exports = {
     newTournament,
     newTeam,
@@ -486,4 +552,7 @@ module.exports = {
     getTeam,
     getPlayer,
     getTournamentPage,
+    getUserTournaments,
+    getRefereesInTournament,
+    getGamesInTournament
 };

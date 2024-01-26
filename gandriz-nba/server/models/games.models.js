@@ -57,10 +57,11 @@ const modelGame = async (
     team2BestPlayers,
     finals,
     group,
-    venue
+    venue,
+    time
 ) => {
     const text =
-        "INSERT INTO games (team1id, team2id, team1points, team2points, refereeids, date, tournamentid, team1blocks, team13points, team1lostpoints, team12points, team2blocks, team23points, team2lostpoints, team22points, timestied, timesleadchanged, team2biggestlead, team1biggestlead, team1mostpointsinrow, team2mostpointsinrow, team1bestplayers, team2bestplayers, finals, gamegroup, venue) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26) RETURNING id";
+        "INSERT INTO games (team1id, team2id, team1points, team2points, refereeids, date, tournamentid, team1blocks, team13points, team1lostpoints, team12points, team2blocks, team23points, team2lostpoints, team22points, timestied, timesleadchanged, team2biggestlead, team1biggestlead, team1mostpointsinrow, team2mostpointsinrow, team1bestplayers, team2bestplayers, finals, gamegroup, venue, time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING id";
     const values = [
         team1ID,
         team2ID,
@@ -87,7 +88,8 @@ const modelGame = async (
         team2BestPlayers,
         finals,
         group,
-        venue
+        venue,
+        time
     ];
     return await db.query(text, values);
 };
@@ -145,4 +147,10 @@ const getGame = async (gameID) => {
     return await db.query(text, values);
 };
 
-module.exports = { modelGame, updateGame, getGame };
+const getGamesInTournament = async (tournamentID) => {
+    const text = "SELECT * FROM games WHERE tournamentid = $1";
+    const values = [tournamentID];
+    return await db.query(text, values);
+}
+
+module.exports = { modelGame, updateGame, getGame, getGamesInTournament };

@@ -1,0 +1,54 @@
+.tournament-nav {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid black;
+    margin-bottom: 2px;
+    position: relative;
+}
+
+.tournament-nav-item {
+    margin: 0 30px;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tournament-nav a {
+    font-weight: 500;
+}
+
+.tournament-nav a:hover {
+    color: #EE6730;
+}
+
+.tabLine {
+    width: 70px;
+    height: 4px;
+    background-color: #EE6730;
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    visibility: hidden;
+}
+
+.tabLine.active {
+    visibility: visible;
+}
+
+@media screen and (max-width: 550px) {
+    .tournament-nav-item {
+        margin: 0 15px;
+    }
+
+    .tabLine {
+        width: 50px;
+    }
+}

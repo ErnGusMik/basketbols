@@ -68,4 +68,10 @@ const getTournamentPage = async (pageName) => {
     return await response;
 };
 
-module.exports = { modelTournament, getTournament, getTournamentPage };
+const getUserTournaments = async (userID) => {
+    const text = "SELECT * FROM tournaments WHERE userid = $1";
+    const values = [userID];
+    return await db.query(text, values);
+};
+
+module.exports = { modelTournament, getTournament, getTournamentPage, getUserTournaments };

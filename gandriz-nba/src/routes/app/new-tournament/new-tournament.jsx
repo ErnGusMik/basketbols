@@ -31,6 +31,7 @@ export default function NewTournament() {
   const [selectedGroup, setSelectedGroup] = React.useState(0);
   const [finalsNum, setFinalsNum] = React.useState([]);
   const [finalsSub, setFinalsSub] = React.useState([]);
+
   // set page title
   document.title = "Jauns turnīrs | GandrīzNBA";
   // handle change of team number (on change)
@@ -197,7 +198,7 @@ export default function NewTournament() {
               inputID="groupNum"
               value={groupNum.slice(0, 5)}
               valueSub={groupNumSub.slice(0, 5)}
-              error="Komandu skaitam ir jādalās ar 2, 4, 16, 32, 64 vai 128!"
+              error={"Komandu skaitam ir jādalās ar 2, 4, 16, 32, 64 vai 128!"}
               onChange={groupNumChange}
               required={true}
             />
@@ -205,7 +206,7 @@ export default function NewTournament() {
               label="Izslēgšanas spēles"
               labelSub="Cik komandas tiek izslēgšanas spēlēs?"
               inputID="finalsNum"
-              error="Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"
+              error={"Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"}
               value={finalsNum}
               valueSub={finalsSub}
               onChange={handleFinalsNum}

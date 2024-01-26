@@ -35,4 +35,10 @@ const getRefereeInTournament = async (tournamentID, name) => {
     return await db.query(text, values);
 };
 
-module.exports = { modelReferee, getReferee };
+const getRefereesInTournament = async (tournamentID) => {
+    const text = "SELECT * FROM referees WHERE tournamentID = $1";
+    const values = [tournamentID];
+    return await db.query(text, values);
+};
+
+module.exports = { modelReferee, getReferee, getRefereesInTournament };

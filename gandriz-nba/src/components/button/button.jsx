@@ -10,7 +10,7 @@ export default function Button({
 }) {
   return (
     <button className="button" onClick={onClick} disabled={disabled}>
-      {icon}
+      {icon ? icon : ""}
       <p>{text}</p>
     </button>
   );
