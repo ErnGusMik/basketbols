@@ -15,6 +15,8 @@ import NewTournament3 from "./routes/app/new-tournament/3/new-tournament-3";
 import NewTournament4 from "./routes/app/new-tournament/4/new-tournament-4";
 import NewTournamentSend from "./routes/app/new-tournament/send/new-tournament-send";
 
+import AboutTournament from "./routes/app/tournament/about/about";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -47,7 +49,7 @@ function App() {
         {
           path: "/app/tournaments/new/send",
           element: <NewTournamentSend />,
-        }
+        },
       ],
     },
     {
@@ -80,6 +82,11 @@ function App() {
       errorElement: <div>Reset password error</div>,
       children: [],
     },
+    // REMOVE AFTER
+    {
+      path: '/tournaments/:id/about',
+      element: <AboutTournament />
+    }
   ]);
   return (
     <div className="App">
