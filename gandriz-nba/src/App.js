@@ -40,11 +40,11 @@ function App() {
         },
         {
           path: "/app/tournaments/new/3",
-          element: <NewTournament3 />
+          element: <NewTournament3 />,
         },
         {
-          path: '/app/tournaments/new/4',
-          element: <NewTournament4 />
+          path: "/app/tournaments/new/4",
+          element: <NewTournament4 />,
         },
         {
           path: "/app/tournaments/new/send",
@@ -84,9 +84,9 @@ function App() {
     },
     // REMOVE AFTER
     {
-      path: '/tournaments/:id/about',
-      element: <AboutTournament />
-    }
+      path: "/tournaments/:id/about",
+      element: <AboutTournament />,
+    },
   ]);
   return (
     <div className="App">
