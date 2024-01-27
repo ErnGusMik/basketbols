@@ -35,18 +35,19 @@ export default function NewTournamentSend() {
 
         for (let i = 0; i < gameSchedule.length; i++) {
             for (let j = 0; j < gameSchedule[i].length; j++) {
-                if (gameSchedule[i][j].date < startDate) {
+                if (new Date(gameSchedule[i][j].date) < startDate) {
                     startDate = new Date(gameSchedule[i][j].date);
                 }
-                if (gameSchedule[i][j].date > endDate) {
+                if (new Date(gameSchedule[i][j].date) > endDate) {
                     endDate = new Date(gameSchedule[i][j].date);
                 }
             }
         }
-        return [
+
+        return JSON.stringify([
             startDate.toLocaleDateString("en-GB", dateOptions),
             endDate.toLocaleDateString("en-GB", dateOptions),
-        ];
+        ]);
     };
 
     // Decode JWT payload
@@ -318,13 +319,14 @@ export default function NewTournamentSend() {
         // For each game, push data to object
         gameSchedule.forEach((group) => {
             group.forEach((game) => {
+                console.log(game);
                 bodyData.games.push({
                     group: game.group,
-                    date: game.date,
+                    date: new Date(game.date),
                     referees: game.referees.split(", "),
                     team1Name: game.team1,
                     team2Name: game.team2,
-                    time: game.time,
+                    time: new Date(game.time),
                     venue: game.venue,
                 });
             });
@@ -378,12 +380,12 @@ export default function NewTournamentSend() {
         );
         navigate("/app/tournaments/" + tournamentID);
 
-        localStorage.removeItem("tournament");
-        localStorage.removeItem("teams");
-        localStorage.removeItem("gameSchedule");
-        localStorage.removeItem("tournamentLogo");
-        localStorage.removeItem("referees");
-        localStorage.removeItem("refereeNum");
+        // localStorage.removeItem("tournament");
+        // localStorage.removeItem("teams");
+        // localStorage.removeItem("gameSchedule");
+        // localStorage.removeItem("tournamentLogo");
+        // localStorage.removeItem("referees");
+        // localStorage.removeItem("refereeNum");
     };
 
     React.useEffect(() => {

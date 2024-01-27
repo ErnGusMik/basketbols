@@ -159,18 +159,21 @@ export default function NewTournament4() {
                         const game = {
                             team1: group[j][0],
                             team2: group[k][0],
-                            date: new Date(date),
-                            time: new Date(date),
+                            date: new Date(date).toJSON(),
+                            time: new Date(date).toJSON(),
                             referees: referees
                                 .map((referee) => referee[0])
                                 .join(", "),
                             venue: tournament.location,
                             group: i,
                         };
+
                         games.push(game);
                     }
                 }
             }
+            console.log(games);
+
             gameSchedule.push(games);
         }
         localStorage.setItem("gameSchedule", JSON.stringify(gameSchedule));
@@ -190,14 +193,14 @@ export default function NewTournament4() {
                     game.team2,
                     <input
                         className="invisibleInput"
-                        defaultValue={game.date.toLocaleDateString(
+                        defaultValue={new Date(game.date).toLocaleDateString(
                             "en-GB",
                             dateOptions
                         )}
                     />,
                     <input
                         className="invisibleInput"
-                        defaultValue={game.time.toLocaleTimeString(
+                        defaultValue={new Date(game.time).toLocaleTimeString(
                             "en-GB",
                             timeOptions
                         )}
@@ -246,32 +249,30 @@ export default function NewTournament4() {
                     if (dateSplit.length !== 3 || dateSplit[1] > 12)
                         throw new Error("Date error");
 
-                    const date = new Date(
-                        "20" + dateSplit[2],
-                        dateSplit[1]-1,
-                        dateSplit[0]
-                    );
-
-                    rowData[0] = date;
-
                     const timeSplit = rowData[1].split(":");
 
                     if (timeSplit.length !== 2 || Number(timeSplit[0]) > 60)
                         throw new Error("Time error");
 
+                    const date = new Date(
+                        "20" + dateSplit[2],
+                        dateSplit[1] - 1,
+                        dateSplit[0],
+                        Number(timeSplit[0]),
+                        Number(timeSplit[1])
+                    );
+
+                    rowData[0] = date;
+
                     const time = new Date(
                         "20" + dateSplit[2],
-                        dateSplit[1],
+                        dateSplit[1] - 1,
                         dateSplit[0],
-                        timeSplit[0],
-                        timeSplit[1]
+                        Number(timeSplit[0]),
+                        Number(timeSplit[1])
                     );
 
                     rowData[1] = time;
-
-                    // document.getElementById(
-                    //     "tableError-" + groups[j]
-                    // ).innerHTML = "";
                 } catch (error) {
                     console.log(error);
 
@@ -295,8 +296,8 @@ export default function NewTournament4() {
         for (let i = 0; i < data.length; i++) {
             const updatedData = totalData[i];
             for (let j = 0; j < data[i].length; j++) {
-                data[i][j].date = updatedData[j][0];
-                data[i][j].time = updatedData[j][1];
+                data[i][j].date = new Date(updatedData[j][0]).toJSON();
+                data[i][j].time = new Date(updatedData[j][1]).toJSON();
                 data[i][j].venue = updatedData[j][2];
             }
         }

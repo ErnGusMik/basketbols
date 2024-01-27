@@ -31,6 +31,10 @@
     padding-bottom: 15px;
 }
 
+.descriptionCard .description {
+    min-height: 100px;
+}
+
 .descriptionCard .location p {
     margin-left: 10px;
 }

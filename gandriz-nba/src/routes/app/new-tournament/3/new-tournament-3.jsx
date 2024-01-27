@@ -240,7 +240,11 @@ export default function NewTournament3() {
                                         refereeNum
                                     );
 
-                                    navigate("/app/tournaments/new/4");
+                                    if (tableContent.length >= refereeNum) {
+                                        navigate("/app/tournaments/new/4");
+                                        return;
+                                    } 
+                                    setRefereeNumError('Pievieno pitiekamo tiesnešu skaitu!');
                                     return;
                                 }
                                 setRefereeNumError('Izvēlies tiesnešu skaitu!');

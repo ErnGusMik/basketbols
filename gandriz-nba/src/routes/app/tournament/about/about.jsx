@@ -1,5 +1,5 @@
+// ! KEEP IN MIND: Server sends UTC date & time values. Convert to local time before displaying to user (new Date(*server data*))
 // TODO: Set html values to data from API
-// TODO: verify API sends correct, non-empty values
 // TODO: main nav, change highlight to each page
 
 import React from "react";
@@ -23,7 +23,7 @@ export default function AboutTournament() {
     // Set vars
     const params = useParams();
     document.title = tournament.name
-        ? tournament.name
+        ? tournament.name + " | Gandrīz NBA"
         : "Lādējās" + " | Gandrīz NBA";
 
     // Get tournament data
@@ -100,16 +100,21 @@ export default function AboutTournament() {
         // Get response
         const response = await request.json();
 
-
         let nextGame = {};
         let lastGame = {};
 
         for (let i = 0; i < response.length; i++) {
-            if (new Date(response[i].time) > new Date(nextGame.time) || !nextGame.time) {
+            if (
+                new Date(response[i].date) > new Date(nextGame.date) ||
+                !nextGame.date
+            ) {
                 nextGame = response[i];
             }
 
-            if (new Date(response[i].time) < new Date(lastGame.time) || !lastGame.time) {
+            if (
+                new Date(response[i].date) < new Date(lastGame.date) ||
+                !lastGame.date
+            ) {
                 lastGame = response[i];
             }
         }
@@ -119,10 +124,29 @@ export default function AboutTournament() {
             nextGame,
             lastGame,
         });
+    };
 
-        console.log(nextGame);
-        console.log(lastGame);
+    // Set referee table
+    const setRefereeTable = () => {
+        const refereeArray = [];
 
+        referees.forEach((referee) => {
+            let finals;
+
+            if (referee.finals) {
+                finals = (
+                    <span className="outer">
+                        <span className="inner"></span>
+                    </span>
+                );
+            } else {
+                finals = <span className="outer"></span>;
+            }
+
+            refereeArray.push([referee.name, finals]);
+        });
+
+        return refereeArray;
     };
 
     React.useEffect(() => {
@@ -131,27 +155,29 @@ export default function AboutTournament() {
         getGames();
     }, []);
 
+    React.useEffect(() => {
+        tournament.dates = tournament.dates
+            ? JSON.parse(tournament.dates).join(" - ") + ' (UTC)'
+            : "";
+    }, [tournament]);
+
+    React.useEffect(() => {
+        console.log(games);
+    }, [games]);
+
     return (
         <div className="aboutTournament">
             <div className="flexCol">
-                <MainImage titleData="Skolas čempionāts 2023 9. - 12. klasēm un skolotājiem" />
+                <MainImage titleData={tournament.name ? tournament.name : ""} />
                 <div className="descriptionCard">
-                    <p className="description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Sint inventore asperiores magnam vero consequatur
-                        voluptate harum molestias maxime aperiam rem numquam
-                        repellendus quisquam natus ipsam vel consequuntur
-                        excepturi, quod sed.
-                    </p>
+                    <p className="description">{tournament.description}</p>
                     <div className="location">
                         <i class="fa-solid fa-location-dot fa-lg"></i>
-                        <p className="locationText">Rīga</p>
+                        <p className="locationText">{tournament.location}</p>
                     </div>
                     <p className="organizer">
                         Organizē{" "}
-                        <b className="organizerName">
-                            Rīgas valsts 1. ģimnāzija
-                        </b>
+                        <b className="organizerName">{tournament.organizer}</b>
                     </p>
                 </div>
             </div>
@@ -196,14 +222,7 @@ export default function AboutTournament() {
                 <div className="refTable">
                     <Table
                         cols={["Vārds", "Izslēgšanas spēles"]}
-                        content={[
-                            [
-                                "Gatis Saliņš",
-                                <span className="outer">
-                                    <span className="inner"></span>
-                                </span>,
-                            ],
-                        ]}
+                        content={[...setRefereeTable()]}
                         id="refTable"
                     />
                 </div>
@@ -255,6 +274,7 @@ export default function AboutTournament() {
                         <a
                             href="https://www.fiba.basketball/documents/official-basketball-rules/current.pdf"
                             target="_blank"
+                            rel="noreferrer"
                         >
                             šeit
                         </a>
@@ -262,7 +282,7 @@ export default function AboutTournament() {
                     </p>
                     <div className="dates">
                         <i class="fa-regular fa-calendar fa-lg"></i>
-                        <p>03/12/23 - 12/02/24</p>
+                        <p>{tournament.dates}</p>
                     </div>
                 </div>
             </div>
