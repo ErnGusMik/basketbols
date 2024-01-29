@@ -29,7 +29,8 @@
   transition: all 0.5s ease-out;
 }
 
-.verticalNav-menuButton, .verticalNav-menuButtonClose {
+.verticalNav-menuButton,
+.verticalNav-menuButtonClose {
   display: none;
 }
 

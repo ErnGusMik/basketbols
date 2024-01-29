@@ -20,8 +20,6 @@ import TournamentNav from "./routes/app/tournament/tournament-nav";
 import AboutTournament from "./routes/app/tournament/about/about";
 import TournamentTeams from "./routes/app/tournament/teams/teams";
 
-
-
 function App() {
   const router = createBrowserRouter([
     {
@@ -45,31 +43,31 @@ function App() {
         },
         {
           path: "/app/tournaments/new/3",
-          element: <NewTournament3 />
+          element: <NewTournament3 />,
         },
         {
-          path: '/app/tournaments/new/4',
-          element: <NewTournament4 />
+          path: "/app/tournaments/new/4",
+          element: <NewTournament4 />,
         },
         {
           path: "/app/tournaments/new/send",
           element: <NewTournamentSend />,
         },
         {
-          path: '/app/tournaments/:id',
+          path: "/app/tournaments/:id",
           element: <TournamentNav />,
           children: [
             {
-              path: '/app/tournaments/:id/about',
+              path: "/app/tournaments/:id/about",
               element: <AboutTournament />,
             },
             {
-              path: '/app/tournaments/:id/teams',
-              element: <TournamentTeams />
-            }
+              path: "/app/tournaments/:id/teams",
+              element: <TournamentTeams />,
+            },
           ],
           errorElement: <div>Tournament error</div>,
-        }
+        },
       ],
     },
     {

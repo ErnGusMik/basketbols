@@ -1,172 +1,170 @@
 /* GENERAL */
 .aboutTournament {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    margin: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 10px;
+  flex-wrap: wrap;
 }
 
 .aboutTournament .middleRow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
 
 /* DESCRIPTION CARD */
 .descriptionCard {
-    max-width: 400px;
-    min-width: 380px;
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 50px;
+  max-width: 400px;
+  min-width: 380px;
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 50px;
 }
 
 .descriptionCard p {
-    display: inline-block;
-    margin: 0;
-    padding-bottom: 15px;
+  display: inline-block;
+  margin: 0;
+  padding-bottom: 15px;
 }
 
 .descriptionCard .description {
-    min-height: 100px;
+  min-height: 100px;
 }
 
 .descriptionCard .location p {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .descriptionCard .organizer {
-    padding-bottom: 0;
-    padding-top: 5px;
+  padding-bottom: 0;
+  padding-top: 5px;
 }
 
 .descriptionCard .organizer b {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 /* GAME CARDS */
 .gameCard {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 50px;
-    max-width: 370px;
-    min-width: 320px;
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 50px;
+  max-width: 370px;
+  min-width: 320px;
 }
 
 .gameCard h3 {
-    margin: 0;
-    padding-bottom: 15px;
+  margin: 0;
+  padding-bottom: 15px;
 }
 
 .gameCard .teamInfo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .gameCard .teamInfo img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 }
 
 .gameCard .teamInfo .team {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .gameCard .teamInfo .team p {
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 .gameCard .gameData {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    max-width: 70%;
-    margin: 20px auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 70%;
+  margin: 20px auto;
 }
 
 .gameCard.lastGame .gameData p {
-    margin: 10px 0;
-    padding: 0;
+  margin: 10px 0;
+  padding: 0;
 }
 
 .gameCard.lastGame .gameData {
-    margin: 5px auto;
+  margin: 5px auto;
 }
 
 .gameCard .buttonDiv {
-    display: block;
-    text-align: center;
+  display: block;
+  text-align: center;
 }
 
 .gameCard .noGame {
-    color: #8A8A8A;
-    font-weight: 500;
-    min-height: 190px;
-    max-height: 220px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 16px;
+  color: #8a8a8a;
+  font-weight: 500;
+  min-height: 190px;
+  max-height: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
 }
-
 
 /* REFEREE TABLE */
 .refTable span.outer {
-    height: 20px;
-    width: 20px;
-    border-radius: 5px;
-    background-color: #727272;
-    position: relative;
-    display: block;
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  background-color: #727272;
+  position: relative;
+  display: block;
 }
 
 .refTable span.inner {
-    height: 13px;
-    width: 13px;
-    border-radius: 3px;
-    background-color: #ee6730;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  height: 13px;
+  width: 13px;
+  border-radius: 3px;
+  background-color: #ee6730;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* RULES SECTION */
 .rulesCont {
-    max-width: 370px;
-    min-width: 320px;
+  max-width: 370px;
+  min-width: 320px;
 }
 
 .rulesCont a {
-    color: #EE6730;
-    text-decoration: none;
+  color: #ee6730;
+  text-decoration: none;
 }
 
 .rulesCont a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .rulesCont .dates p {
-    display: inline;
-    margin-left: 10px;
+  display: inline;
+  margin-left: 10px;
 }
 
 @media screen and (max-width: 400px) {
-    .descriptionCard {
-        min-width: 320px;
-    }
+  .descriptionCard {
+    min-width: 320px;
+  }
 }
