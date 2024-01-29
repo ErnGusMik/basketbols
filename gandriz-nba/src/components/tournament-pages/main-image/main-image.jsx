@@ -20,7 +20,7 @@ export default function MainImage({ titleData }) {
     return (
         <div className="mainImage">
             <div className="mainImageOverlay">
-                <h1 style={{ fontSize: '3rem' }}>{titleData}</h1>
+                <h1>{titleData}</h1>
             </div>
         </div>
     );

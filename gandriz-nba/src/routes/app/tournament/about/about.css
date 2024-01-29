@@ -110,6 +110,18 @@
     text-align: center;
 }
 
+.gameCard .noGame {
+    color: #8A8A8A;
+    font-weight: 500;
+    min-height: 190px;
+    max-height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+}
+
 
 /* REFEREE TABLE */
 .refTable span.outer {
@@ -151,4 +163,10 @@
 .rulesCont .dates p {
     display: inline;
     margin-left: 10px;
+}
+
+@media screen and (max-width: 400px) {
+    .descriptionCard {
+        min-width: 320px;
+    }
 }

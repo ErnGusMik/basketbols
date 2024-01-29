@@ -18,6 +18,7 @@ router.get('/tournaments/:id/referees', routes.getRefereesInTournament)
 router.get('/tournaments/:id/games', routes.getGamesInTournament)
 router.get('/referees/:id', routes.getReferee)
 router.get('/teams/:id', routes.getTeam)
+router.get('/teams/batch/:id', routes.getTeams)
 router.get('/players/:id', routes.getPlayer)
 
 router.get('/:userID/tournaments', routes.getUserTournaments)

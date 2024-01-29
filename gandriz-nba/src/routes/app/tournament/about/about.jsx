@@ -1,6 +1,4 @@
 // ! KEEP IN MIND: Server sends UTC date & time values. Convert to local time before displaying to user (new Date(*server data*))
-// TODO: Set html values to data from API
-// TODO: main nav, change highlight to each page
 
 import React from "react";
 
@@ -19,6 +17,7 @@ export default function AboutTournament() {
     const [tournament, setTournament] = React.useState({});
     const [referees, setReferees] = React.useState([]);
     const [games, setGames] = React.useState({});
+    const [teams, setTeams] = React.useState([]);
 
     // Set vars
     const params = useParams();
@@ -100,30 +99,61 @@ export default function AboutTournament() {
         // Get response
         const response = await request.json();
 
-        let nextGame = {};
-        let lastGame = {};
+        // Sort games by date
+        response.sort((a, b) => {
+            return new Date(a.date) - new Date(b.date);
+        });
 
-        for (let i = 0; i < response.length; i++) {
-            if (
-                new Date(response[i].date) > new Date(nextGame.date) ||
-                !nextGame.date
-            ) {
-                nextGame = response[i];
-            }
+        // Get next game
+        const nextGame = response.find((game) => {
+            return new Date(game.date) > new Date();
+        });
 
-            if (
-                new Date(response[i].date) < new Date(lastGame.date) ||
-                !lastGame.date
-            ) {
-                lastGame = response[i];
-            }
-        }
+        // Get last game
+        const lastGame = response.find((game) => {
+            return new Date(game.date) < new Date();
+        });
 
         // Set games
         setGames({
             nextGame,
             lastGame,
         });
+    };
+
+    const getTeams = async () => {
+        // Check if games exist and if yes, get team ids
+        let teamIDs = [];
+        if (games.nextGame) {
+            teamIDs.push(games.nextGame.team1id);
+            teamIDs.push(games.nextGame.team2id);
+        }
+        if (games.lastGame) {
+            teamIDs.push(games.lastGame.team1id);
+            teamIDs.push(games.lastGame.team2id);
+        }
+
+        if (teamIDs.length === 0) return;
+
+        // Make request to API
+        const request = await fetch(
+            "http://localhost:8080/api/teams/batch/" + teamIDs.join("+"),
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "access_token"
+                    )}`,
+                },
+            }
+        );
+
+        // Get response
+        const response = await request.json();
+
+        // Set teams
+        setTeams(response);
     };
 
     // Set referee table
@@ -157,14 +187,136 @@ export default function AboutTournament() {
 
     React.useEffect(() => {
         tournament.dates = tournament.dates
-            ? JSON.parse(tournament.dates).join(" - ") + ' (UTC)'
+            ? JSON.parse(tournament.dates).join(" - ") + " (UTC)"
             : "";
     }, [tournament]);
 
     React.useEffect(() => {
-        console.log(games);
+        getTeams();
     }, [games]);
 
+
+    // Functions to set html values
+    const setGameCard = (game) => {
+        let teamData = [];
+
+        // Check if games exist, if not return so
+        if ((game && !games.nextGame) || (!game && !games.lastGame))
+            return (
+                <div className="gameCard">
+                    <h3 className="title">
+                        {game ? "Nākamā" : "Pēdējā"} spēle
+                    </h3>
+                    <h2 className="noGame">
+                        {game
+                            ? "Visas spēles jau ir izspēlētas"
+                            : "Neviena spēle vēl nav izspēlēta"}
+                    </h2>
+                </div>
+            );
+
+            // Check if teams have been returned from API, if not retunr 'loading'
+        if (teams.length > 0) {
+            teamData = teams.filter((team) => {
+                if (game) {
+                    return (
+                        team.id === games.nextGame.team1id ||
+                        team.id === games.nextGame.team2id
+                    );
+                } else {
+                    return (
+                        team.id === games.lastGame.team1id ||
+                        team.id === games.lastGame.team2id
+                    );
+                }
+            });
+        } else {
+            return (
+                <div className="gameCard">
+                    <h3 className="title">
+                        {game ? "Nākamā" : "Pēdējā"} spēle
+                    </h3>
+                    <h2 className="noGame">
+                        {'Lādējās...'}
+                    </h2>
+                </div>
+            );
+        }
+
+        // Set group letter from number
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        const group = alphabet[teamData[0].teamgroup];
+
+        // Return game card
+        return (
+            <div className={game ? "gameCard" : "gameCard lastGame"}>
+                <h3 className="title">{game ? "Nākamā" : "Pēdējā"} spēle</h3>
+                <div className="teamInfo">
+                    <div className="team">
+                        <img
+                            src={logoImg}
+                            alt="Team 1 logo"
+                            className="teamLogo"
+                        />
+                        <p className="teamName">{teamData[0].name}</p>
+                    </div>
+                    <div className="vs">VS</div>
+                    <div className="team">
+                        <img
+                            src={logoImg}
+                            alt="Team 2 logo"
+                            className="teamLogo"
+                        />
+                        <p className="teamName">{teamData[1].name}</p>
+                    </div>
+                </div>
+                <div className="gameData">
+                    <p>
+                        <b>{group}</b> grupa
+                    </p>
+                    <p>
+                        {/* Set date to correct format */}
+                        {game
+                            ? new Date(games.nextGame.date).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                      year: "2-digit",
+                                  }
+                              )
+                            : new Date(games.lastGame.date).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                      year: "2-digit",
+                                  }
+                              )}
+                    </p>
+                    <p>
+                        {/* Set time to correct format */}
+                        {game
+                            ? new Date(games.nextGame.time).toLocaleTimeString(
+                                  "en-GB",
+                                  { hour: "2-digit", minute: "2-digit" }
+                              )
+                            : new Date(games.lastGame.time).toLocaleTimeString(
+                                  "en-GB",
+                                  { hour: "2-digit", minute: "2-digit" }
+                              )}
+                    </p>
+                </div>
+                <div className="buttonDiv">
+                    <Button
+                        text={game ? "Sagatavot spēli" : "Spēles analīze"}
+                    />
+                </div>
+            </div>
+        );
+    };
+
+    
     return (
         <div className="aboutTournament">
             <div className="flexCol">
@@ -172,7 +324,7 @@ export default function AboutTournament() {
                 <div className="descriptionCard">
                     <p className="description">{tournament.description}</p>
                     <div className="location">
-                        <i class="fa-solid fa-location-dot fa-lg"></i>
+                        <i className="fa-solid fa-location-dot fa-lg"></i>
                         <p className="locationText">{tournament.location}</p>
                     </div>
                     <p className="organizer">
@@ -183,42 +335,8 @@ export default function AboutTournament() {
             </div>
 
             <div className="flexCol middleRow">
-                <div className="gameCard">
-                    <h3 className="title">Nākamā spēle</h3>
-                    <div className="teamInfo">
-                        <div className="team">
-                            <img
-                                src={logoImg}
-                                alt="Team 1 logo"
-                                className="teamLogo"
-                            />
-                            <p className="teamName">
-                                Rīgas Valsts 1. ģimnāzija
-                            </p>
-                        </div>
-                        <div className="vs">VS</div>
-                        <div className="team">
-                            <img
-                                src={logoImg}
-                                alt="Team 2 logo"
-                                className="teamLogo"
-                            />
-                            <p className="teamName">
-                                Rīgas Valsts 1. ģimnāzija
-                            </p>
-                        </div>
-                    </div>
-                    <div className="gameData">
-                        <p>
-                            <b>A</b> grupa
-                        </p>
-                        <p>03/12/24</p>
-                        <p>21:30</p>
-                    </div>
-                    <div className="buttonDiv">
-                        <Button text="Sagatavot spēli" />
-                    </div>
-                </div>
+                {teams.length ? setGameCard(1) : setGameCard(1)}
+
                 <div className="refTable">
                     <Table
                         cols={["Vārds", "Izslēgšanas spēles"]}
@@ -229,44 +347,9 @@ export default function AboutTournament() {
             </div>
 
             <div className="flexCol">
-                <div className="gameCard lastGame">
-                    <h3 className="title">Pēdējā spēle</h3>
-                    <div className="teamInfo">
-                        <div className="team">
-                            <img
-                                src={logoImg}
-                                alt="Team 1 logo"
-                                className="teamLogo"
-                            />
-                            <p className="teamName">
-                                Rīgas Valsts 1. ģimnāzija
-                            </p>
-                            <h3 className="score">94</h3>
-                        </div>
-                        <div className="vs">VS</div>
-                        <div className="team">
-                            <img
-                                src={logoImg}
-                                alt="Team 2 logo"
-                                className="teamLogo"
-                            />
-                            <p className="teamName">
-                                Rīgas Valsts 1. ģimnāzija
-                            </p>
-                            <h3 className="score">120</h3>
-                        </div>
-                    </div>
-                    <div className="gameData">
-                        <p>
-                            <b>A</b> grupa
-                        </p>
-                        <p>03/12/24</p>
-                        <p>21:30</p>
-                    </div>
-                    <div className="buttonDiv">
-                        <Button text="Spēles analīze" />
-                    </div>
-                </div>
+
+                {teams.length ? setGameCard(0) : setGameCard(0)}
+
                 <div className="rulesCont">
                     <p>
                         Turnīrs notiek pēc oficiāliem FIBA apstiprinātiem
@@ -281,7 +364,7 @@ export default function AboutTournament() {
                         .
                     </p>
                     <div className="dates">
-                        <i class="fa-regular fa-calendar fa-lg"></i>
+                        <i className="fa-regular fa-calendar fa-lg"></i>
                         <p>{tournament.dates}</p>
                     </div>
                 </div>

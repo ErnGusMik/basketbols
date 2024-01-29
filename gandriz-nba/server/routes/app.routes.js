@@ -472,6 +472,17 @@ const getTeam = async (req, res, next) => {
     res.status(200).send(result[0]);
 };
 
+const getTeams = async (req, res, next) => {
+    /* GET /api/teams/batch/:id */
+    const idArray = req.params.id.split("+");
+    const result = [];
+    for (let i = 0; i < idArray.length; i++) {
+        const team = await teams.getTeam(parseInt(idArray[i]));
+        result.push(team[0]);
+    };
+    res.status(200).send(result);
+};
+
 const getPlayer = async (req, res, next) => {
     /* GET /api/players/:id */
     const result = await players.getPlayer(req.params.id);
@@ -501,7 +512,7 @@ const getUserTournaments = async (req, res, next) => {
     }
     const result = await tournaments.getUserTournaments(req.params.userID);
     res.status(200).send(result);
-}
+};
 
 const getRefereesInTournament = async (req, res, next) => {
     // GET /api/tournaments/:id/referees
@@ -519,7 +530,7 @@ const getRefereesInTournament = async (req, res, next) => {
 
     const result = await referees.getRefereesInTournament(req.params.id);
     res.status(200).send(result);
-}
+};
 
 const getGamesInTournament = async (req, res, next) => {
     // GET /api/tournaments/:id/games
@@ -537,7 +548,7 @@ const getGamesInTournament = async (req, res, next) => {
 
     const result = await games.getGamesInTournament(req.params.id);
     res.status(200).send(result);
-}
+};
 
 module.exports = {
     newTournament,
@@ -554,5 +565,6 @@ module.exports = {
     getTournamentPage,
     getUserTournaments,
     getRefereesInTournament,
-    getGamesInTournament
+    getGamesInTournament,
+    getTeams,
 };

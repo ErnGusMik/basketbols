@@ -1,11 +1,19 @@
 import React from "react";
 import "./root.css";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import {
+    Outlet,
+    Link,
+    useNavigate,
+    useLocation,
+    NavLink,
+} from "react-router-dom";
 
 export default function Root() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [tournaments, setTournaments] = React.useState([]);
+    const [breadcrumbs, setBreadcrumbs] = React.useState("Sākums");
 
     // Parse JWT token
     const parseJwt = (token) => {
@@ -85,6 +93,41 @@ export default function Root() {
         return;
     };
 
+    // Set breadcrumbs
+    const setBreadcrumbsContent = () => {
+        // If /app set breadcrumbs to "Sākums"
+        if (location.pathname === "/app") {
+            setBreadcrumbs("Sākums");
+
+            // If new tournament set breadcrumbs to "Jauns turnīrs"
+        } else if (location.pathname.includes("/app/tournaments/new")) {
+            setBreadcrumbs("Jauns turnīrs");
+
+            // If tournament page is open set to name of tournament
+        } else if (location.pathname.includes("/app/tournaments/")) {
+
+            // Get tournament ID from URL
+            const tournamentID = location.pathname.split("/")[3];
+            if (!tournamentID) return;
+
+            // Find tournament with specific ID from state
+            const tournament = tournaments.find(
+                (tournament) => tournament.id === Number(tournamentID)
+            );
+
+            // If tournament is not found set breadcrumbs to "Turnīrs", else set to name of tournament
+            if (!tournament) {
+                setBreadcrumbs("Turnīrs");
+                return;
+            }
+            setBreadcrumbs(tournament.name);
+
+            // If settings page is open set breadcrumbs to "Iestatījumi"
+        } else if (location.pathname.includes("/app/settings")) {
+            setBreadcrumbs("Iestatījumi");
+        }
+    };
+
     React.useEffect(() => {
         if (!loggedIn()) {
             navigate("/login");
@@ -92,6 +135,11 @@ export default function Root() {
         }
         getTournaments();
     }, []);
+
+    // On location change and tournaments update set breadcrumbs
+    React.useEffect(() => {
+        setBreadcrumbsContent();
+    }, [location.pathname, tournaments]);
 
     return (
         <div className="root">
@@ -105,9 +153,10 @@ export default function Root() {
                         <img src="x" alt="GandrīzNBA logo" />
                     </Link>
                 </div>
+                {/* HORIZONTAL BREADCRUMBS */}
                 <div className="horizontalNav-breadcrumbs">
                     <i className="fa-solid fa-chevron-right horizontalNav-sign"></i>
-                    <p id="breadcrumbs">Jauns turnīrs</p>
+                    <p id="breadcrumbs">{breadcrumbs}</p>
                 </div>
             </div>
             <div className="verticalNav-main">
@@ -119,39 +168,61 @@ export default function Root() {
                         <i className="fa-solid fa-xmark"></i>
                     </div>
                     <div className="verticalNav-home">
-                        <div className="verticalNav-line verticalNav-active">
-                            <Link to="/app">
-                                <i className="fa-solid fa-house"></i>
-                                <p>Sākums</p>
-                            </Link>
-                        </div>
+                        <NavLink
+                            to="/app"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "verticalNav-active verticalNav-line"
+                                    : "verticalNav-line"
+                            }
+                            end
+                        >
+                            <i className="fa-solid fa-house"></i>
+                            <p>Sākums</p>
+                        </NavLink>
                         <hr />
                     </div>
                     <div className="verticalNav-tournaments">
                         {tournaments.map((tournament) => {
                             return (
-                                <div className="verticalNav-line">
-                                    <Link to={"/app/tournaments/" + tournament.id}>
-                                        <i className="fa-solid fa-basketball"></i>
-                                        <p>{setWidth(tournament.name)}</p>
-                                    </Link>
-                                </div>
+                                <NavLink
+                                    to={"/app/tournaments/" + tournament.id}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "verticalNav-active verticalNav-line"
+                                            : "verticalNav-line"
+                                    }
+                                >
+                                    <i className="fa-solid fa-basketball"></i>
+                                    <p>{setWidth(tournament.name)}</p>
+                                </NavLink>
                             );
                         })}
-                        <div className="verticalNav-line">
-                            <Link to="/app/tournaments/new">
-                                <i className="fa-solid fa-plus"></i>
-                                <p>Jauns turnīrs</p>
-                            </Link>
-                        </div>
+                        <NavLink
+                            to="/app/tournaments/new"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "verticalNav-active verticalNav-line"
+                                    : "verticalNav-line"
+                            }
+                        >
+                            <i className="fa-solid fa-plus"></i>
+                            <p>Jauns turnīrs</p>
+                        </NavLink>
                     </div>
                 </div>
-                <div className="verticalNav-line verticalNav-settings">
-                    <Link to="/app/settings">
-                        <i className="fa-solid fa-gear"></i>
-                        <p>Iestatījumi</p>
-                    </Link>
-                </div>
+                <NavLink
+                    to="/app/settings"
+                    className={({ isActive }) =>
+                        isActive
+                            ? "verticalNav-active verticalNav-line verticalNav-settings"
+                            : "verticalNav-line verticalNav-settings"
+                    }
+                    end
+                >
+                    <i className="fa-solid fa-gear"></i>
+                    <p>Iestatījumi</p>
+                </NavLink>
             </div>
             <div id="mainOutlet">
                 <Outlet />

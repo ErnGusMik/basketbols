@@ -380,12 +380,12 @@ export default function NewTournamentSend() {
         );
         navigate("/app/tournaments/" + tournamentID);
 
-        // localStorage.removeItem("tournament");
-        // localStorage.removeItem("teams");
-        // localStorage.removeItem("gameSchedule");
-        // localStorage.removeItem("tournamentLogo");
-        // localStorage.removeItem("referees");
-        // localStorage.removeItem("refereeNum");
+        localStorage.removeItem("tournament");
+        localStorage.removeItem("teams");
+        localStorage.removeItem("gameSchedule");
+        localStorage.removeItem("tournamentLogo");
+        localStorage.removeItem("referees");
+        localStorage.removeItem("refereeNum");
     };
 
     React.useEffect(() => {
