@@ -1,0 +1,45 @@
+.tournamentTeams {
+    margin: 15px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    max-width: 80%;
+    min-height: 100%;
+}
+
+.tournamentTeams .stickyContainer {
+    position: sticky;
+    top: 20px;
+    margin-right: 5px;
+}
+
+.tournamentTeams .tableContainer {
+    max-width: 50% !important;
+}
+
+@media screen and (max-width: 1300px) {
+    .tournamentTeams {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 1060px) {
+    .tournamentTeams .stickyContainer {
+        position: relative;
+        margin-left: 0;
+        margin-bottom: 50px;
+        padding: 0;
+        margin-top: 0;
+    }
+    .tournamentTeams {
+        flex-wrap: wrap;
+        padding: 0;
+    }
+    .tournamentTeams .tableContainer {
+        max-width: 100% !important;
+    }
+    .tournamentTeams .descriptionCard {
+        display: none;
+    }
+}

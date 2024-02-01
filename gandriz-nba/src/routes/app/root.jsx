@@ -105,7 +105,6 @@ export default function Root() {
 
             // If tournament page is open set to name of tournament
         } else if (location.pathname.includes("/app/tournaments/")) {
-
             // Get tournament ID from URL
             const tournamentID = location.pathname.split("/")[3];
             if (!tournamentID) return;
@@ -176,6 +175,7 @@ export default function Root() {
                                     : "verticalNav-line"
                             }
                             end
+                            unstable_viewTransition
                         >
                             <i className="fa-solid fa-house"></i>
                             <p>Sākums</p>
@@ -192,6 +192,7 @@ export default function Root() {
                                             ? "verticalNav-active verticalNav-line"
                                             : "verticalNav-line"
                                     }
+                                    unstable_viewTransition
                                 >
                                     <i className="fa-solid fa-basketball"></i>
                                     <p>{setWidth(tournament.name)}</p>
@@ -205,6 +206,7 @@ export default function Root() {
                                     ? "verticalNav-active verticalNav-line"
                                     : "verticalNav-line"
                             }
+                            unstable_viewTransition
                         >
                             <i className="fa-solid fa-plus"></i>
                             <p>Jauns turnīrs</p>
@@ -219,6 +221,7 @@ export default function Root() {
                             : "verticalNav-line verticalNav-settings"
                     }
                     end
+                    unstable_viewTransition
                 >
                     <i className="fa-solid fa-gear"></i>
                     <p>Iestatījumi</p>

@@ -61,4 +61,18 @@ const getPlayerInTournament = async (firstName, lastName, teamID) => {
     return await db.query(text, values);
 };
 
-module.exports = { modelPlayer, getPlayer };
+const getBestBlockers = async (tournamentID) => {
+    const text =
+        "SELECT * FROM players WHERE tournamentid = $1 ORDER BY blocks DESC LIMIT 10";
+    const values = [tournamentID];
+    return await db.query(text, values);
+};
+
+const getBestPlayers = async (tournamentID) => {
+    const text =
+        "SELECT * FROM players WHERE tournamentid = $1 ORDER BY points DESC LIMIT 10";
+    const values = [tournamentID];
+    return await db.query(text, values);
+};
+
+module.exports = { modelPlayer, getPlayer, getBestBlockers, getBestPlayers};

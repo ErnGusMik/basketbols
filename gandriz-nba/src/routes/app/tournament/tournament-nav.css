@@ -23,13 +23,13 @@
 }
 
 .tournament-nav a:hover {
-    color: #EE6730;
+    color: #ee6730;
 }
 
-.tabLine {
+.navLink .tabLine {
     width: 70px;
     height: 4px;
-    background-color: #EE6730;
+    background-color: #ee6730;
     position: absolute;
     bottom: -2px;
     left: 50%;
@@ -39,7 +39,7 @@
     visibility: hidden;
 }
 
-.tabLine.active {
+.navLink.active .tabLine {
     visibility: visible;
 }
 

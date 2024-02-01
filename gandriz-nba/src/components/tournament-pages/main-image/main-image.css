@@ -8,12 +8,11 @@
     position: relative;
     color: white;
     border-radius: 50px;
-    display: inline;
 }
 
 .mainImage h1 {
     font-size: 3rem;
-
+    font-weight: 900;
 }
 
 .mainImageOverlay {

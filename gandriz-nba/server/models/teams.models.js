@@ -69,4 +69,10 @@ const getTeam = async (teamID) => {
     return await db.query(text, values);
 };
 
-module.exports = { modelTeam, getTeam };
+const getTeamsInTournament = async (tournamentID) => {
+    const text = "SELECT * FROM teams WHERE tournamentid = $1";
+    const values = [tournamentID];
+    return await db.query(text, values);
+};
+
+module.exports = { modelTeam, getTeam, getTeamsInTournament };

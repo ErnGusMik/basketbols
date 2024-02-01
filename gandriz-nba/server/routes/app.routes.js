@@ -479,7 +479,23 @@ const getTeams = async (req, res, next) => {
     for (let i = 0; i < idArray.length; i++) {
         const team = await teams.getTeam(parseInt(idArray[i]));
         result.push(team[0]);
-    };
+    }
+    res.status(200).send(result);
+};
+
+const getTeamsInTournament = async (req, res, next) => {
+    /* GET /api/tournaments/:id/teams */
+    const tournamentID = await helpers.verifyTournamentID(req.params.id);
+    if (!tournamentID) {
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        });
+        return;
+    }
+    const result = await teams.getTeamsInTournament(req.params.id);
     res.status(200).send(result);
 };
 
@@ -550,6 +566,42 @@ const getGamesInTournament = async (req, res, next) => {
     res.status(200).send(result);
 };
 
+const getBestBlockers = async (req, res, next) => {
+    /* GET /api/tournaments/:id/stats/best-blockers */
+    const tournamentID = await helpers.verifyTournamentID(req.params.id);
+
+    if (!tournamentID) {
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        });
+        return;
+    }
+
+    const result = await players.getBestBlockers(req.params.id);
+    res.status(200).send(result);
+};
+
+const getBestPlayers = async (req, res, next) => {
+    /* GET /api/tournaments/:id/stats/best-players */
+    const tournamentID = await helpers.verifyTournamentID(req.params.id);
+
+    if (!tournamentID) {
+        res.status(400).send({
+            error: "Tournament not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        });
+        return;
+    }
+
+    const result = await players.getBestPlayers(req.params.id);
+    res.status(200).send(result);
+};
+
 module.exports = {
     newTournament,
     newTeam,
@@ -567,4 +619,7 @@ module.exports = {
     getRefereesInTournament,
     getGamesInTournament,
     getTeams,
+    getTeamsInTournament,
+    getBestBlockers,
+    getBestPlayers,
 };
