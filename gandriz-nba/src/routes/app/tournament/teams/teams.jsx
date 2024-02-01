@@ -1,4 +1,3 @@
-// TODO: TournamentTeams according to design
 import React from "react";
 import { useParams } from "react-router-dom";
 
