@@ -20,6 +20,7 @@ import TournamentNav from "./routes/app/tournament/tournament-nav";
 import AboutTournament from "./routes/app/tournament/about/about";
 import TournamentTeams from "./routes/app/tournament/teams/teams";
 import TournamentStats from "./routes/app/tournament/stats/stats";
+import TournamentGames from "./routes/app/tournament/games/games";
 
 
 
@@ -71,6 +72,10 @@ function App() {
             {
               path: '/app/tournaments/:id/stats',
               element: <TournamentStats />
+            },
+            {
+              path: '/app/tournaments/:id/games',
+              element: <TournamentGames />
             }
           ],
           errorElement: <div>Tournament error</div>,

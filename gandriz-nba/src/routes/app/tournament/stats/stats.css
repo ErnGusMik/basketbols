@@ -29,6 +29,7 @@
     padding: 10px 20px;
     margin: 10px;
     width: 350px;
+    min-height: 200px;
 }
 
 .tournamentStats .statCard h2 {

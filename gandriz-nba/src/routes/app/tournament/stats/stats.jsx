@@ -69,8 +69,7 @@ export default function TournamentStats() {
         // Get response
         const response = await request.json();
 
-        console.log(response);
-
+        // Sort teams by stats
         const teamBlocks = response.sort((a, b) => {
             return b.avgblocks - a.avgblocks;
         });
@@ -87,6 +86,7 @@ export default function TournamentStats() {
             return b.avglostpoints - a.avglostpoints;
         });
 
+        // Set team data
         setTeamBlocks(teamBlocks);
         setTeam3p(team3p);
         setTeamPoints(teamPoints);
