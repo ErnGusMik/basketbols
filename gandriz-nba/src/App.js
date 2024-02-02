@@ -22,8 +22,6 @@ import TournamentTeams from "./routes/app/tournament/teams/teams";
 import TournamentStats from "./routes/app/tournament/stats/stats";
 import TournamentGames from "./routes/app/tournament/games/games";
 
-
-
 function App() {
   const router = createBrowserRouter([
     {
@@ -47,39 +45,39 @@ function App() {
         },
         {
           path: "/app/tournaments/new/3",
-          element: <NewTournament3 />
+          element: <NewTournament3 />,
         },
         {
-          path: '/app/tournaments/new/4',
-          element: <NewTournament4 />
+          path: "/app/tournaments/new/4",
+          element: <NewTournament4 />,
         },
         {
           path: "/app/tournaments/new/send",
           element: <NewTournamentSend />,
         },
         {
-          path: '/app/tournaments/:id',
+          path: "/app/tournaments/:id",
           element: <TournamentNav />,
           children: [
             {
-              path: '/app/tournaments/:id/about',
+              path: "/app/tournaments/:id/about",
               element: <AboutTournament />,
             },
             {
-              path: '/app/tournaments/:id/teams',
-              element: <TournamentTeams />
+              path: "/app/tournaments/:id/teams",
+              element: <TournamentTeams />,
             },
             {
-              path: '/app/tournaments/:id/stats',
-              element: <TournamentStats />
+              path: "/app/tournaments/:id/stats",
+              element: <TournamentStats />,
             },
             {
-              path: '/app/tournaments/:id/games',
-              element: <TournamentGames />
-            }
+              path: "/app/tournaments/:id/games",
+              element: <TournamentGames />,
+            },
           ],
           errorElement: <div>Tournament error</div>,
-        }
+        },
       ],
     },
     {
