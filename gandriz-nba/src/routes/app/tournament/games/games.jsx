@@ -1,5 +1,5 @@
 // TODO: save server data to local storage for faster loading
-// TODO: make playoffs appear only if there are any
+
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -68,13 +68,25 @@ export default function TournamentGames() {
         );
 
         // Get response
-        const response = await request.json();
+        let response = await request.json();
 
+        const playoffsArr = [];
+
+        // Find all playoff games and push to arrray
         response.forEach((game) => {
             if (game.finals !== 0) {
-                setPlayoffs((prev) => [...prev, game]);
+                playoffsArr.push(game);
             }
-            response.slice(response.indexOf(game), 1);
+        });
+
+        console.log(playoffsArr);
+
+        // Set playoffs
+        setPlayoffs(playoffsArr);
+
+        // Remove playoff games from response
+        response = response.filter((game) => {
+            return game.finals === 0;
         });
 
         // Set game data
@@ -166,6 +178,622 @@ export default function TournamentGames() {
         final();
     }, []);
 
+    React.useEffect(() => {
+        console.log(playoffs);
+    }, [playoffs]);
+
+    const createPlayoffsChart = () => {
+        const eightFinals = [];
+        const quarterFinals = [];
+        const semiFinals = [];
+        let final;
+        let thirdPlace;
+
+        playoffs.forEach((game) => {
+            if (game.finals === 16) {
+                eightFinals.push(game);
+            } else if (game.finals === 8) {
+                quarterFinals.push(game);
+            } else if (game.finals === 4) {
+                semiFinals.push(game);
+            } else if (game.finals === 2) {
+                final = game;
+            } else if (game.finals === 3) {
+                thirdPlace = game;
+            }
+        });
+
+        return (
+            <div className="playoffsContainer__container">
+                <div className="playoffsContainer">
+                    {eightFinals.length > 0 ? (
+                        <div className="playoffs">
+                            <p>Astotdaļfināli</p>
+                            {Array(8)
+                                .fill()
+                                .map((_, i) => {
+                                    return (
+                                        <table className="game">
+                                            <tr>
+                                                <td>
+                                                    {eightFinals[i] ? (
+                                                        eightFinals[i]
+                                                            .team1points
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {eightFinals[i] ? (
+                                                        teams.filter(
+                                                            (team) =>
+                                                                eightFinals[i]
+                                                                    .team1id ===
+                                                                team.id
+                                                        )[0].name
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {eightFinals[i] ? (
+                                                        eightFinals[i]
+                                                            .team2points
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {eightFinals[i] ? (
+                                                        teams.filter(
+                                                            (team) =>
+                                                                eightFinals[i]
+                                                                    .team2id ===
+                                                                team.id
+                                                        )[0].name
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    );
+                                })}
+                        </div>
+                    ) : (
+                        ""
+                    )}
+
+                    {quarterFinals.length > 0 || eightFinals.length > 0 ? (
+                        <div className="playoffs">
+                            <p>Ceturtdaļfināli</p>
+                            {Array(4)
+                                .fill()
+                                .map((_, i) => {
+                                    return (
+                                        <table className="game">
+                                            <tr>
+                                                <td>
+                                                    {quarterFinals[i] ? (
+                                                        quarterFinals[i]
+                                                            .team1points
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {quarterFinals[i] ? (
+                                                        teams.filter(
+                                                            (team) =>
+                                                                quarterFinals[i]
+                                                                    .team1id ===
+                                                                team.id
+                                                        )[0].name
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {quarterFinals[i] ? (
+                                                        quarterFinals[i]
+                                                            .team2points
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {quarterFinals[i] ? (
+                                                        teams.filter(
+                                                            (team) =>
+                                                                quarterFinals[i]
+                                                                    .team2id ===
+                                                                team.id
+                                                        )[0].name
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    );
+                                })}
+                        </div>
+                    ) : (
+                        ""
+                    )}
+
+                    {semiFinals.length > 0 ||
+                    quarterFinals.length > 0 ||
+                    eightFinals.length > 0 ? (
+                        <div className="playoffs">
+                            <p>Pusfināli</p>
+                            {Array(2)
+                                .fill()
+                                .map((_, i) => {
+                                    return (
+                                        <table className="game">
+                                            <tr>
+                                                <td>
+                                                    {semiFinals[i] ? (
+                                                        semiFinals[i]
+                                                            .team1points
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {semiFinals[i] ? (
+                                                        teams.filter(
+                                                            (team) =>
+                                                                semiFinals[i]
+                                                                    .team1id ===
+                                                                team.id
+                                                        )[0].name
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {semiFinals[i] ? (
+                                                        semiFinals[i]
+                                                            .team2points
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {semiFinals[i] ? (
+                                                        teams.filter(
+                                                            (team) =>
+                                                                semiFinals[i]
+                                                                    .team2id ===
+                                                                team.id
+                                                        )[0].name
+                                                    ) : (
+                                                        <wbr />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    );
+                                })}
+                        </div>
+                    ) : (
+                        ""
+                    )}
+
+                    {final ||
+                    semiFinals.length > 0 ||
+                    quarterFinals.length > 0 ||
+                    eightFinals.length > 0 ? (
+                        <div className="playoffs">
+                            <p>Fināls</p>
+                            <table className="game">
+                                <tr>
+                                    <td>
+                                        {final ? final.team1points : <wbr />}
+                                    </td>
+                                    <td>
+                                        {final ? (
+                                            teams.filter(
+                                                (team) =>
+                                                    final.team1id === team.id
+                                            )[0].name
+                                        ) : (
+                                            <wbr />
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {final ? final.team2points : <wbr />}
+                                    </td>
+                                    <td>
+                                        {final ? (
+                                            teams.filter(
+                                                (team) =>
+                                                    final.team2id === team.id
+                                            )[0].name
+                                        ) : (
+                                            <wbr />
+                                        )}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    ) : (
+                        ""
+                    )}
+                </div>
+
+                {eightFinals.length > 0 ? (
+                    <div className="playoffsTable">
+                        <p>Astotdaļfināli</p>
+                        <Table
+                            cols={[
+                                "Komanda",
+                                "Komanda",
+                                "Datums",
+                                "Laiks",
+                                "Vieta",
+                                "Rezultāts",
+                                "Tiesneši",
+                            ]}
+                            content={eightFinals.map((game) => {
+                                return [
+                                    teams.filter((team) => {
+                                        return team.id === game.team1id;
+                                    })[0].name,
+                                    teams.filter((team) => {
+                                        return team.id === game.team2id;
+                                    })[0].name,
+                                    new Date(game.date).toLocaleDateString(
+                                        "en-GB",
+                                        {
+                                            year: "2-digit",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                        }
+                                    ),
+                                    new Date(game.date).toLocaleTimeString(
+                                        "en-GB",
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        }
+                                    ),
+                                    game.venue,
+                                    game.team1points + " - " + game.team2points,
+                                    JSON.parse(game.refereeids)
+                                        .map((ref, _, arr) => {
+                                            const filtered = referees.filter(
+                                                (referee) => {
+                                                    return (
+                                                        referee.id === ref &&
+                                                        referee.name
+                                                    );
+                                                }
+                                            );
+                                            console.log(filtered);
+                                            return filtered[0]
+                                                ? filtered[0].name
+                                                : "";
+                                        })
+                                        .join(", "),
+                                ];
+                            })}
+                        />
+                    </div>
+                ) : (
+                    ""
+                )}
+
+                {quarterFinals.length > 0 || eightFinals.length > 0 ? (
+                    <div className="playoffsTable">
+                        <p>Ceturtdaļfināli</p>
+                        <Table
+                            cols={[
+                                "Komanda",
+                                "Komanda",
+                                "Datums",
+                                "Laiks",
+                                "Vieta",
+                                "Rezultāts",
+                                "Tiesneši",
+                            ]}
+                            content={quarterFinals.map((game) => {
+                                return [
+                                    teams.filter((team) => {
+                                        return team.id === game.team1id;
+                                    })[0].name,
+                                    teams.filter((team) => {
+                                        return team.id === game.team2id;
+                                    })[0].name,
+                                    new Date(game.date).toLocaleDateString(
+                                        "en-GB",
+                                        {
+                                            year: "2-digit",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                        }
+                                    ),
+                                    new Date(game.date).toLocaleTimeString(
+                                        "en-GB",
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        }
+                                    ),
+                                    game.venue,
+                                    game.team1points + " - " + game.team2points,
+                                    JSON.parse(game.refereeids)
+                                        .map((ref, _, arr) => {
+                                            const filtered = referees.filter(
+                                                (referee) => {
+                                                    return (
+                                                        referee.id === ref &&
+                                                        referee.name
+                                                    );
+                                                }
+                                            );
+                                            console.log(filtered);
+                                            return filtered[0]
+                                                ? filtered[0].name
+                                                : "";
+                                        })
+                                        .join(", "),
+                                ];
+                            })}
+                        />
+                    </div>
+                ) : (
+                    ""
+                )}
+
+                {semiFinals.length > 0 ||
+                quarterFinals.length > 0 ||
+                eightFinals.length > 0 ? (
+                    <div className="playoffsTable">
+                        <p>Pusfināli</p>
+                        <Table
+                            cols={[
+                                "Komanda",
+                                "Komanda",
+                                "Datums",
+                                "Laiks",
+                                "Vieta",
+                                "Rezultāts",
+                                "Tiesneši",
+                            ]}
+                            content={semiFinals.map((game) => {
+                                return [
+                                    teams.filter((team) => {
+                                        return team.id === game.team1id;
+                                    })[0].name,
+                                    teams.filter((team) => {
+                                        return team.id === game.team2id;
+                                    })[0].name,
+                                    new Date(game.date).toLocaleDateString(
+                                        "en-GB",
+                                        {
+                                            year: "2-digit",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                        }
+                                    ),
+                                    new Date(game.date).toLocaleTimeString(
+                                        "en-GB",
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        }
+                                    ),
+                                    game.venue,
+                                    game.team1points + " - " + game.team2points,
+                                    JSON.parse(game.refereeids)
+                                        .map((ref, _, arr) => {
+                                            const filtered = referees.filter(
+                                                (referee) => {
+                                                    return (
+                                                        referee.id === ref &&
+                                                        referee.name
+                                                    );
+                                                }
+                                            );
+                                            console.log(filtered);
+                                            return filtered[0]
+                                                ? filtered[0].name
+                                                : "";
+                                        })
+                                        .join(", "),
+                                ];
+                            })}
+                        />
+                    </div>
+                ) : (
+                    ""
+                )}
+
+                {final ||
+                semiFinals.length > 0 ||
+                quarterFinals.length > 0 ||
+                eightFinals.length > 0 ? (
+                    <div className="playoffsTable">
+                        <p>Fināls</p>
+                        <Table
+                            cols={[
+                                "Komanda",
+                                "Komanda",
+                                "Datums",
+                                "Laiks",
+                                "Vieta",
+                                "Rezultāts",
+                                "Tiesneši",
+                            ]}
+                            content={
+                                final
+                                    ? [
+                                          [
+                                              teams.filter((team) => {
+                                                  return (
+                                                      team.id === final.team1id
+                                                  );
+                                              })[0].name,
+                                              teams.filter((team) => {
+                                                  return (
+                                                      team.id === final.team2id
+                                                  );
+                                              })[0].name,
+                                              new Date(
+                                                  final.date
+                                              ).toLocaleDateString("en-GB", {
+                                                  year: "2-digit",
+                                                  month: "2-digit",
+                                                  day: "2-digit",
+                                              }),
+                                              new Date(
+                                                  final.date
+                                              ).toLocaleTimeString("en-GB", {
+                                                  hour: "2-digit",
+                                                  minute: "2-digit",
+                                              }),
+                                              final.venue,
+                                              final.team1points +
+                                                  " - " +
+                                                  final.team2points,
+                                              JSON.parse(final.refereeids)
+                                                  .map((ref, _, arr) => {
+                                                      const filtered =
+                                                          referees.filter(
+                                                              (referee) => {
+                                                                  return (
+                                                                      referee.id ===
+                                                                          ref &&
+                                                                      referee.name
+                                                                  );
+                                                              }
+                                                          );
+                                                      console.log(filtered);
+                                                      return filtered[0]
+                                                          ? filtered[0].name
+                                                          : "";
+                                                  })
+                                                  .join(", "),
+                                          ],
+                                      ]
+                                    : [
+                                          [
+                                              "-",
+                                              "-",
+                                              "TBC",
+                                              "TBC",
+                                              "TBC",
+                                              "",
+                                              "TBC",
+                                          ],
+                                      ]
+                            }
+                        />
+                    </div>
+                ) : (
+                    ""
+                )}
+
+                {thirdPlace ||
+                final ||
+                semiFinals.length > 0 ||
+                quarterFinals.length > 0 ||
+                eightFinals.length > 0 ? (
+                    <div className="playoffsTable">
+                        <p>3. vietas spēle</p>
+                        <Table
+                            cols={[
+                                "Komanda",
+                                "Komanda",
+                                "Datums",
+                                "Laiks",
+                                "Vieta",
+                                "Rezultāts",
+                                "Tiesneši",
+                            ]}
+                            content={
+                                thirdPlace
+                                    ? [
+                                          [
+                                              teams.filter((team) => {
+                                                  return (
+                                                      team.id === thirdPlace.team1id
+                                                  );
+                                              })[0].name,
+                                              teams.filter((team) => {
+                                                  return (
+                                                      team.id === thirdPlace.team2id
+                                                  );
+                                              })[0].name,
+                                              new Date(
+                                                  thirdPlace.date
+                                              ).toLocaleDateString("en-GB", {
+                                                  year: "2-digit",
+                                                  month: "2-digit",
+                                                  day: "2-digit",
+                                              }),
+                                              new Date(
+                                                  thirdPlace.date
+                                              ).toLocaleTimeString("en-GB", {
+                                                  hour: "2-digit",
+                                                  minute: "2-digit",
+                                              }),
+                                              thirdPlace.venue,
+                                              thirdPlace.team1points +
+                                                  " - " +
+                                                  thirdPlace.team2points,
+                                              JSON.parse(thirdPlace.refereeids)
+                                                  .map((ref, _, arr) => {
+                                                      const filtered =
+                                                          referees.filter(
+                                                              (referee) => {
+                                                                  return (
+                                                                      referee.id ===
+                                                                          ref &&
+                                                                      referee.name
+                                                                  );
+                                                              }
+                                                          );
+                                                      console.log(filtered);
+                                                      return filtered[0]
+                                                          ? filtered[0].name
+                                                          : "";
+                                                  })
+                                                  .join(", "),
+                                          ],
+                                      ]
+                                    : [
+                                          [
+                                              "-",
+                                              "-",
+                                              "TBC",
+                                              "TBC",
+                                              "TBC",
+                                              "",
+                                              "TBC",
+                                          ],
+                                      ]
+                            }
+                        />
+                    </div>
+                ) : (
+                    ""
+                )}
+            </div>
+        );
+    };
+
     return (
         <div className="tournamentGames">
             <div className="stickyContainer flexCont">
@@ -183,94 +811,8 @@ export default function TournamentGames() {
                 </div>
             </div>
             <div className="tournamentGamesContainer flexCont">
-                <div className="playoffsContainer">
-                    <div className="playoffs">
-                        <p>Ceturtdaļfināli</p>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test123</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
+                {playoffs.length > 0 ? createPlayoffsChart() : <div></div>}
 
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
-
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
-
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
-
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div className="playoffs">
-                        <p>Pusfināli</p>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
-
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
-
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div className="playoffs">
-                        <p>Fināls</p>
-                        <table className="game">
-                            <tr>
-                                <td>0</td>
-                                <td>Test</td>
-                            </tr>
-                            <tr>
-                                <td>0</td>
-
-                                <td>Test</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
                 <div className="tableContainer">
                     {games.map((group, index) => {
                         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

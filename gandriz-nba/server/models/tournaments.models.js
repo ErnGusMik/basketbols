@@ -29,7 +29,15 @@ const modelTournament = async (
 ) => {
     const result = await getTournamentPage(pageName).then((result) => {
         if (result.length > 0) {
-            return { error: "Tournament with this page name already exists", code: 400, severity: "ERROR", detail: "Turnīrs ar šādu lapas nosaukumu ("+pageName+") jau eksistē!" };
+            return {
+                error: "Tournament with this page name already exists",
+                code: 400,
+                severity: "ERROR",
+                detail:
+                    "Turnīrs ar šādu lapas nosaukumu (" +
+                    pageName +
+                    ") jau eksistē!",
+            };
         } else return null;
     });
     if (result) return result;
@@ -51,7 +59,16 @@ const modelTournament = async (
     ];
 
     const response = await db.query(text, values);
-    if (response.code && response.severity) return { error: 'Tournament with this page name already exists', code: 400, severity: 'ERROR', detail: 'Turnīrs ar šādu lapas nosaukumu ('+pageName+') jau eksistē!' };
+    if (response.code && response.severity)
+        return {
+            error: "Tournament with this page name already exists",
+            code: 400,
+            severity: "ERROR",
+            detail:
+                "Turnīrs ar šādu lapas nosaukumu (" +
+                pageName +
+                ") jau eksistē!",
+        };
     return response;
 };
 
@@ -74,4 +91,9 @@ const getUserTournaments = async (userID) => {
     return await db.query(text, values);
 };
 
-module.exports = { modelTournament, getTournament, getTournamentPage, getUserTournaments };
+module.exports = {
+    modelTournament,
+    getTournament,
+    getTournamentPage,
+    getUserTournaments,
+};

@@ -45,20 +45,28 @@
 }
 
 
-.game {
+table.game {
     margin: 15px;
     border: 1px solid #000;
     border-radius: 10px;
+    min-width: 130px;
+    max-width: 200px;
+    table-layout: fixed;
 }
 
 .game tr, .game tr td:last-child {
     width: 100%;
 }
 
+.game tr td:first-child {
+    text-align: center;
+}
+
 .game td {
     padding: 5px 15px;
     border-collapse: collapse;
     border: none !important;
+    min-height: 35px;
 }
 
 .game tr:last-child td {
