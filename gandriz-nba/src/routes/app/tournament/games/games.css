@@ -1,139 +1,138 @@
 .tournamentGames {
-    margin: 15px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: flex-start;
-    min-height: 100%;
+  margin: 15px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  min-height: 100%;
 }
 
 .tournamentGames .stickyContainer {
-    position: sticky;
-    top: 20px;
-    margin-right: 5px;
+  position: sticky;
+  top: 20px;
+  margin-right: 5px;
 }
 
 .tournamentGames .tournamentGamesContainer {
-    max-width: 70% !important;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-direction: column;
+  max-width: 70% !important;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 /* PLAYOFFS */
 
 .playoffsContainer {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: stretch;
-    margin: 15px;
-    min-width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: stretch;
+  margin: 15px;
+  min-width: 100%;
 }
 
 .playoffsContainer p {
-    text-align: center;
-    font-weight: 500;
-    display: none;
+  text-align: center;
+  font-weight: 500;
+  display: none;
 }
 
 .playoffs {
-    display: inline-flex;
-    justify-content: space-evenly;
-    align-items: space-evenly;
-    flex-direction: column;
+  display: inline-flex;
+  justify-content: space-evenly;
+  align-items: space-evenly;
+  flex-direction: column;
 }
-
 
 table.game {
-    margin: 15px;
-    border: 1px solid #000;
-    border-radius: 10px;
-    min-width: 130px;
-    max-width: 200px;
-    table-layout: fixed;
+  margin: 15px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  min-width: 130px;
+  max-width: 200px;
+  table-layout: fixed;
 }
 
-.game tr, .game tr td:last-child {
-    width: 100%;
+.game tr,
+.game tr td:last-child {
+  width: 100%;
 }
 
 .game tr td:first-child {
-    text-align: center;
+  text-align: center;
 }
 
 .game td {
-    padding: 5px 15px;
-    border-collapse: collapse;
-    border: none !important;
-    min-height: 35px;
+  padding: 5px 15px;
+  border-collapse: collapse;
+  border: none !important;
+  min-height: 35px;
 }
 
 .game tr:last-child td {
-    border-top: 1px solid #000 !important;
+  border-top: 1px solid #000 !important;
 }
 
 /* top-left border-radius */
 .game tr:first-child td:first-child {
-    border-top-left-radius: 10px;
-    background-color: #facdbb;
+  border-top-left-radius: 10px;
+  background-color: #facdbb;
 }
 
 /* top-right border-radius */
 .game tr:first-child td:last-child {
-    border-top-right-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 /* bottom-left border-radius */
 .game tr:last-child td:first-child {
-    border-bottom-left-radius: 10px;
-    background-color: #facdbb;
+  border-bottom-left-radius: 10px;
+  background-color: #facdbb;
 }
 
 /* bottom-right border-radius */
 .game tr:last-child td:last-child {
-    border-bottom-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 @media screen and (max-width: 1300px) {
-    .tournamentGames .stickyContainer {
-        position: relative;
-        margin-left: 0;
-        margin-bottom: 50px;
-        padding: 0;
-        margin-top: 0;
-        display: flex;
-    }
-    .tournamentGames {
-        flex-wrap: wrap;
-        padding: 0;
-        max-width: 100%;
-    }
-    .tournamentGames .tableContainer {
-        max-width: 100% !important;
-    }
+  .tournamentGames .stickyContainer {
+    position: relative;
+    margin-left: 0;
+    margin-bottom: 50px;
+    padding: 0;
+    margin-top: 0;
+    display: flex;
+  }
+  .tournamentGames {
+    flex-wrap: wrap;
+    padding: 0;
+    max-width: 100%;
+  }
+  .tournamentGames .tableContainer {
+    max-width: 100% !important;
+  }
 
-    .tournamentGames .tournamentGamesContainer {
-        max-width: 100% !important;
-    }
+  .tournamentGames .tournamentGamesContainer {
+    max-width: 100% !important;
+  }
 
-    .tournamentGames .descriptionCard {
-        margin: 10px;
-    }
+  .tournamentGames .descriptionCard {
+    margin: 10px;
+  }
 }
 
 @media screen and (max-width: 700px) {
-    .tournamentGames .descriptionCard {
-        display: none;
-    }
-    .tournamentGames .playoffsContainer {
-        flex-direction: column;
-    }
+  .tournamentGames .descriptionCard {
+    display: none;
+  }
+  .tournamentGames .playoffsContainer {
+    flex-direction: column;
+  }
 
-    .tournamentGames .playoffsContainer p {
-        display: block;
-        margin: 0;
-        margin-top: 10px;
-    }
-    
+  .tournamentGames .playoffsContainer p {
+    display: block;
+    margin: 0;
+    margin-top: 10px;
+  }
 }
