@@ -21,6 +21,11 @@ export default function TournamentTeams() {
     const getTournamentData = async () => {
         // Get tournament id from url
         const { id } = params;
+        
+        if (localStorage.getItem("tournament_" + id)) {
+            setTournament(JSON.parse(localStorage.getItem("tournament_" + id)));
+            return;
+        }
 
         // Make request to API
         const request = await fetch(
@@ -41,6 +46,22 @@ export default function TournamentTeams() {
 
         // Set tournament data
         setTournament(response);
+
+        localStorage.setItem(
+            "tournament_" + id,
+            JSON.stringify({
+                name: response.name,
+                description: response.description,
+                location: response.location,
+                organizer: response.organizer,
+                dates: response.dates,
+                finalsnum: response.finalsnum,
+                groups: response.groups,
+                logo: response.logo,
+                pagename: response.pagename,
+                refereenum: response.refereenum,
+            })
+        );
     };
 
     // Get tournament teams
@@ -48,22 +69,49 @@ export default function TournamentTeams() {
         // Get tournament id from url
         const { id } = params;
 
-        // Make request to API
-        const request = await fetch(
-            "http://localhost:8080/api/tournaments/" + id + "/teams",
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "access_token"
-                    )}`,
-                },
-            }
-        );
+        let response;
 
-        // Get response
-        const response = await request.json();
+        if (!localStorage.getItem("tournaments_" + id + "_teams")) {
+            // Make request to API
+            const request = await fetch(
+                "http://localhost:8080/api/tournaments/" + id + "/teams",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                }
+            );
+
+            // Get response
+            response = await request.json();
+
+            // Save to local storage
+            const responseData = response.map((team) => {
+                return {
+                    id: team.id,
+                    name: team.name,
+                    teamgroup: team.teamgroup,
+                    tournamentpoints: team.tournamentpoints,
+                    wins: team.wins,
+                    losses: team.losses,
+                    ties: team.ties,
+                };
+            });
+
+            // Save to local storage
+            localStorage.setItem(
+                "tournament_" + id + "_teams",
+                JSON.stringify(responseData)
+            );
+        } else {
+            response = JSON.parse(
+                localStorage.getItem("tournaments_" + id + "_teams")
+            );
+        }
 
         // Sort by group into sub-arrays
         response.sort((a, b) => {
@@ -109,47 +157,47 @@ export default function TournamentTeams() {
                 </div>
             </div>
             <div className="tableContainer flexCont">
-            {teams.map((group, index) => {
-                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-                group.forEach((team) => (team.teamgroup = alphabet[index]));
-                return (
-                    <div className="groupTable">
-                        <p>
-                            <b>{group[0].teamgroup}</b> grupa
-                        </p>
-                        <Table
-                            cols={[
-                                "Nosaukums",
-                                "Spēlētāji",
-                                "Uzv.",
-                                "Zaud.",
-                                "Neizšķ.",
-                                "Punkti",
-                            ]}
-                            content={group.map((team) => {
-                                return [
-                                    team.name,
-                                    <a
-                                        href="#"
-                                        id={
-                                            "viewPlayers-" +
-                                            team.id +
-                                            "-group-" +
-                                            index
-                                        }
-                                    >
-                                        skatīt
-                                    </a>,
-                                    team.wins,
-                                    team.losses,
-                                    team.ties,
-                                    team.tournamentpoints,
-                                ];
-                            })}
-                        />
-                    </div>
-                );
-            })}
+                {teams.map((group, index) => {
+                    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+                    group.forEach((team) => (team.teamgroup = alphabet[index]));
+                    return (
+                        <div className="groupTable">
+                            <p>
+                                <b>{group[0].teamgroup}</b> grupa
+                            </p>
+                            <Table
+                                cols={[
+                                    "Nosaukums",
+                                    "Spēlētāji",
+                                    "Uzv.",
+                                    "Zaud.",
+                                    "Neizšķ.",
+                                    "Punkti",
+                                ]}
+                                content={group.map((team) => {
+                                    return [
+                                        team.name,
+                                        <a
+                                            href="#"
+                                            id={
+                                                "viewPlayers-" +
+                                                team.id +
+                                                "-group-" +
+                                                index
+                                            }
+                                        >
+                                            skatīt
+                                        </a>,
+                                        team.wins,
+                                        team.losses,
+                                        team.ties,
+                                        team.tournamentpoints,
+                                    ];
+                                })}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

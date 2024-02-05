@@ -26,6 +26,11 @@ export default function TournamentStats() {
         // Get tournament id from url
         const { id } = params;
 
+        if (localStorage.getItem("tournament_" + id)) {
+            setTournament(JSON.parse(localStorage.getItem("tournament_" + id)));
+            return;
+        }
+
         // Make request to API
         const request = await fetch(
             "http://localhost:8080/api/tournaments/" + id,
@@ -45,6 +50,22 @@ export default function TournamentStats() {
 
         // Set tournament data
         setTournament(response);
+
+        localStorage.setItem(
+            "tournament_" + id,
+            JSON.stringify({
+                name: response.name,
+                description: response.description,
+                location: response.location,
+                organizer: response.organizer,
+                dates: response.dates,
+                finalsnum: response.finalsnum,
+                groups: response.groups,
+                logo: response.logo,
+                pagename: response.pagename,
+                refereenum: response.refereenum,
+            })
+        );
     };
 
     // Get tournament teams

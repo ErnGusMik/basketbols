@@ -30,6 +30,29 @@ export default function AboutTournament() {
         // Get tournament id from url
         const { id } = params;
 
+        // Check if tournament data is saved in local storage
+        if (localStorage.getItem("tournament_" + id)) {
+            const data = JSON.parse(localStorage.getItem("tournament_" + id));
+            if (
+                !data.name ||
+                !data.description ||
+                !data.location ||
+                !data.organizer ||
+                !data.dates ||
+                !data.finalsnum ||
+                !data.groups ||
+                !data.logo ||
+                !data.pagename ||
+                !data.refereenum
+            ) {
+                localStorage.removeItem("tournament_" + id);
+                getTournamentData();
+                return;
+            }
+            setTournament(data);
+            return;
+        }
+
         // Make request to API
         const request = await fetch(
             "http://localhost:8080/api/tournaments/" + id,
@@ -49,6 +72,23 @@ export default function AboutTournament() {
 
         // Set tournament data
         setTournament(response);
+
+        // Save to local storage
+        localStorage.setItem(
+            "tournament_" + id,
+            JSON.stringify({
+                name: response.name,
+                description: response.description,
+                location: response.location,
+                organizer: response.organizer,
+                dates: response.dates,
+                finalsnum: response.finalsnum,
+                groups: response.groups,
+                logo: response.logo,
+                pagename: response.pagename,
+                refereenum: response.refereenum,
+            })
+        );
     };
 
     // Get referees
@@ -135,6 +175,15 @@ export default function AboutTournament() {
 
         if (teamIDs.length === 0) return;
 
+        if (localStorage.getItem("tournament_" + params.id + "_teams")) {
+            const data = JSON.parse(
+                localStorage.getItem("tournament_" + params.id + "_teams")
+            );
+            console.log(data);
+            setTeams(data);
+            return;
+        }
+
         // Make request to API
         const request = await fetch(
             "http://localhost:8080/api/teams/batch/" + teamIDs.join("+"),
@@ -154,6 +203,30 @@ export default function AboutTournament() {
 
         // Set teams
         setTeams(response);
+
+        console.log(response);
+
+        // Save to local storage
+        const responseData = response.map((team) => {
+            return {
+                id: team.id,
+                name: team.name,
+                teamgroup: team.teamgroup,
+                tournamentpoints: team.tournamentpoints,
+                wins: team.wins,
+                losses: team.losses,
+                ties: team.ties,
+            };
+        });
+
+        // Get tournament id from url
+        const { id } = params;
+
+        // Save to local storage
+        localStorage.setItem(
+            "tournament_" + id + "_teams",
+            JSON.stringify(responseData)
+        );
     };
 
     // Set referee table
@@ -195,7 +268,6 @@ export default function AboutTournament() {
         getTeams();
     }, [games]);
 
-
     // Functions to set html values
     const setGameCard = (game) => {
         let teamData = [];
@@ -215,7 +287,7 @@ export default function AboutTournament() {
                 </div>
             );
 
-            // Check if teams have been returned from API, if not retunr 'loading'
+        // Check if teams have been returned from API, if not retunr 'loading'
         if (teams.length > 0) {
             teamData = teams.filter((team) => {
                 if (game) {
@@ -236,9 +308,7 @@ export default function AboutTournament() {
                     <h3 className="title">
                         {game ? "Nākamā" : "Pēdējā"} spēle
                     </h3>
-                    <h2 className="noGame">
-                        {'Lādējās...'}
-                    </h2>
+                    <h2 className="noGame">{"Lādējās..."}</h2>
                 </div>
             );
         }
@@ -316,7 +386,6 @@ export default function AboutTournament() {
         );
     };
 
-    
     return (
         <div className="aboutTournament">
             <div className="flexCol">
@@ -347,7 +416,6 @@ export default function AboutTournament() {
             </div>
 
             <div className="flexCol">
-
                 {teams.length ? setGameCard(0) : setGameCard(0)}
 
                 <div className="rulesCont">

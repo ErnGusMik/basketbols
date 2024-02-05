@@ -1,5 +1,3 @@
-// TODO: save server data to local storage for faster loading
-
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -27,6 +25,12 @@ export default function TournamentGames() {
         // Get url param (tournamentID)
         const { id } = params;
 
+        // Check if data is in local storage
+        if (localStorage.getItem("tournament_" + id)) {
+            setTournament(JSON.parse(localStorage.getItem("tournament_" + id)));
+            return;
+        }
+
         // Make request to server
         const request = await fetch(
             "http://localhost:8080/api/tournaments/" + id,
@@ -46,6 +50,23 @@ export default function TournamentGames() {
 
         // Set tournament data
         setTournament(response);
+
+        // Save to local storage
+        localStorage.setItem(
+            "tournament_" + id,
+            JSON.stringify({
+                name: response.name,
+                description: response.description,
+                location: response.location,
+                organizer: response.organizer,
+                dates: response.dates,
+                finalsnum: response.finalsnum,
+                groups: response.groups,
+                logo: response.logo,
+                pagename: response.pagename,
+                refereenum: response.refereenum,
+            })
+        );
     };
 
     // Get game data
@@ -728,12 +749,14 @@ export default function TournamentGames() {
                                           [
                                               teams.filter((team) => {
                                                   return (
-                                                      team.id === thirdPlace.team1id
+                                                      team.id ===
+                                                      thirdPlace.team1id
                                                   );
                                               })[0].name,
                                               teams.filter((team) => {
                                                   return (
-                                                      team.id === thirdPlace.team2id
+                                                      team.id ===
+                                                      thirdPlace.team2id
                                                   );
                                               })[0].name,
                                               new Date(
