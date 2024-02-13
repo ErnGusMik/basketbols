@@ -1,0 +1,31 @@
+.keyboardBtn {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #1b7ced;
+    color: #1b7ced;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+    user-select: none;
+    cursor: default;
+}
+
+.keyboardBtn h2 {
+    font-weight: 300;
+}
+
+.keyboardBtn__cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    flex-direction: column;
+}
+
+.keyboardBtn__cont p {
+    margin: 5px;
+    font-size: 11px;
+}

@@ -21,6 +21,9 @@ import AboutTournament from "./routes/app/tournament/about/about";
 import TournamentTeams from "./routes/app/tournament/teams/teams";
 import TournamentStats from "./routes/app/tournament/stats/stats";
 import TournamentGames from "./routes/app/tournament/games/games";
+import Instructions from "./routes/app/game/pre-game/instructions";
+import GameRoot from "./routes/app/game/game-root";
+import Keyboard from "./routes/app/game/pre-game/keyboard/keyboard";
 
 
 
@@ -79,6 +82,27 @@ function App() {
             }
           ],
           errorElement: <div>Tournament error</div>,
+        },
+        {
+          path: '/app/game/:id',
+          element: <GameRoot />,
+          children: [
+            {
+              path: '/app/game/:id/instructions',
+              element: <Instructions />,
+              children: [
+                {
+                  path: '/app/game/:id/instructions/keyboard',
+                  element: <Keyboard />
+                },
+                {
+                  path: '/app/game/:id/instructions/mouse',
+                  element: <div>Mouse</div>
+                }
+              ]
+            }
+          ],
+          errorElement: <div>Game error</div>,
         }
       ],
     },

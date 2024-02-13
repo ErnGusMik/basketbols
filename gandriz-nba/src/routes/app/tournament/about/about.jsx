@@ -317,6 +317,8 @@ export default function AboutTournament() {
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
         const group = alphabet[teamData[0].teamgroup];
 
+        console.log(games);
+
         // Return game card
         return (
             <div className={game ? "gameCard" : "gameCard lastGame"}>
@@ -329,6 +331,7 @@ export default function AboutTournament() {
                             className="teamLogo"
                         />
                         <p className="teamName">{teamData[0].name}</p>
+                        <h3>{game ? '' : games.lastGame.team1points}</h3>
                     </div>
                     <div className="vs">VS</div>
                     <div className="team">
@@ -338,6 +341,7 @@ export default function AboutTournament() {
                             className="teamLogo"
                         />
                         <p className="teamName">{teamData[1].name}</p>
+                        <h3>{game ? '' : games.lastGame.team2points}</h3>
                     </div>
                 </div>
                 <div className="gameData">

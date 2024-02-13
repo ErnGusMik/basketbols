@@ -1,0 +1,47 @@
+/* ! */
+.flexStart {
+    display: flex;
+    justify-content: flex-start;
+}
+.spaceAround {
+    display: flex;
+    justify-content: space-around;
+}
+.center {
+    display: flex;
+    justify-content: center;
+}
+.verticalStart {
+    display: flex;
+    align-items: flex-start;
+}
+/* ! */
+
+.verticalNums {
+    margin: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.verticalNums__cont {
+    align-self: center;
+    display: inline-block;
+}
+
+span.large-0 {
+    width: 70px;
+    height: 30px;
+    display: inline-block;
+    color: #1b7ced;
+    border: 1px solid #1b7ced;
+    border-radius: 5px;
+    margin: 5px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.points .mainBtns div {
+    margin: 5px;
+}
