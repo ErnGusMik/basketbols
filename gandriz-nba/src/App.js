@@ -25,8 +25,6 @@ import Instructions from "./routes/app/game/pre-game/instructions";
 import GameRoot from "./routes/app/game/game-root";
 import Keyboard from "./routes/app/game/pre-game/keyboard/keyboard";
 
-
-
 function App() {
   const router = createBrowserRouter([
     {
@@ -50,60 +48,60 @@ function App() {
         },
         {
           path: "/app/tournaments/new/3",
-          element: <NewTournament3 />
+          element: <NewTournament3 />,
         },
         {
-          path: '/app/tournaments/new/4',
-          element: <NewTournament4 />
+          path: "/app/tournaments/new/4",
+          element: <NewTournament4 />,
         },
         {
           path: "/app/tournaments/new/send",
           element: <NewTournamentSend />,
         },
         {
-          path: '/app/tournaments/:id',
+          path: "/app/tournaments/:id",
           element: <TournamentNav />,
           children: [
             {
-              path: '/app/tournaments/:id/about',
+              path: "/app/tournaments/:id/about",
               element: <AboutTournament />,
             },
             {
-              path: '/app/tournaments/:id/teams',
-              element: <TournamentTeams />
+              path: "/app/tournaments/:id/teams",
+              element: <TournamentTeams />,
             },
             {
-              path: '/app/tournaments/:id/stats',
-              element: <TournamentStats />
+              path: "/app/tournaments/:id/stats",
+              element: <TournamentStats />,
             },
             {
-              path: '/app/tournaments/:id/games',
-              element: <TournamentGames />
-            }
+              path: "/app/tournaments/:id/games",
+              element: <TournamentGames />,
+            },
           ],
           errorElement: <div>Tournament error</div>,
         },
         {
-          path: '/app/game/:id',
+          path: "/app/game/:id",
           element: <GameRoot />,
           children: [
             {
-              path: '/app/game/:id/instructions',
+              path: "/app/game/:id/instructions",
               element: <Instructions />,
               children: [
                 {
-                  path: '/app/game/:id/instructions/keyboard',
-                  element: <Keyboard />
+                  path: "/app/game/:id/instructions/keyboard",
+                  element: <Keyboard />,
                 },
                 {
-                  path: '/app/game/:id/instructions/mouse',
-                  element: <div>Mouse</div>
-                }
-              ]
-            }
+                  path: "/app/game/:id/instructions/mouse",
+                  element: <div>Mouse</div>,
+                },
+              ],
+            },
           ],
           errorElement: <div>Game error</div>,
-        }
+        },
       ],
     },
     {

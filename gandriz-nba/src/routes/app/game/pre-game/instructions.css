@@ -1,33 +1,33 @@
 .instructions {
-    min-height: 100%;
-    width: 100%;
-    text-align: center;
+  min-height: 100%;
+  width: 100%;
+  text-align: center;
 }
 
 .tabSelector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tabSelector div a {
-    display: inline-block;
-    padding: 10px;
-    border: 1px solid #000;
-    width: 150px;
-    margin-bottom: 10px;
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #000;
+  width: 150px;
+  margin-bottom: 10px;
 }
 
 .tabSelector div .active {
-    background-color: #fbcdbb;
+  background-color: #fbcdbb;
 }
 
 .tabSelector_1 {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 .tabSelector_2 {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
