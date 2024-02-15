@@ -32,6 +32,9 @@
   background-color: #555;
 }
 
-p, a, span, label {
+p,
+a,
+span,
+label {
   font-weight: 300;
 }

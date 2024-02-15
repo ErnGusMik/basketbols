@@ -1,31 +1,31 @@
 .game404 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
 }
 
 .game404 h1 {
-    font-size: 6rem;
-    margin-bottom: 1rem;
-    letter-spacing: 1rem;
-    color: var(--primary-text-color);
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    cursor: default;
+  font-size: 6rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1rem;
+  color: var(--primary-text-color);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  cursor: default;
 }
 
 .game404 h2 {
-    margin-bottom: 1rem;
-    font-size: 25px;
+  margin-bottom: 1rem;
+  font-size: 25px;
 }
 
 .game404 p {
-    margin: 5px;
+  margin: 5px;
 }

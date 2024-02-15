@@ -1,15 +1,17 @@
 .mouse__container .spaceBtn__cont {
-    width: 200px;
+  width: 200px;
 }
 
 .mouse__container .spaceBtn {
-    font-size: 25px;
+  font-size: 25px;
 }
 
-.mouse__container .spaceBtn, .mouse__container .keyboardBtn {
-    cursor: pointer !important;
+.mouse__container .spaceBtn,
+.mouse__container .keyboardBtn {
+  cursor: pointer !important;
 }
 
-.mouse__container .spaceBtn:hover, .mouse__container .keyboardBtn:hover {
-    filter: brightness(0.8);
+.mouse__container .spaceBtn:hover,
+.mouse__container .keyboardBtn:hover {
+  filter: brightness(0.8);
 }
