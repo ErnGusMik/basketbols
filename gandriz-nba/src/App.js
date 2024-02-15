@@ -24,124 +24,128 @@ import TournamentGames from "./routes/app/tournament/games/games";
 import Instructions from "./routes/app/game/pre-game/instructions";
 import GameRoot from "./routes/app/game/game-root";
 import Keyboard from "./routes/app/game/pre-game/keyboard/keyboard";
-
-
+import Mouse from "./routes/app/game/pre-game/mouse/mouse";
+import Game404 from "./routes/app/game/pre-game/404/game404";
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <div>Home</div>,
-      errorElement: <div>Home error</div>,
-      children: [],
-    },
-    {
-      path: "/app",
-      element: <Root />,
-      errorElement: <div>App error</div>,
-      children: [
+    const router = createBrowserRouter([
         {
-          path: "/app/tournaments/new",
-          element: <NewTournament />,
+            path: "/",
+            element: <div>Home</div>,
+            errorElement: <div>Home error</div>,
+            children: [],
         },
         {
-          path: "/app/tournaments/new/2",
-          element: <NewTournament2 />,
-        },
-        {
-          path: "/app/tournaments/new/3",
-          element: <NewTournament3 />
-        },
-        {
-          path: '/app/tournaments/new/4',
-          element: <NewTournament4 />
-        },
-        {
-          path: "/app/tournaments/new/send",
-          element: <NewTournamentSend />,
-        },
-        {
-          path: '/app/tournaments/:id',
-          element: <TournamentNav />,
-          children: [
-            {
-              path: '/app/tournaments/:id/about',
-              element: <AboutTournament />,
-            },
-            {
-              path: '/app/tournaments/:id/teams',
-              element: <TournamentTeams />
-            },
-            {
-              path: '/app/tournaments/:id/stats',
-              element: <TournamentStats />
-            },
-            {
-              path: '/app/tournaments/:id/games',
-              element: <TournamentGames />
-            }
-          ],
-          errorElement: <div>Tournament error</div>,
-        },
-        {
-          path: '/app/game/:id',
-          element: <GameRoot />,
-          children: [
-            {
-              path: '/app/game/:id/instructions',
-              element: <Instructions />,
-              children: [
+            path: "/app",
+            element: <Root />,
+            errorElement: <div>App error</div>,
+            children: [
                 {
-                  path: '/app/game/:id/instructions/keyboard',
-                  element: <Keyboard />
+                    path: "/app/tournaments/new",
+                    element: <NewTournament />,
                 },
                 {
-                  path: '/app/game/:id/instructions/mouse',
-                  element: <div>Mouse</div>
-                }
-              ]
-            }
-          ],
-          errorElement: <div>Game error</div>,
-        }
-      ],
-    },
-    {
-      path: "login",
-      element: <Login />,
-      errorElement: <div>Login error</div>,
-      children: [],
-    },
-    {
-      path: "/login/email",
-      element: <Email />,
-      errorElement: <div>Login email error</div>,
-      children: [],
-    },
-    {
-      path: "/signup",
-      element: <Signup />,
-      errorElement: <div>Signup error</div>,
-      children: [],
-    },
-    {
-      path: "/forgot-password",
-      element: <ForgotPassword />,
-      errorElement: <div>Forgot password error</div>,
-      children: [],
-    },
-    {
-      path: "/reset-password",
-      element: <ResetPassword />,
-      errorElement: <div>Reset password error</div>,
-      children: [],
-    },
-  ]);
-  return (
-    <div className="App">
-      <RouterProvider router={router} />
-    </div>
-  );
+                    path: "/app/tournaments/new/2",
+                    element: <NewTournament2 />,
+                },
+                {
+                    path: "/app/tournaments/new/3",
+                    element: <NewTournament3 />,
+                },
+                {
+                    path: "/app/tournaments/new/4",
+                    element: <NewTournament4 />,
+                },
+                {
+                    path: "/app/tournaments/new/send",
+                    element: <NewTournamentSend />,
+                },
+                {
+                    path: "/app/tournaments/:id",
+                    element: <TournamentNav />,
+                    children: [
+                        {
+                            path: "/app/tournaments/:id/about",
+                            element: <AboutTournament />,
+                        },
+                        {
+                            path: "/app/tournaments/:id/teams",
+                            element: <TournamentTeams />,
+                        },
+                        {
+                            path: "/app/tournaments/:id/stats",
+                            element: <TournamentStats />,
+                        },
+                        {
+                            path: "/app/tournaments/:id/games",
+                            element: <TournamentGames />,
+                        },
+                    ],
+                    errorElement: <div>Tournament error</div>,
+                },
+                {
+                    path: "/app/game/:id",
+                    element: <GameRoot />,
+                    children: [
+                        {
+                            path: "/app/game/:id/instructions",
+                            element: <Instructions />,
+                            children: [
+                                {
+                                    path: "/app/game/:id/instructions/keyboard",
+                                    element: <Keyboard />,
+                                },
+                                {
+                                    path: "/app/game/:id/instructions/mouse",
+                                    element: <Mouse />,
+                                }
+                            ],
+                        },
+                    ],
+                    errorElement: <div>Game error</div>,
+                },
+                {
+                    path: "/app/game/not-found",
+                    element: <Game404 />,
+                },
+            ],
+        },
+        {
+            path: "login",
+            element: <Login />,
+            errorElement: <div>Login error</div>,
+            children: [],
+        },
+        {
+            path: "/login/email",
+            element: <Email />,
+            errorElement: <div>Login email error</div>,
+            children: [],
+        },
+        {
+            path: "/signup",
+            element: <Signup />,
+            errorElement: <div>Signup error</div>,
+            children: [],
+        },
+        {
+            path: "/forgot-password",
+            element: <ForgotPassword />,
+            errorElement: <div>Forgot password error</div>,
+            children: [],
+        },
+        {
+            path: "/reset-password",
+            element: <ResetPassword />,
+            errorElement: <div>Reset password error</div>,
+            children: [],
+        },
+    ]);
+    return (
+        <div className="App">
+            <RouterProvider router={router} />
+        </div>
+    );
 }
 
 export default App;

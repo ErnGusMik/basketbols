@@ -451,7 +451,7 @@ const updateGame = async (req, res, next) => {
 const getGame = async (req, res, next) => {
     /* GET /api/games/:id */
     const result = await games.getGame(req.params.id);
-    res.status(200).send(result[0]);
+    res.status(200).send([result[0]]);
 };
 
 const getTournament = async (req, res, next) => {

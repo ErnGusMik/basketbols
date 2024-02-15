@@ -1,8 +1,8 @@
 .keyboardBtn {
     width: 70px;
     height: 70px;
-    border: 1px solid #1b7ced;
-    color: #1b7ced;
+    border: 1px solid var(--keyboardBtn_color);
+    color: var(--keyboardBtn_color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,4 +28,5 @@
 .keyboardBtn__cont p {
     margin: 5px;
     font-size: 11px;
+    max-width: 70px;
 }

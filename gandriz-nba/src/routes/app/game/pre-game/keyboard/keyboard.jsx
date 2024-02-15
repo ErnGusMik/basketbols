@@ -1,10 +1,8 @@
-// TODO: finish this component
-// TODO: make verticalNums appear centered vertically
-
 import React from "react";
+import Button from "./../../../../../components/button/button";
+import KeyboardBtn from "../../../../../components/tournament-pages/keyboard/keyboard-button";
 
 import "./keyboard.css";
-import KeyboardBtn from "../../../../../components/tournament-pages/keyboard/keyboard-button";
 
 export default function Keyboard() {
     return (
@@ -68,6 +66,41 @@ export default function Keyboard() {
                 pēc tam teksta lodziņā ievadiet spēlētāja numuru, kurš iemeta
                 bumbu grozā.
             </p>
+            <div className="points horizontalCont verticalStart">
+                <div className="flexCont verticalStart mainBtns_cont">
+                    <h2 className="hiddenH2">Čempionu komanda!</h2>
+                    <div className="flexCont horizontalCont verticalStart mainBtns">
+                        <KeyboardBtn text="Q" caption="+1 piezīme" />
+                        <KeyboardBtn text="W" caption="+1 bloks" />
+                        <KeyboardBtn text="E" caption="+1 min pārtraukums" />
+                    </div>
+                </div>
+                <p style={{ maxWidth: "150px" }}>
+                    Kad nepieciešams, ievadiet spēlētāja nr. teksta lodziņā.
+                </p>
+                <div className="flexCont verticalStart mainBtns_cont">
+                    <h2 className="hiddenH2">Cetrutās klases vilki</h2>
+                    <div className="flexCont horizontalCont verticalStart mainBtns">
+                        <KeyboardBtn text="I" caption="+1 piezīme" />
+                        <KeyboardBtn text="O" caption="+1 bloks" />
+                        <KeyboardBtn text="P" caption="+1 min pārtraukums" />
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div className="horizontalCont verticalStart center mainBtns">
+                <KeyboardBtn text="G" caption="24s" />
+                <KeyboardBtn text="H" caption="14s" />
+            </div>
+            <div className="spaceBtn__cont">
+                <span className="spaceBtn"></span>
+                <p>Pauzēt/turpināt laika atskaiti</p>
+            </div>
+            <div className="keyboard__readyBtn">
+                <div>
+                    <Button text="Gatavs" />
+                </div>
+            </div>
         </div>
     );
 }
