@@ -1,47 +1,46 @@
 .game__container {
-    color: white;
-    background-color: black;
-    height: 100vh;
-    width: 100%;
+  color: white;
+  background-color: black;
+  height: 100vh;
+  width: 100%;
 }
 
 .gameFlex__container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-height: 70vh;
-    width: 90%;
-    margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 70vh;
+  width: 90%;
+  margin: auto;
 }
 
 .game__container .btnCont {
-    display: flex;
+  display: flex;
 }
 
 .game__container .btnCont div {
-    margin: 5px;
+  margin: 5px;
 }
 
 /* FOULS */
 .foul__container {
-    display: flex;
+  display: flex;
 }
 
 .foul {
-    width: 20px;
-    height: 15px;
-    border: 2px solid white;
-    display: block;
+  width: 20px;
+  height: 15px;
+  border: 2px solid white;
+  display: block;
 }
 
 .foul.active {
-    background-color: var(--primary-text-color);
+  background-color: var(--primary-text-color);
 }
 .foul__container.full .active {
-    background-color: #FE2001 !important;
+  background-color: #fe2001 !important;
 }
 
-
 .game__container h2 {
-    margin: 0;
+  margin: 0;
 }
