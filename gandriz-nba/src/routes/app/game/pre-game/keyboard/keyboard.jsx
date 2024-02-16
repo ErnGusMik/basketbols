@@ -3,8 +3,11 @@ import Button from "./../../../../../components/button/button";
 import KeyboardBtn from "../../../../../components/tournament-pages/keyboard/keyboard-button";
 
 import "./keyboard.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Keyboard() {
+    const navigate = useNavigate();
+    const { id } = useParams();
     return (
         <div className="keyboard__container">
             <div className="points horizontalCont verticalStart">
@@ -98,7 +101,12 @@ export default function Keyboard() {
             </div>
             <div className="keyboard__readyBtn">
                 <div>
-                    <Button text="Gatavs" />
+                    <Button
+                        text="Gatavs"
+                        onClick={() => {
+                            navigate("/game/" + id + "/play");
+                        }}
+                    />
                 </div>
             </div>
         </div>

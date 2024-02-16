@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import MainImage from "../../../../components/tournament-pages/main-image/main-image";
 import Button from "../../../../components/button/button";
@@ -24,6 +24,7 @@ export default function AboutTournament() {
     document.title = tournament.name
         ? tournament.name + " | Gandrīz NBA"
         : "Lādējās" + " | Gandrīz NBA";
+    const navigate = useNavigate();
 
     // Get tournament data
     const getTournamentData = async () => {
@@ -384,6 +385,9 @@ export default function AboutTournament() {
                 <div className="buttonDiv">
                     <Button
                         text={game ? "Sagatavot spēli" : "Spēles analīze"}
+                        onClick={() => {
+                            game ? navigate('/app/game/' + games.nextGame.id + '/instructions') : navigate('/app/game/' + games.lastGame.id + '/analysis');
+                        }}
                     />
                 </div>
             </div>

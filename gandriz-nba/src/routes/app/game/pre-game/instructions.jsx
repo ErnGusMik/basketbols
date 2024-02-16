@@ -6,11 +6,11 @@ import "./instructions.css";
 export default function Instructions() {
     const { id } = useParams();
     const navigate = useNavigate();
-    document.title = "Kā skaitīt spēles statistiku? | Gandriz NBA";
+    document.title = "Kā skaitīt spēles statistiku? | Gandrīz NBA";
 
     // Redirect to the correct instructions page based on the device
     React.useEffect(() => {
-        // getGame();
+        getGame();
         if ("ontouchstart" in window) {
             navigate("/app/game/" + id + "/instructions/mouse");
         } else {

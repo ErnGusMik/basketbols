@@ -6,27 +6,12 @@ export default function KeyboardBtn({ text, caption, small, gray }) {
     return (
         <div className="keyboardBtn__cont">
             <div
-                className="keyboardBtn"
-                style={
+                className={
                     small
                         ? gray
-                            ? {
-                                  width: "30px",
-                                  height: "30px",
-                                  fontSize: "10px",
-                                  borderRadius: "5px",
-                                  color: "#D9D9D9",
-                                  border: "1px solid #D9D9D9",
-                                  margin: "0 5px",
-                              }
-                            : {
-                                  width: "30px",
-                                  height: "30px",
-                                  fontSize: "10px",
-                                  borderRadius: "5px",
-                                  margin: "0 5px",
-                              }
-                        : {}
+                            ? "keyboardBtn keyboardBtn__small keyboardBtn__gray"
+                            : "keyboardBtn keyboardBtn__small"
+                        : "keyboardBtn"
                 }
             >
                 <h2>{text}</h2>

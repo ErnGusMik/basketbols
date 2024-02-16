@@ -26,6 +26,7 @@ import GameRoot from "./routes/app/game/game-root";
 import Keyboard from "./routes/app/game/pre-game/keyboard/keyboard";
 import Mouse from "./routes/app/game/pre-game/mouse/mouse";
 import Game404 from "./routes/app/game/pre-game/404/game404";
+import Game from "./routes/app/game/game/game";
 
 function App() {
     const router = createBrowserRouter([
@@ -109,6 +110,10 @@ function App() {
                     element: <Game404 />,
                 },
             ],
+        },
+        {
+            path: '/game/:id/play',
+            element: <Game />
         },
         {
             path: "login",

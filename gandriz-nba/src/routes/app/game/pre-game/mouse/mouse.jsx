@@ -3,10 +3,13 @@ import Button from "./../../../../../components/button/button";
 import KeyboardBtn from "../../../../../components/tournament-pages/keyboard/keyboard-button";
 
 import "./mouse.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Mouse() {
+    const navigate = useNavigate();
+    const { id } = useParams();
     return (
-        <div className="mouse__container">
+        <div className="mouse__container keyboard__container">
             <div className="points horizontalCont verticalStart">
                 <div className="flexCont">
                     <h2>Čempionu komanda!</h2>
@@ -73,14 +76,19 @@ export default function Mouse() {
             </div>
             <div className="spaceBtn__cont">
                 <span className="spaceBtn">
-                <i class="fa-solid fa-play"></i>
-                <p>/</p>
-                <i class="fa-solid fa-pause"></i>
+                    <i class="fa-solid fa-play"></i>
+                    <p>/</p>
+                    <i class="fa-solid fa-pause"></i>
                 </span>
                 <p>Pauzēt/turpināt laika atskaiti</p>
             </div>
             <div className="keyboard__readyBtn">
-                <Button text="Gatavs" />
+                <Button
+                    text="Gatavs"
+                    onClick={() => {
+                        navigate("/game/" + id + "/play");
+                    }}
+                />
             </div>
         </div>
     );
