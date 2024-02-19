@@ -11,6 +11,11 @@
     border-radius: 10px;
     user-select: none;
     cursor: default;
+    transition: 0.1s all;
+}
+
+.keyboardBtn:hover {
+    filter: brightness(0.8);
 }
 
 .keyboardBtn h2 {

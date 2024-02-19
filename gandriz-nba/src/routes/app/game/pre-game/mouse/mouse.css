@@ -6,10 +6,10 @@
     font-size: 25px;
 }
 
-.mouse__container .spaceBtn, .mouse__container .keyboardBtn {
+.mouse__container .spaceBtn {
     cursor: pointer !important;
 }
 
-.mouse__container .spaceBtn:hover, .mouse__container .keyboardBtn:hover {
+.mouse__container .spaceBtn:hover {
     filter: brightness(0.8);
 }

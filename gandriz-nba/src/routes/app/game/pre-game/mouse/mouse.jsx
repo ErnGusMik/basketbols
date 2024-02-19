@@ -14,9 +14,9 @@ export default function Mouse() {
                 <div className="flexCont">
                     <h2>Čempionu komanda!</h2>
                     <div className="horizontalCont center mainBtns">
-                        <KeyboardBtn text="1" caption="+1 punkts" />
-                        <KeyboardBtn text="2" caption="+2 punkti" />
-                        <KeyboardBtn text="3" caption="+3 punkti" />
+                        <KeyboardBtn pointer text="1" caption="+1 punkts" />
+                        <KeyboardBtn pointer text="2" caption="+2 punkti" />
+                        <KeyboardBtn pointer text="3" caption="+3 punkti" />
                     </div>
                 </div>
                 <div className="flexCont horizontalCont">
@@ -26,9 +26,9 @@ export default function Mouse() {
                             className="horizontalCont center mainBtns"
                             id="pointsInstruction2"
                         >
-                            <KeyboardBtn text="1" caption="+1 punkts" />
-                            <KeyboardBtn text="2" caption="+2 punkti" />
-                            <KeyboardBtn text="3" caption="+3 punkti" />
+                            <KeyboardBtn pointer text="1" caption="+1 punkts" />
+                            <KeyboardBtn pointer text="2" caption="+2 punkti" />
+                            <KeyboardBtn pointer text="3" caption="+3 punkti" />
                         </div>
                     </div>
                 </div>
@@ -40,14 +40,17 @@ export default function Mouse() {
             <div className="points horizontalCont verticalStart">
                 <div className="flexCont horizontalCont verticalStart mainBtns">
                     <KeyboardBtn
+                        pointer
                         text={<i class="fa-solid fa-circle-xmark"></i>}
                         caption="+1 piezīme"
                     />
                     <KeyboardBtn
+                        pointer
                         text={<i class="fa-solid fa-shield"></i>}
                         caption="+1 bloks"
                     />
                     <KeyboardBtn
+                        pointer
                         text={<i class="fa-solid fa-hourglass-start"></i>}
                         caption="+1 min pārtraukums"
                     />
@@ -57,22 +60,25 @@ export default function Mouse() {
                 </p>
                 <div className="flexCont horizontalCont verticalStart mainBtns">
                     <KeyboardBtn
+                        pointer
                         text={<i class="fa-solid fa-circle-xmark"></i>}
                         caption="+1 piezīme"
                     />
                     <KeyboardBtn
+                        pointer
                         text={<i class="fa-solid fa-shield"></i>}
                         caption="+1 bloks"
                     />
                     <KeyboardBtn
+                        pointer
                         text={<i class="fa-solid fa-hourglass-start"></i>}
                         caption="+1 min pārtraukums"
                     />
                 </div>
             </div>
             <div className="horizontalCont verticalStart center mainBtns">
-                <KeyboardBtn text="24" caption="24s" />
-                <KeyboardBtn text="14" caption="14s" />
+                <KeyboardBtn pointer text="24" caption="24s" />
+                <KeyboardBtn pointer text="14" caption="14s" />
             </div>
             <div className="spaceBtn__cont">
                 <span className="spaceBtn">

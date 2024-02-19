@@ -1,8 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 .game__container {
     color: white;
     background-color: black;
     height: 100vh;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.game__container p,
+.game__container h3,
+.game__container h4,
+.game__container h1,
+.game__container h2,
+.game__container b {
+    font-family: "Montserrat Alternates", sans-serif;
+}
+
+.game__container h1 {
+    font-weight: 900;
 }
 
 .gameFlex__container {
@@ -12,6 +30,7 @@
     max-height: 70vh;
     width: 90%;
     margin: auto;
+    margin-top: 100px;
 }
 
 .game__container .btnCont {
@@ -20,6 +39,22 @@
 
 .game__container .btnCont div {
     margin: 5px;
+}
+
+/* INSTRUCTIONS */
+#adminGameInstructions {
+    width: 20%;
+    text-align: center;
+}
+
+#gameSpaceBtn {
+    cursor: pointer;
+}
+
+.game__container .spaceBtn.disabled {
+    cursor: not-allowed;
+    color: #4d4d4d;
+    border: 1px solid #4d4d4d;
 }
 
 /* FOULS */
@@ -38,10 +73,59 @@
     background-color: var(--primary-text-color);
 }
 .foul__container.full .active {
-    background-color: #FE2001 !important;
+    background-color: #fe2001 !important;
 }
-
 
 .game__container h2 {
     margin: 0;
+}
+
+/* INFO */
+.gameInfo {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.gameInfo h3,
+.gameInfo p {
+    margin: 2px;
+}
+
+.gameInfo h3 {
+    font-size: 28px;
+}
+
+.gameInfo p {
+    font-size: 14px;
+}
+
+.gameInfo h4 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+/* TEAMS */
+.team-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.team h1 {
+    margin: 30px 0;
+    font-size: 50px;
+}
+
+.team h2 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.foul__container {
+    margin: 20px 0;
 }
