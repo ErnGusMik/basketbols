@@ -446,6 +446,107 @@ const updateGame = async (req, res, next) => {
     res.status(200).send("Game updated");
 };
 
+// Create new public game (for security reasons?). Uses a seperate table in db with fewer columns.
+const newPublicGame = async (req, res, next) => {
+    /* POST /api/games/new/public
+    Structure:
+    Team1Name
+    Team2Name
+    Team1Points
+    Team2Points
+    Group
+    Time remaining
+    Venue
+    Quarter
+    Team1Fouls
+    Team2Fouls
+    Timestamp (when request is sent, to sync client with admin)
+
+    UserID (from token, for verification)
+    */
+    const header = req.headers.authorization.split(" ")[1];
+    const token = JSON.parse(
+        Buffer.from(header.split(".")[1], "base64").toString()
+    );
+    const userID = token.sub;
+
+    const game = await games.getGame(req.body.gameid);
+
+    console.log(game);
+
+    if (!game || game.length === 0) {
+        res.status(400).send({
+            error: "Game not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Spēle nav atrasta!",
+        });
+        return;
+    }
+
+    const tournamentID = await helpers.verifyTournamentOwner(
+        game[0].tournamentid,
+        userID
+    );
+
+    if (!tournamentID) {
+        res.status(401).send({
+            error: "Tournament not found or unauthorized",
+            code: 400,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts vai arī jums nav pieejas šim turnīram!",
+        });
+        return;
+    }
+
+    if (game[0].public_id !== null) {
+        res.status(400).send({
+            error: "Game already has a public ID",
+            code: 400,
+            severity: "ERROR",
+            detail: "Spēlei jau ir publiskais ID!",
+        });
+        return;
+    }
+
+    const gameID = await games.modelPublicGame(
+        userID,
+        req.body.team1name,
+        req.body.team2name,
+        0,
+        0,
+        game[0].gamegroup,
+        600,
+        game[0].venue,
+        1,
+        0,
+        0,
+        req.body.timestamp
+    );
+
+    games.addPublicID(game[0].id, gameID[0].id);
+
+    res.status(201).send(gameID[0]);
+};
+
+const updatePublicGame = async (req, res, next) => {
+    /* PUT /api/games/update/public/:id */
+    const values = [
+        req.params.id,
+        req.body.team1Points,
+        req.body.team2Points,
+        req.body.group,
+        req.body.timeRemaining,
+        req.body.venue,
+        req.body.quarter,
+        req.body.team1Fouls,
+        req.body.team2Fouls,
+        req.body.timestamp,
+    ];
+    await games.updatePublicGame(...values);
+    res.status(204).send("Game updated");
+};
+
 // GET requests
 
 const getGame = async (req, res, next) => {
@@ -602,6 +703,12 @@ const getBestPlayers = async (req, res, next) => {
     res.status(200).send(result);
 };
 
+const getPublicGame = async (req, res, next) => {
+    /* GET /api/games/public/:id */
+    const result = await games.getPublicGame(req.params.id);
+    res.status(200).send(result[0]);
+};
+
 module.exports = {
     newTournament,
     newTeam,
@@ -622,4 +729,7 @@ module.exports = {
     getTeamsInTournament,
     getBestBlockers,
     getBestPlayers,
+    newPublicGame,
+    updatePublicGame,
+    getPublicGame,
 };
