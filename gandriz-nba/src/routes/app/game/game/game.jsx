@@ -1,4 +1,5 @@
 // TODO: add functionality to buttons, send to BOTH public and normal endpoints, check if updatePublicGame works as expected
+// ! TODO: key pressing does not work. disabled is not working -- showing as true (set only at init), but with button it works. Why?
 // TODO: responsive design
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React from "react";
@@ -56,7 +57,7 @@ export default function Game() {
         });
         const response = await request.json();
 
-        if (response.error || response.length === 0) {
+        if (response.error || response.length === 0 || !response[0]) {
             navigate("/app/game/not-found");
             return;
         }
@@ -67,8 +68,6 @@ export default function Game() {
                 <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
             </p>
         );
-
-        setDisabled(false);
 
         setGameData(response[0]);
         console.log(response[0]);
@@ -105,34 +104,29 @@ export default function Game() {
 
     // Create public game
     const createPublicGame = async () => {
-        const request = await fetch(
-            "http://localhost:8080/api/games/new/public",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "access_token"
-                    )}`,
-                },
-                body: JSON.stringify({
-                    gameid: gameData.id,
-                    team1name: team1.name,
-                    team2name: team2.name,
-                    timestamp: new Date().getTime(),
-                }),
-            }
-        );
-
-        const response = await request.json();
-        console.log(response);
+        console.log("Creating public game");
+        fetch("http://localhost:8080/api/games/new/public", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            body: JSON.stringify({
+                gameid: gameData.id,
+                team1name: team1.name,
+                team2name: team2.name,
+                timestamp: new Date().getTime(),
+            }),
+        });
     };
 
     // Bring it all together
     const final = async () => {
         const teamIDs = await getGame();
+        if (!teamIDs) return;
         await getTeams(teamIDs[0], 1);
         await getTeams(teamIDs[1], 2);
+        setDisabled(false);
     };
 
     React.useEffect(() => {
@@ -143,7 +137,11 @@ export default function Game() {
     }, []);
 
     React.useEffect(() => {
-        if (gameData.id && team1.name !== 'Lādējas...' && team2.name !== 'Lādējas...') {
+        if (
+            gameData.id &&
+            team1.name !== "Lādējas..." &&
+            team2.name !== "Lādējas..."
+        ) {
             createPublicGame();
         }
     }, [team1, team2]);
@@ -152,8 +150,12 @@ export default function Game() {
 
     // Play/pause game
     const pauseHandler = () => {
-        if (disabled) return;
+        if (disabled === true) {
+            console.log("Disabled");
+            return;
+        }
         if (!start) {
+            console.log("Game not started");
             setStart(true);
             console.log(`[START] Game starting in 11 seconds.`);
             setInstructions(
@@ -213,6 +215,55 @@ export default function Game() {
         }
     };
 
+    const addPoints = (team, points) => {
+        if (disabled) return;
+        if (pause) return;
+        // setDisabled(true);
+
+        // Get animation ready
+        document.getElementById("team" + team + "add").innerText = `+${points}`;
+        document
+            .getElementById("team" + team + "points")
+            .classList.add("active");
+
+        setTimeout(() => {
+            document
+                .getElementById("team" + team + "points")
+                .classList.remove("active");
+            // setDisabled(false);
+        }, 1500);
+
+        // Add points to the team after 0.5s delay, to avoid showing before animation
+        setTimeout(() => {
+            if (team === 1) {
+                setGameData((prev) => ({
+                    ...prev,
+                    team1points: prev.team1points + points,
+                }));
+            } else {
+                setGameData((prev) => ({
+                    ...prev,
+                    team2points: prev.team2points + points,
+                }));
+            }
+        }, 500);
+    };
+
+    const keyDown = (e) => {
+        console.log(e.key);
+        if (e.key.toUpperCase() === " ") {
+            console.log("Space pressed");
+            pauseHandler();
+        }
+    };
+
+    React.useEffect(() => {
+        document.body.addEventListener("keyup", keyDown);
+        return () => {
+            document.body.removeEventListener("keyup", keyDown);
+        };
+    }, []);
+
     return (
         <div className="game__container">
             <StartAnimation start={start} />
@@ -220,11 +271,28 @@ export default function Game() {
             <div className="gameFlex__container">
                 <div className="flexCont team">
                     <h2>{team1.name}</h2>
-                    <h1>{gameData.team1points}</h1>
+                    <div className="points__cont">
+                        <h1 id="team1points">
+                            {gameData.team1points} <br />
+                            <div id="team1add"></div>
+                        </h1>
+                    </div>
                     <div className="btnCont">
-                        <KeyboardBtn pointer text="+1" />
-                        <KeyboardBtn pointer text="+2" />
-                        <KeyboardBtn pointer text="+3" />
+                        <KeyboardBtn
+                            pointer
+                            text="+1"
+                            onClick={() => addPoints(1, 1)}
+                        />
+                        <KeyboardBtn
+                            pointer
+                            text="+2"
+                            onClick={() => addPoints(1, 2)}
+                        />
+                        <KeyboardBtn
+                            pointer
+                            text="+3"
+                            onClick={() => addPoints(1, 3)}
+                        />
                     </div>
                     <div className="foul__container">
                         <span
@@ -294,11 +362,28 @@ export default function Game() {
 
                 <div className="flexCont team team-right">
                     <h2>{team2.name}</h2>
-                    <h1>{gameData.team2points}</h1>
+                    <div className="points__cont">
+                        <h1 id="team2points">
+                            {gameData.team2points} <br />
+                            <div id="team2add">+3</div>
+                        </h1>
+                    </div>
                     <div className="btnCont">
-                        <KeyboardBtn pointer text="+1" />
-                        <KeyboardBtn pointer text="+2" />
-                        <KeyboardBtn pointer text="+3" />
+                        <KeyboardBtn
+                            pointer
+                            text="+1"
+                            onClick={() => addPoints(2, 1)}
+                        />
+                        <KeyboardBtn
+                            pointer
+                            text="+2"
+                            onClick={() => addPoints(2, 2)}
+                        />
+                        <KeyboardBtn
+                            pointer
+                            text="+3"
+                            onClick={() => addPoints(2, 3)}
+                        />
                     </div>
                     <div className="foul__container full">
                         <span
@@ -370,6 +455,20 @@ export default function Game() {
                 <p>
                     {gameData.venue ? gameData.venue : "Turnīra galvenā arēna"}
                 </p>
+            </div>
+
+            <div className="playerOverlay__cont" id="playerOverlay">
+                <div className="playerOverlay">
+                    <input
+                        type="number"
+                        name="playerNr"
+                        id="playerNr"
+                        placeholder="Nr."
+                        autoFocus
+                        min={0}
+                    />
+                    <button className="submitNr">OK &rarr;</button>
+                </div>
             </div>
         </div>
     );
