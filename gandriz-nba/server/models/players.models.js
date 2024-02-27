@@ -17,7 +17,7 @@ const modelPlayer = async (
     blocks,
     tournamentID
 ) => {
-    const player = await getPlayerInTournament(firstName, lastName, teamID);
+    const player = await getPlayerInTournament(firstName, lastName, teamID, number);
     if (player.length > 0) {
         return {
             error: "Player already exists in this team",
@@ -54,10 +54,10 @@ const getPlayer = async (playerID) => {
     return await db.query(text, values);
 };
 
-const getPlayerInTournament = async (firstName, lastName, teamID) => {
+const getPlayerInTournament = async (firstName, lastName, teamID, number) => {
     const text =
-        "SELECT * FROM players WHERE firstname = $1 AND lastname = $2 AND teamid = $3";
-    const values = [firstName, lastName, teamID];
+        "SELECT * FROM players WHERE firstname = $1 AND lastname = $2 AND teamid = $3 AND number = $4";
+    const values = [firstName, lastName, teamID, number];
     return await db.query(text, values);
 };
 

@@ -241,6 +241,7 @@ const newPlayer = async (req, res, next) => {
             0,
             req.body.tournamentID
         );
+        console.log(result);
         playerIDs.push(result[0].id.toString());
     }
     res.status(201).send(playerIDs);

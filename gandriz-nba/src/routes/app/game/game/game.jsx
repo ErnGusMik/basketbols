@@ -1,8 +1,7 @@
-// TODO: add functionality to buttons, send to BOTH public and normal endpoints, check if updatePublicGame works as expected
-// ! TODO: key pressing does not work. disabled is not working -- showing as true (set only at init), but with button it works. Why?
-// TODO: responsive design
+// TODO: show modal when needed onClick buttons, send to BOTH public and normal endpoints, check if updatePublicGame works as expected
+// TODO: responsive design, server-sent events for data sending
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
-import React from "react";
+import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import KeyboardBtn from "./../../../../components/tournament-pages/keyboard/keyboard-button";
@@ -11,8 +10,7 @@ import StartAnimation from "../../../../components/game/start-anim/start-anim";
 import "./game.css";
 
 export default function Game() {
-    // Set states and title
-    document.title = "Admin | NULL vs NULL | Gandrīz NBA";
+    // Set states
     const navigate = useNavigate();
     const params = useParams();
 
@@ -44,6 +42,19 @@ export default function Game() {
         team1: 0,
         team2: 0,
     });
+
+    const [timeouts, setTimeouts] = React.useState({
+        team1: 0,
+        team2: 0,
+    });
+
+    // Set title
+    document.title = `Admin | ${team1.id ? team1.name : "NULL"} vs ${
+        team2.id ? team2.name : "NULL"
+    } | Gandrīz NBA`;
+
+    // Set refs
+    const playButton = useRef();
 
     // Get game data from the server
     const getGame = async () => {
@@ -143,6 +154,11 @@ export default function Game() {
             team2.name !== "Lādējas..."
         ) {
             createPublicGame();
+            setGameData((prev) => ({
+                ...prev,
+                team1points: 0,
+                team2points: 0,
+            }));
         }
     }, [team1, team2]);
 
@@ -151,13 +167,17 @@ export default function Game() {
     // Play/pause game
     const pauseHandler = () => {
         if (disabled === true) {
-            console.log("Disabled");
+            console.log(
+                "[ERROR] Buttons are disabled. Cannot play/pause game. Probably loading data."
+            );
             return;
         }
+
+        // If game has not started, start it
         if (!start) {
-            console.log("Game not started");
             setStart(true);
             console.log(`[START] Game starting in 11 seconds.`);
+
             setInstructions(
                 <p>
                     Spēle sākusies! Lai apturētu spēli, spied{" "}
@@ -168,39 +188,52 @@ export default function Game() {
                     pārtraukums.
                 </p>
             );
+
             setTimeout(() => {
                 setPause(false);
+
                 setTimeInterval(
                     setInterval(() => {
                         setTime((prev) => prev - 1);
                     }, 1000)
                 );
+
                 console.log(
                     `[START] Game started at ${Date.now()} seconds since unix epoch.`
                 );
             }, 11000);
+
             return;
         }
+
+        // If game is playing, pause it
         if (!pause) {
             setPause(true);
             clearInterval(timeInterval);
             console.log(`[PAUSE] Game paused at ${time} seconds remaining.`);
+
             setInstructions(
                 <p>
                     Spēle apturēta! Lai turpinātu spēli, spied{" "}
                     <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
                 </p>
             );
+
             return;
         }
+
+        // If game is paused, resume it
         if (pause && start) {
             setPause(false);
+
             setTimeInterval(
                 setInterval(() => {
                     setTime((prev) => prev - 1);
                 }, 1000)
             );
+
             console.log(`[RESUME] Game resumed at ${time} seconds remaining.`);
+
             setInstructions(
                 <p>
                     Spēle turpinās! Lai apturētu spēli, spied{" "}
@@ -211,10 +244,12 @@ export default function Game() {
                     pārtraukums.
                 </p>
             );
+
             return;
         }
     };
 
+    // Add points to the team
     const addPoints = (team, points) => {
         if (disabled) return;
         if (pause) return;
@@ -249,11 +284,128 @@ export default function Game() {
         }, 500);
     };
 
+    // Add or remove fouls from the team
+    const addRemoveFoul = (e, team) => {
+        if (disabled) return;
+
+        // Left click (default) adds a foul
+        if (e.button == 0) {
+            console.log(
+                "Adding foul to team " +
+                    team +
+                    " at time " +
+                    Date.now() +
+                    "since unix epoch. (" +
+                    fouls["team" + team] +
+                    " fouls total)"
+            );
+            setFouls((prev) => ({
+                ...prev,
+                ["team" + team]: prev["team" + team] + 1,
+            }));
+
+            // Right click removes a foul
+        } else if (e.button == 2) {
+            if (fouls["team" + team] > 0) {
+                console.log(
+                    "Removing foul from team " +
+                        team +
+                        " at time " +
+                        Date.now() +
+                        "since unix epoch. (" +
+                        fouls["team" + team] +
+                        " fouls total)"
+                );
+                setFouls((prev) => ({
+                    ...prev,
+                    ["team" + team]: prev["team" + team] - 1,
+                }));
+            }
+        }
+    };
+
+    // Add or remove block
+    const addRemoveBlock = (e, team) => {
+        if (disabled) return;
+
+        // Left click (default) adds a block
+        if (e.button == 0) {
+            console.log(
+                "Adding block to team " +
+                    team +
+                    " at time " +
+                    Date.now() +
+                    "since unix epoch."
+            );
+
+            console.log(gameData["team" + team + "blocks"]);
+
+            setGameData((prev) => ({
+                ...prev,
+                ["team" + team + "blocks"]: prev["team" + team + "blocks"] + 1,
+            }));
+        } else if (e.button == 2) {
+            if (gameData["team" + team + "blocks"] > 0) {
+                console.log(
+                    "Removing block from team " +
+                        team +
+                        " at time " +
+                        Date.now() +
+                        "since unix epoch."
+                );
+
+                setGameData((prev) => ({
+                    ...prev,
+                    ["team" + team + "blocks"]:
+                        prev["team" + team + "blocks"] - 1,
+                }));
+            }
+        }
+    };
+
+    const addMinuteBreak = (team) => {
+        if (disabled) return;
+
+        console.log(
+            "Adding 1 minute break to team " +
+                team +
+                " at time " +
+                Date.now() +
+                "since unix epoch."
+        );
+
+        if (team === 1) {
+            if (timeouts.team1 <= 6) {
+
+                setTimeouts((prev) => ({
+                    ...prev,
+                    team1: prev.team1 + 1,
+                }));
+
+            } else {
+                console.log("Team 1 has no more timeouts left.");
+            }
+        } else if (team === 2) {
+            if (timeouts.team2 <= 6) {
+
+                setTimeouts((prev) => ({
+                    ...prev,
+                    team1: prev.team1 + 1,
+                }));
+
+            } else {
+                console.log("Team 2 has no more timeouts left.");
+            }
+        }
+    };
+
+    // Note to self: calling functions is not wokring, cause state is not updating.
+    // Need to use refs and manually click the buttons programmatically.
+
     const keyDown = (e) => {
         console.log(e.key);
         if (e.key.toUpperCase() === " ") {
-            console.log("Space pressed");
-            pauseHandler();
+            playButton.current.click();
         }
     };
 
@@ -294,7 +446,13 @@ export default function Game() {
                             onClick={() => addPoints(1, 3)}
                         />
                     </div>
-                    <div className="foul__container">
+                    <div
+                        className={
+                            fouls.team1 >= 4
+                                ? "foul__container full"
+                                : "foul__container"
+                        }
+                    >
                         <span
                             className={
                                 fouls.team1 >= 1 ? "foul active" : "foul"
@@ -325,16 +483,19 @@ export default function Game() {
                         <KeyboardBtn
                             pointer
                             text={<i className="fa-solid fa-circle-xmark"></i>}
+                            onClick={(e) => addRemoveFoul(e, 1)}
                         />
                         <KeyboardBtn
                             pointer
                             text={<i className="fa-solid fa-shield"></i>}
+                            onClick={(e) => addRemoveBlock(e, 1)}
                         />
                         <KeyboardBtn
                             pointer
                             text={
                                 <i className="fa-solid fa-hourglass-start"></i>
                             }
+                            onClick={() => addMinuteBreak(1)}
                         />
                     </div>
                 </div>
@@ -348,6 +509,7 @@ export default function Game() {
                         }
                         id="gameSpaceBtn"
                         onClick={pauseHandler}
+                        ref={playButton}
                     >
                         <i
                             className={
@@ -385,7 +547,13 @@ export default function Game() {
                             onClick={() => addPoints(2, 3)}
                         />
                     </div>
-                    <div className="foul__container full">
+                    <div
+                        className={
+                            fouls.team2 >= 4
+                                ? "foul__container full"
+                                : "foul__container"
+                        }
+                    >
                         <span
                             className={
                                 fouls.team2 >= 1 ? "foul active" : "foul"
@@ -416,16 +584,19 @@ export default function Game() {
                         <KeyboardBtn
                             pointer
                             text={<i className="fa-solid fa-circle-xmark"></i>}
+                            onClick={(e) => addRemoveFoul(e, 2)}
                         />
                         <KeyboardBtn
                             pointer
                             text={<i className="fa-solid fa-shield"></i>}
+                            onClick={(e) => addRemoveBlock(e, 2)}
                         />
                         <KeyboardBtn
                             pointer
                             text={
                                 <i className="fa-solid fa-hourglass-start"></i>
                             }
+                            onClick={() => addMinuteBreak(2)}
                         />
                     </div>
                 </div>
