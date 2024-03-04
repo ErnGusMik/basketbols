@@ -41,6 +41,8 @@ export default function Game() {
     const [fouls, setFouls] = React.useState({
         team1: 0,
         team2: 0,
+        team1details: [],
+        team2details: [],
     });
 
     const [timeouts, setTimeouts] = React.useState({
@@ -161,6 +163,30 @@ export default function Game() {
             }));
         }
     }, [team1, team2]);
+
+    const showModal = async () => {
+        const modal = document.getElementById("playerOverlay");
+        modal.style.display = "flex";
+        const submit = document.querySelector(".submitNr");
+        const input = document.getElementById("playerNr");
+
+        input.focus();
+
+        await new Promise((resolve) => {
+            const listener = (e) => {
+                if (e.key && e.key !== "Enter") return;
+                submit.removeEventListener("click", listener);
+                input.removeEventListener("keyup", listener);
+                modal.style.display = "none";
+                resolve(input.value);
+            };
+
+            submit.addEventListener("click", listener);
+            input.addEventListener("keyup", listener);
+        });
+
+        return input.value;
+    };
 
     // ! FUNCTIONALITY
 
@@ -285,8 +311,11 @@ export default function Game() {
     };
 
     // Add or remove fouls from the team
-    const addRemoveFoul = (e, team) => {
+    const addRemoveFoul = async (e, team) => {
         if (disabled) return;
+        setPause(true);
+        setDisabled(true);
+        const value = await showModal();
 
         // Left click (default) adds a foul
         if (e.button == 0) {
@@ -302,6 +331,8 @@ export default function Game() {
             setFouls((prev) => ({
                 ...prev,
                 ["team" + team]: prev["team" + team] + 1,
+                ["team" + team + "details"]:
+                    prev["team" + team + "details"].push(value),
             }));
 
             // Right click removes a foul
@@ -316,9 +347,13 @@ export default function Game() {
                         fouls["team" + team] +
                         " fouls total)"
                 );
+                const index = fouls["team" + team + "details"].indexOf(value);
+                if (index == -1) return;
                 setFouls((prev) => ({
                     ...prev,
                     ["team" + team]: prev["team" + team] - 1,
+                    ["team" + team + "details"]:
+                        prev["team" + team + "details"].splice(index, 1),
                 }));
             }
         }
@@ -376,23 +411,19 @@ export default function Game() {
 
         if (team === 1) {
             if (timeouts.team1 <= 6) {
-
                 setTimeouts((prev) => ({
                     ...prev,
                     team1: prev.team1 + 1,
                 }));
-
             } else {
                 console.log("Team 1 has no more timeouts left.");
             }
         } else if (team === 2) {
             if (timeouts.team2 <= 6) {
-
                 setTimeouts((prev) => ({
                     ...prev,
                     team1: prev.team1 + 1,
                 }));
-
             } else {
                 console.log("Team 2 has no more timeouts left.");
             }
