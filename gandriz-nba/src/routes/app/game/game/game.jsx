@@ -1,4 +1,4 @@
-// TODO: show modal when needed onClick buttons, send to BOTH public and normal endpoints, check if updatePublicGame works as expected
+// TODO: show 1min countdown when minute timeout, send to BOTH public and normal endpoints, check if updatePublicGame works as expected
 // TODO: responsive design, server-sent events for data sending
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
@@ -165,12 +165,13 @@ export default function Game() {
     }, [team1, team2]);
 
     const showModal = async () => {
+        window.addEventListener("contextmenu", (e) => e.preventDefault());
         const modal = document.getElementById("playerOverlay");
-        modal.style.display = "flex";
         const submit = document.querySelector(".submitNr");
         const input = document.getElementById("playerNr");
 
-        input.focus();
+        modal.style.display = "flex";
+        setTimeout(() => {input.focus();}, 0);
 
         await new Promise((resolve) => {
             const listener = (e) => {
@@ -184,8 +185,10 @@ export default function Game() {
             submit.addEventListener("click", listener);
             input.addEventListener("keyup", listener);
         });
-
-        return input.value;
+        const value = input.value;
+        input.value = "";
+        window.removeEventListener("contextmenu", (e) => e.preventDefault());
+        return value;
     };
 
     // ! FUNCTIONALITY
@@ -316,6 +319,7 @@ export default function Game() {
         setPause(true);
         setDisabled(true);
         const value = await showModal();
+        if (!value) return;
 
         // Left click (default) adds a foul
         if (e.button == 0) {
@@ -357,11 +361,13 @@ export default function Game() {
                 }));
             }
         }
+        setDisabled(false);
     };
 
     // Add or remove block
-    const addRemoveBlock = (e, team) => {
+    const addRemoveBlock = async (e, team) => {
         if (disabled) return;
+        setDisabled(true);
 
         // Left click (default) adds a block
         if (e.button == 0) {
@@ -395,11 +401,15 @@ export default function Game() {
                         prev["team" + team + "blocks"] - 1,
                 }));
             }
+        } else {
+            console.log("Unknown mouse button clicked.");
         }
+        setDisabled(false);
     };
 
-    const addMinuteBreak = (team) => {
+    const addMinuteBreak = (e, team) => {
         if (disabled) return;
+        setPause(true);
 
         console.log(
             "Adding 1 minute break to team " +
@@ -422,7 +432,7 @@ export default function Game() {
             if (timeouts.team2 <= 6) {
                 setTimeouts((prev) => ({
                     ...prev,
-                    team1: prev.team1 + 1,
+                    team2: prev.team2 + 1,
                 }));
             } else {
                 console.log("Team 2 has no more timeouts left.");
@@ -526,7 +536,8 @@ export default function Game() {
                             text={
                                 <i className="fa-solid fa-hourglass-start"></i>
                             }
-                            onClick={() => addMinuteBreak(1)}
+                            onClick={timeouts.team1 > 6 ? () => {} : (e) => addMinuteBreak(e, 1)}
+                            gray={timeouts.team1 >= 6 ? true : false}
                         />
                     </div>
                 </div>
@@ -627,7 +638,8 @@ export default function Game() {
                             text={
                                 <i className="fa-solid fa-hourglass-start"></i>
                             }
-                            onClick={() => addMinuteBreak(2)}
+                            onClick={timeouts.team2 > 6 ? () => {} : (e) => addMinuteBreak(e, 2)}
+                            gray={timeouts.team2 >= 6 ? true : false}
                         />
                     </div>
                 </div>

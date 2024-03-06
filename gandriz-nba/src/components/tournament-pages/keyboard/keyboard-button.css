@@ -49,6 +49,16 @@
     border: 1px solid #d9d9d9;
 }
 
+.keyboardBtn__darkGray {
+    color: #313131;
+    border: 1px solid #313131;
+    cursor: default !important;
+}
+
+.keyboardBtn__darkGray:hover {
+    filter: none !important;
+}
+
 @media screen and (max-width: 430px) {
     .keyboardBtn__small {
         margin: 0 2px;

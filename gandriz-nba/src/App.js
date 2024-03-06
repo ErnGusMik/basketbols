@@ -99,7 +99,7 @@ function App() {
                                 {
                                     path: "/app/game/:id/instructions/mouse",
                                     element: <Mouse />,
-                                }
+                                },
                             ],
                         },
                     ],
@@ -112,8 +112,8 @@ function App() {
             ],
         },
         {
-            path: '/game/:id/play',
-            element: <Game />
+            path: "/game/:id/play",
+            element: <Game />,
         },
         {
             path: "login",

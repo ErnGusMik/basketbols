@@ -2,19 +2,38 @@ import React from "react";
 
 import "./keyboard-button.css";
 
-export default function KeyboardBtn({ text, caption, small, gray, onClick = () => {}, pointer}) {
+export default function KeyboardBtn({
+    text,
+    caption,
+    small,
+    gray,
+    onClick = () => {},
+    pointer,
+}) {
+    // React.useEffect(() => {
+    //     document.getElementById("keyboardBtn-" + text + small).addEventListener('click', onClick);
+    //     return () => {
+    //         document.getElementById("keyboardBtn-" + text + small).removeEventListener('click', onClick);
+    //     }
+    // }, [onClick, text, small]);
     return (
-        <div className="keyboardBtn__cont">
+        <div
+            className="keyboardBtn__cont"
+            onContextMenu={(e) => e.preventDefault()}
+        >
             <div
                 className={
                     small
                         ? gray
                             ? "keyboardBtn keyboardBtn__small keyboardBtn__gray"
                             : "keyboardBtn keyboardBtn__small"
+                        : gray
+                        ? "keyboardBtn keyboardBtn__darkGray"
                         : "keyboardBtn"
                 }
-                onClick={onClick}
+                onMouseDown={onClick}
                 style={pointer ? { cursor: "pointer" } : {}}
+                id={"keyboardBtn-" + text + small}
             >
                 <h2>{text}</h2>
             </div>
