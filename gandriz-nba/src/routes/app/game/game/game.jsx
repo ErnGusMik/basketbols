@@ -1,4 +1,4 @@
-// TODO: show 1min countdown when minute timeout, send to BOTH public and normal endpoints, check if updatePublicGame works as expected
+// TODO: send to BOTH public and normal endpoints, check if updatePublicGame works as expected
 // TODO: responsive design, server-sent events for data sending
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
@@ -57,6 +57,18 @@ export default function Game() {
 
     // Set refs
     const playButton = useRef();
+    const team1one = useRef();
+    const team1two = useRef();
+    const team1three = useRef();
+    const team2one = useRef();
+    const team2two = useRef();
+    const team2three = useRef();
+    const team1foul = useRef();
+    const team1block = useRef();
+    const team1timeout = useRef();
+    const team2foul = useRef();
+    const team2block = useRef();
+    const team2timeout = useRef();
 
     // Get game data from the server
     const getGame = async () => {
@@ -171,7 +183,9 @@ export default function Game() {
         const input = document.getElementById("playerNr");
 
         modal.style.display = "flex";
-        setTimeout(() => {input.focus();}, 0);
+        setTimeout(() => {
+            input.focus();
+        }, 0);
 
         await new Promise((resolve) => {
             const listener = (e) => {
@@ -356,8 +370,9 @@ export default function Game() {
                 setFouls((prev) => ({
                     ...prev,
                     ["team" + team]: prev["team" + team] - 1,
-                    ["team" + team + "details"]:
-                        prev["team" + team + "details"].splice(index, 1),
+                    ["team" + team + "details"]: prev[
+                        "team" + team + "details"
+                    ].splice(index, 1),
                 }));
             }
         }
@@ -404,6 +419,14 @@ export default function Game() {
         } else {
             console.log("Unknown mouse button clicked.");
         }
+        document
+            .getElementById("team" + team + "block").style = 'color: #90ee98; border: 1px solid #90ee98; cursor: pointer; transition: 0.2s;'
+        setTimeout(
+            () =>
+                (document
+                    .getElementById("team" + team + "block").style = 'cursor: pointer;'),
+            500
+        );
         setDisabled(false);
     };
 
@@ -438,15 +461,93 @@ export default function Game() {
                 console.log("Team 2 has no more timeouts left.");
             }
         }
+        let time = 60;
+        const interval = setInterval(() => {
+            if (time < 0) return;
+            if (time < 11) {
+                setInstructions(
+                    team === 1 ? (
+                        <p>
+                            <i class="fa-solid fa-triangle-exclamation"></i>{" "}
+                            <br />
+                            Minūtes pārtraukums: {time} sekundes komandai{" "}
+                            {team1.name}.
+                        </p>
+                    ) : (
+                        <p>
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <br />
+                            Minūtes pārtraukums: {time} sekundes komandai{" "}
+                            {team2.name}.
+                        </p>
+                    )
+                );
+                time -= 1;
+                return;
+            }
+            setInstructions(
+                team === 1 ? (
+                    <p>
+                        Minūtes pārtraukums: {time} sekundes komandai{" "}
+                        {team1.name}.
+                    </p>
+                ) : (
+                    <p>
+                        Minūtes pārtraukums: {time} sekundes komandai{" "}
+                        {team2.name}.
+                    </p>
+                )
+            );
+            time -= 1;
+        }, 1000);
+        setTimeout(() => {
+            clearInterval(interval);
+            setInstructions(
+                <p>
+                    Spēle apturēta! Lai turpinātu spēli, spied{" "}
+                    <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
+                </p>
+            );
+        }, 61000);
     };
 
     // Note to self: calling functions is not wokring, cause state is not updating.
     // Need to use refs and manually click the buttons programmatically.
 
     const keyDown = (e) => {
-        console.log(e.key);
+        const event = new MouseEvent("mousedown", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+            button: 0,
+        });
+
         if (e.key.toUpperCase() === " ") {
             playButton.current.click();
+        } else if (e.code === "Digit1") {
+            document.getElementById("team1one").dispatchEvent(event);
+        } else if (e.code === "Digit2") {
+            document.getElementById("team1two").dispatchEvent(event);
+        } else if (e.code === "Digit3") {
+            document.getElementById("team1three").dispatchEvent(event);
+        } else if (e.code === "Numpad1") {
+            document.getElementById("team2one").dispatchEvent(event);
+        } else if (e.code === "Numpad2") {
+            document.getElementById("team2two").dispatchEvent(event);
+        } else if (e.code === "Numpad3") {
+            document.getElementById("team2three").dispatchEvent(event);
+        } else if (e.code === "KeyQ") {
+            document.getElementById("team1foul").dispatchEvent(event);
+        } else if (e.code === "KeyW") {
+            document.getElementById("team1block").dispatchEvent(event);
+        } else if (e.code === "KeyE") {
+            document.getElementById("team1timeout").dispatchEvent(event);
+        } else if (e.code === "KeyI") {
+            document.getElementById("team2foul").dispatchEvent(event);
+        } else if (e.code === "KeyO") {
+            document.getElementById("team2block").dispatchEvent(event);
+        } else if (e.code === "KeyP") {
+            document.getElementById("team2timeout").dispatchEvent(event);
         }
     };
 
@@ -475,16 +576,19 @@ export default function Game() {
                             pointer
                             text="+1"
                             onClick={() => addPoints(1, 1)}
+                            id="team1one"
                         />
                         <KeyboardBtn
                             pointer
                             text="+2"
                             onClick={() => addPoints(1, 2)}
+                            id="team1two"
                         />
                         <KeyboardBtn
                             pointer
                             text="+3"
                             onClick={() => addPoints(1, 3)}
+                            id="team1three"
                         />
                     </div>
                     <div
@@ -525,19 +629,26 @@ export default function Game() {
                             pointer
                             text={<i className="fa-solid fa-circle-xmark"></i>}
                             onClick={(e) => addRemoveFoul(e, 1)}
+                            id="team1foul"
                         />
                         <KeyboardBtn
                             pointer
                             text={<i className="fa-solid fa-shield"></i>}
                             onClick={(e) => addRemoveBlock(e, 1)}
+                            id="team1block"
                         />
                         <KeyboardBtn
                             pointer
                             text={
                                 <i className="fa-solid fa-hourglass-start"></i>
                             }
-                            onClick={timeouts.team1 > 6 ? () => {} : (e) => addMinuteBreak(e, 1)}
+                            onClick={
+                                timeouts.team1 > 6
+                                    ? () => {}
+                                    : (e) => addMinuteBreak(e, 1)
+                            }
                             gray={timeouts.team1 >= 6 ? true : false}
+                            id="team1timeout"
                         />
                     </div>
                 </div>
@@ -577,16 +688,19 @@ export default function Game() {
                             pointer
                             text="+1"
                             onClick={() => addPoints(2, 1)}
+                            id="team2one"
                         />
                         <KeyboardBtn
                             pointer
                             text="+2"
                             onClick={() => addPoints(2, 2)}
+                            id="team2two"
                         />
                         <KeyboardBtn
                             pointer
                             text="+3"
                             onClick={() => addPoints(2, 3)}
+                            id="team2three"
                         />
                     </div>
                     <div
@@ -627,19 +741,26 @@ export default function Game() {
                             pointer
                             text={<i className="fa-solid fa-circle-xmark"></i>}
                             onClick={(e) => addRemoveFoul(e, 2)}
+                            id="team2foul"
                         />
                         <KeyboardBtn
                             pointer
                             text={<i className="fa-solid fa-shield"></i>}
                             onClick={(e) => addRemoveBlock(e, 2)}
+                            id="team2block"
                         />
                         <KeyboardBtn
                             pointer
                             text={
                                 <i className="fa-solid fa-hourglass-start"></i>
                             }
-                            onClick={timeouts.team2 > 6 ? () => {} : (e) => addMinuteBreak(e, 2)}
+                            onClick={
+                                timeouts.team2 > 6
+                                    ? () => {}
+                                    : (e) => addMinuteBreak(e, 2)
+                            }
                             gray={timeouts.team2 >= 6 ? true : false}
+                            id="team2timeout"
                         />
                     </div>
                 </div>

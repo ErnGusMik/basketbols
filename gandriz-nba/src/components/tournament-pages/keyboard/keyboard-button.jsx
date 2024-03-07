@@ -9,6 +9,7 @@ export default function KeyboardBtn({
     gray,
     onClick = () => {},
     pointer,
+    id = '',
 }) {
     // React.useEffect(() => {
     //     document.getElementById("keyboardBtn-" + text + small).addEventListener('click', onClick);
@@ -33,7 +34,7 @@ export default function KeyboardBtn({
                 }
                 onMouseDown={onClick}
                 style={pointer ? { cursor: "pointer" } : {}}
-                id={"keyboardBtn-" + text + small}
+                id={id ? id : ''}
             >
                 <h2>{text}</h2>
             </div>
