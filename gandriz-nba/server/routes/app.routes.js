@@ -422,10 +422,16 @@ const newGame = async (req, res, next) => {
 
 const updateGame = async (req, res, next) => {
     /* PUT /api/games/update/:id */
+    // const header = req.headers.authorization.split(" ")[1];
+    // const token = JSON.parse(
+    //     Buffer.from(header.split(".")[1], "base64").toString()
+    // );
+    // const userID = token.sub;
+
     const values = [
         req.params.id,
-        req.body.team1Points,
-        req.body.team2Points,
+        req.body.team1points,
+        req.body.team2points,
         req.body.team1Blocks,
         req.body.team13points,
         req.body.team1LostPoints,
@@ -444,7 +450,7 @@ const updateGame = async (req, res, next) => {
         req.body.team2BestPlayers,
     ];
     await games.updateGame(...values);
-    res.status(200).send("Game updated");
+    res.status(204).send("Game updated");
 };
 
 // Create new public game (for security reasons?). Uses a seperate table in db with fewer columns.
@@ -530,23 +536,23 @@ const newPublicGame = async (req, res, next) => {
     res.status(201).send(gameID[0]);
 };
 
-const updatePublicGame = async (req, res, next) => {
-    /* PUT /api/games/update/public/:id */
-    const values = [
-        req.params.id,
-        req.body.team1Points,
-        req.body.team2Points,
-        req.body.group,
-        req.body.timeRemaining,
-        req.body.venue,
-        req.body.quarter,
-        req.body.team1Fouls,
-        req.body.team2Fouls,
-        req.body.timestamp,
-    ];
-    await games.updatePublicGame(...values);
-    res.status(204).send("Game updated");
-};
+// const updatePublicGame = async (req, res, next) => {
+//     /* PUT /api/games/update/public/:id */
+//     const values = [
+//         req.params.id,
+//         req.body.team1Points,
+//         req.body.team2Points,
+//         req.body.group,
+//         req.body.timeRemaining,
+//         req.body.venue,
+//         req.body.quarter,
+//         req.body.team1Fouls,
+//         req.body.team2Fouls,
+//         req.body.timestamp,
+//     ];
+//     await games.updatePublicGame(...values);
+//     res.status(204).send("Game updated");
+// };
 
 // GET requests
 
@@ -704,11 +710,11 @@ const getBestPlayers = async (req, res, next) => {
     res.status(200).send(result);
 };
 
-const getPublicGame = async (req, res, next) => {
-    /* GET /api/games/public/:id */
-    const result = await games.getPublicGame(req.params.id);
-    res.status(200).send(result[0]);
-};
+// const getPublicGame = async (req, res, next) => {
+//     /* GET /api/games/public/:id */
+//     const result = await games.getPublicGame(req.params.id);
+//     res.status(200).send(result[0]);
+// };
 
 module.exports = {
     newTournament,
@@ -731,6 +737,6 @@ module.exports = {
     getBestBlockers,
     getBestPlayers,
     newPublicGame,
-    updatePublicGame,
-    getPublicGame,
+    // updatePublicGame,
+    // getPublicGame,
 };
