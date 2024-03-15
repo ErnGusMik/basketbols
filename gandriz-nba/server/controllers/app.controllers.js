@@ -32,6 +32,7 @@ router.post("/games/new/public", routes.newPublicGame);
 // router.get("/games/public/:id", routes.getPublicGame);
 
 router.get("/live/games/:id", liveRoutes.getLiveGame);
+router.get("/live/games/once/:id", liveRoutes.getLiveGameOnce);
 router.put("/live/games/update/:id", liveRoutes.updateLiveGame);
 
 module.exports = router;

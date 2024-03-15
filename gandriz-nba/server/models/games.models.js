@@ -176,7 +176,7 @@ const modelPublicGame = async (
     timestamp
 ) => {
     const text =
-        "INSERT INTO game_public (user_id, team1_name, team2_name, team1_points, team2_points, game_group, game_time, venue, quarter, team1_fouls, team2_fouls, timestamp, paused) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id";
+        "INSERT INTO game_public (user_id, team1_name, team2_name, team1_points, team2_points, game_group, game_time, venue, quarter, team1_fouls, team2_fouls, timestamp, paused, team1_fouls_details, team2_fouls_details) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING id";
     const values = [
         userID,
         team1name,
@@ -191,6 +191,8 @@ const modelPublicGame = async (
         team2fouls,
         timestamp,
         true,
+        JSON.stringify([]),
+        JSON.stringify([]),
     ];
     return await db.query(text, values);
 };
@@ -207,10 +209,12 @@ const updatePublicGame = async (
     paused,
     team1_timeouts,
     team2_timeouts,
+    team1FoulDetails,
+    team2FoulDetails,
     userID
 ) => {
     const text =
-        "UPDATE game_public SET team1_points = $2, team2_points = $3, game_time = $4, quarter = $5, team1_fouls = $6, team2_fouls = $7, timestamp = $8, paused = $9, team1_timeouts = $10, team2_timeouts = $11 WHERE id = $1  AND user_id = $12";
+        "UPDATE game_public SET team1_points = $2, team2_points = $3, game_time = $4, quarter = $5, team1_fouls = $6, team2_fouls = $7, timestamp = $8, paused = $9, team1_timeouts = $10, team2_timeouts = $11, team1_fouls_details = $12, team2_fouls_details = $13 WHERE id = $1  AND user_id = $14";
     const values = [
         gameID,
         team1points,
@@ -223,6 +227,8 @@ const updatePublicGame = async (
         paused,
         team1_timeouts,
         team2_timeouts,
+        team1FoulDetails,
+        team2FoulDetails,
         userID,
     ];
     return await db.query(text, values);

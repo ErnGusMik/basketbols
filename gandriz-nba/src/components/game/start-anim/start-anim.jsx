@@ -8,7 +8,7 @@ export default function StartAnimation({ start = false }) {
     const [secondValue, setSecondValue] = React.useState(10);
 
     React.useEffect(() => {
-        if (start) {
+        if (start == true) {
             document.querySelector('.anim__container').style.display = 'flex';
             const interval = setInterval(() => {
                 document.querySelector(".main").classList.add("fade");

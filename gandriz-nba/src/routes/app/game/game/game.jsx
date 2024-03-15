@@ -1,6 +1,6 @@
-// TODO: send to BOTH public and normal endpoints, check if updatePublicGame works as expected
 // TODO: responsive design, server-sent events for data sending
-// TODO: add modal for foul viewing (per player), init from server sent data
+// TODO: add modal for foul viewing (per player)
+// TODO: teamx_fouls_details returns {} instead of [] when empty (FIX)
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -63,13 +63,28 @@ export default function Game() {
     // Get game data from the server
     const getGame = async () => {
         const { id } = params;
-        const request = await fetch(`http://localhost:8080/api/games/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-        });
+        let request;
+        try {
+            request = await fetch(`http://localhost:8080/api/games/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "access_token"
+                    )}`,
+                },
+            });
+        } catch (error) {
+            console.error("[CRITICAL] Failed to fetch game data from server.");
+            console.log(error);
+            setInstructions(
+                <p>
+                    Ir notikusi kļūda. Atsvaidzini lapu vai sazinies ar
+                    atbalstu.
+                </p>
+            );
+            throw new Error("Failed to fetch game data from server.");
+        }
         const response = await request.json();
 
         if (response.error || response.length === 0 || !response[0]) {
@@ -120,6 +135,56 @@ export default function Game() {
     // Create public game
     const createPublicGame = async () => {
         console.log("Creating public game");
+        if (gameData.public_id) {
+            console.log("[INFO] Public game data found");
+            const request = await fetch(
+                "http://localhost:8080/api/live/games/once/" +
+                    gameData.public_id,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            let response = await request.json();
+            response = response[0];
+            console.log(response);
+
+            setQuarter(response.quarter);
+            setGameData((prev) => ({
+                ...prev,
+                team1points: response.team1_points,
+                team2points: response.team2_points,
+            }));
+            setFouls((prev) => ({
+                ...prev,
+                team1: response.team1_fouls,
+                team2: response.team2_fouls,
+                team1details: JSON.parse(response.team1_fouls_details),
+                team2details: JSON.parse(response.team2_fouls_details),
+            }));
+            setTimeouts((prev) => ({
+                ...prev,
+                team1: response.team1_timeouts,
+                team2: response.team2_timeouts,
+            }));
+
+            if (response.paused && response.game_time < 600) {
+                setStart("true");
+                setPause(true);
+                setTime(response.game_time);
+                setInstructions(
+                    <p>
+                        Spēle apturēta! Lai turpinātu spēli, spied{" "}
+                        <i className="fa-solid fa-play"></i> vai atsarpes
+                        taustiņu.
+                    </p>
+                );
+            }
+
+            return;
+        }
         fetch("http://localhost:8080/api/games/new/public", {
             method: "POST",
             headers: {
@@ -192,10 +257,11 @@ export default function Game() {
 
     const sendToServer = async (statData, liveData) => {
         if (!statData && !liveData) return false;
+        const id = gameData.public_id;
 
         if (statData) {
             const request = await fetch(
-                `http://localhost:8080/api/games/update/${statData.id}`,
+                `http://localhost:8080/api/games/update/${id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -207,10 +273,13 @@ export default function Game() {
                     body: JSON.stringify(statData),
                 }
             );
-            console.log('[INFO] Update status from server (statistics db): ' + request.status);
+            console.log(
+                "[INFO] Update status from server (statistics db): " +
+                    request.status
+            );
             if (request.status !== 204) {
                 console.log(
-                    `[ERROR] Failed to update game ${statData.id} on server. (statistics db)`
+                    `[ERROR] Failed to update game ${id} on server. (statistics db)`
                 );
                 return false;
             }
@@ -218,7 +287,7 @@ export default function Game() {
 
         if (liveData) {
             const request = await fetch(
-                `http://localhost:8080/api/live/games/update/${liveData.id}`,
+                `http://localhost:8080/api/live/games/update/${id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -231,34 +300,56 @@ export default function Game() {
                         team1Points: liveData.team1Points
                             ? liveData.team1Points
                             : gameData.team1points,
+
                         team2Points: liveData.team2Points
                             ? liveData.team2Points
                             : gameData.team2points,
+
                         timeRemaining: liveData.timeRemaining
                             ? liveData.timeRemaining
                             : time,
+
                         quarter: liveData.quarter ? liveData.quarter : quarter,
+
                         team1Fouls: liveData.team1Fouls
                             ? liveData.team1Fouls
                             : fouls.team1,
+
                         team2Fouls: liveData.team2Fouls
                             ? liveData.team2Fouls
                             : fouls.team2,
+
+                        team1FoulDetails: liveData.team1FoulDetails
+                            ? liveData.team1FoulDetails
+                            : fouls.team1details,
+
+                        team2FoulDetails: liveData.team2FoulDetails
+                            ? liveData.team2FoulDetails
+                            : fouls.team2details,
+
                         timestamp: new Date(),
-                        paused: liveData.paused ? liveData.paused : pause,
+
+                        paused:
+                            liveData.paused !== undefined
+                                ? liveData.paused
+                                : pause,
+
                         team1_timeouts: liveData.team1_timeouts
                             ? liveData.team1_timeouts
                             : timeouts.team1,
+
                         team2_timeouts: liveData.team2_timeouts
                             ? liveData.team2_timeouts
                             : timeouts.team2,
                     }),
                 }
             );
-            console.log('[INFO] Update status from server (live db): ' + request.status);
+            console.log(
+                "[INFO] Update status from server (live db): " + request.status
+            );
             if (request.status !== 204) {
                 console.log(
-                    `[ERROR] Failed to update game ${liveData.id} on server. (live db)`
+                    `[ERROR] Failed to update game ${id} on server. (live db)`
                 );
                 return false;
             }
@@ -411,14 +502,17 @@ export default function Game() {
                     " at time " +
                     Date.now() +
                     "since unix epoch. (" +
-                    fouls["team" + team] +
+                    (parseInt(fouls["team" + team]) + 1) +
                     " fouls total)"
             );
+
             setFouls((prev) => ({
                 ...prev,
-                ["team" + team]: prev["team" + team] + 1,
-                ["team" + team + "details"]:
-                    prev["team" + team + "details"].push(value),
+                ["team" + team]: parseInt(prev["team" + team]) + 1,
+                ["team" + team + "details"]: [
+                    ...prev["team" + team + "details"],
+                    value,
+                ],
             }));
 
             // Right click removes a foul
@@ -430,14 +524,17 @@ export default function Game() {
                         " at time " +
                         Date.now() +
                         "since unix epoch. (" +
-                        fouls["team" + team] +
+                        (parseInt(fouls["team" + team]) - 1) +
                         " fouls total)"
                 );
                 const index = fouls["team" + team + "details"].indexOf(value);
-                if (index == -1) return;
+                if (index == -1) {
+                    setDisabled(false);
+                    return;
+                };
                 setFouls((prev) => ({
                     ...prev,
-                    ["team" + team]: prev["team" + team] - 1,
+                    ["team" + team]: parseInt(prev["team" + team]) - 1,
                     ["team" + team + "details"]: prev[
                         "team" + team + "details"
                     ].splice(index, 1),
@@ -453,6 +550,8 @@ export default function Game() {
             sendToServer(null, {
                 team1Fouls: fouls.team1,
                 team2Fouls: fouls.team2,
+                team1FoulDetails: fouls.team1details,
+                team2FoulDetails: fouls.team2details,
             });
         }
     }, [fouls]);
@@ -522,6 +621,9 @@ export default function Game() {
 
         if (team === 1) {
             if (timeouts.team1 <= 6) {
+                sendToServer(null, {
+                    team1_timeouts: timeouts.team1 + 1,
+                });
                 setTimeouts((prev) => ({
                     ...prev,
                     team1: prev.team1 + 1,
@@ -531,6 +633,9 @@ export default function Game() {
             }
         } else if (team === 2) {
             if (timeouts.team2 <= 6) {
+                sendToServer(null, {
+                    team2_timeouts: timeouts.team2 + 1,
+                });
                 setTimeouts((prev) => ({
                     ...prev,
                     team2: prev.team2 + 1,

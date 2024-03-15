@@ -24,13 +24,16 @@ const getLiveGame = (req, res, next) => {
     });
 };
 
+const getLiveGameOnce = async (req, res, next) => {
+    res.send(await games.getPublicGame(req.params.id));
+};
+
 const updateLiveGame = async (req, res, next) => {
     const header = req.headers.authorization.split(" ")[1];
     const token = JSON.parse(
         Buffer.from(header.split(".")[1], "base64").toString()
     );
     const userID = token.sub;
-
     const values = [
         req.params.id,
         req.body.team1Points,
@@ -43,6 +46,8 @@ const updateLiveGame = async (req, res, next) => {
         req.body.paused,
         req.body.team1_timeouts,
         req.body.team2_timeouts,
+        req.body.team1FoulDetails,
+        req.body.team2FoulDetails,
         userID,
     ];
     await games.updatePublicGame(...values);
@@ -53,4 +58,4 @@ const updateLiveGame = async (req, res, next) => {
     res.status(204).send("Game updated");
 };
 
-module.exports = { getLiveGame, updateLiveGame };
+module.exports = { getLiveGame, updateLiveGame, getLiveGameOnce };
