@@ -241,7 +241,6 @@ const newPlayer = async (req, res, next) => {
             0,
             req.body.tournamentID
         );
-        console.log(result);
         playerIDs.push(result[0].id.toString());
     }
     res.status(201).send(playerIDs);
@@ -478,8 +477,6 @@ const newPublicGame = async (req, res, next) => {
     const userID = token.sub;
 
     const game = await games.getGame(req.body.gameid);
-
-    console.log(game);
 
     if (!game || game.length === 0) {
         res.status(400).send({

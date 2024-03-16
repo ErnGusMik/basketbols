@@ -216,13 +216,13 @@ const updatePublicGame = async (
     const text =
         "UPDATE game_public SET team1_points = $2, team2_points = $3, game_time = $4, quarter = $5, team1_fouls = $6, team2_fouls = $7, timestamp = $8, paused = $9, team1_timeouts = $10, team2_timeouts = $11, team1_fouls_details = $12, team2_fouls_details = $13 WHERE id = $1  AND user_id = $14";
     const values = [
-        gameID,
+        parseInt(gameID),
         team1points,
         team2points,
         timeRemaining,
         quarter,
-        team1fouls,
-        team2fouls,
+        parseInt(team1fouls),
+        parseInt(team2fouls),
         timestamp,
         paused,
         team1_timeouts,
