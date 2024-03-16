@@ -3,11 +3,11 @@
 
 let timer;
 
-onmessage = e => {
-    clearInterval(timer);
-    if (e.data.message === 'START') {
-        timer = setInterval(() => {
-            postMessage('TICK');
-        }, e.data.interval);
-    }
-}
+onmessage = (e) => {
+  clearInterval(timer);
+  if (e.data.message === "START") {
+    timer = setInterval(() => {
+      postMessage("TICK");
+    }, e.data.interval);
+  }
+};
