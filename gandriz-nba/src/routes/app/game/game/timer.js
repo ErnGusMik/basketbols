@@ -9,5 +9,10 @@ onmessage = e => {
         timer = setInterval(() => {
             postMessage('TICK');
         }, e.data.interval);
+    } else if (e.data.message === 'START TIMEOUT') {
+        console.log('START TIMEOUT');
+        timer = setInterval(() => {
+            postMessage('TICK TIMEOUT');
+        }, e.data.interval);
     }
 }

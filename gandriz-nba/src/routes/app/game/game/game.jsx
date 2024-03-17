@@ -38,7 +38,7 @@ export default function Game() {
     const [start, setStart] = React.useState(false);
     const [pause, setPause] = React.useState(true);
     const [time, setTime] = React.useState(6000); // 10 minutes in deciseconds
-    const [timeoutTime, setTimeoutTime] = React.useState([60, null]); // 1 minute in seconds
+    const [timeoutTime, setTimeoutTime] = React.useState(60); // 1 minute in seconds
     const [quarter, setQuarter] = React.useState(1);
     const [timeInterval, setTimeInterval] = React.useState(null);
 
@@ -264,11 +264,14 @@ export default function Game() {
         };
     }, []);
 
+    // Set up web worker message listener
     React.useEffect(() => {
-
         const handler = (e) => {
             if (e.data === "TICK") {
                 setTime((prev) => prev - 1);
+
+            } else if (e.data === "TICK TIMEOUT") {
+                setTimeoutTime((prev) => prev - 1);
             }
         };
 
@@ -278,6 +281,37 @@ export default function Game() {
             timer.current.removeEventListener("message", (e) => handler(e));
         };
     }, []);
+
+    // Every time timeout time changes, update the instructions
+    React.useEffect(() => {
+        if (timeoutTime === 0) {
+            timer.current.postMessage("STOP");
+            setInstructions(
+                <p>
+                    Spēle apturēta! Lai turpinātu spēli, spied{" "}
+                    <i className="fa-solid fa-play"></i> vai atsarpes
+                    taustiņu.
+                </p>
+            );
+            return;
+        }
+
+        if (timeoutTime < 11) {
+            setInstructions(
+                <p>
+                    <i className="fa-solid fa-triangle-exclamation"></i>{" "}
+                    <br />
+                    Minūtes pārtraukums: {timeoutTime} sekundes
+                </p>
+            );
+        } else if (timeoutTime < 60){
+            setInstructions(
+                <p>
+                    Minūtes pārtraukums: {timeoutTime} sekundes
+                </p>
+            );
+        }
+    }, [timeoutTime]);
 
     // Check if teams have been loaded and create public game
     React.useEffect(() => {
@@ -677,6 +711,7 @@ export default function Game() {
     const addMinuteBreak = (e, team) => {
         if (disabled) return;
         if (!pause) pauseHandler();
+        setTimeoutTime(60);
 
         console.log(
             "[INFO] Adding 1 minute break to team " +
@@ -687,7 +722,7 @@ export default function Game() {
         );
 
         if (team === 1) {
-            if (timeouts.team1 <= 6) {
+            if (timeouts.team1 < 6) {
                 sendToServer(null, {
                     team1_timeouts: timeouts.team1 + 1,
                 });
@@ -697,9 +732,10 @@ export default function Game() {
                 }));
             } else {
                 console.log("[WARN] Team 1 has no more timeouts left.");
+                return
             }
         } else if (team === 2) {
-            if (timeouts.team2 <= 6) {
+            if (timeouts.team2 < 6) {
                 sendToServer(null, {
                     team2_timeouts: timeouts.team2 + 1,
                 });
@@ -709,56 +745,11 @@ export default function Game() {
                 }));
             } else {
                 console.log("[WARN] Team 2 has no more timeouts left.");
+                return
             }
         }
-        let time = 60;
-        const interval = setInterval(() => {
-            if (time < 0) return;
-            if (time < 11) {
-                setInstructions(
-                    team === 1 ? (
-                        <p>
-                            <i className="fa-solid fa-triangle-exclamation"></i>{" "}
-                            <br />
-                            Minūtes pārtraukums: {time} sekundes komandai{" "}
-                            {team1.name}.
-                        </p>
-                    ) : (
-                        <p>
-                            <i className="fa-solid fa-triangle-exclamation"></i>
-                            <br />
-                            Minūtes pārtraukums: {time} sekundes komandai{" "}
-                            {team2.name}.
-                        </p>
-                    )
-                );
-                time -= 1;
-                return;
-            }
-            setInstructions(
-                team === 1 ? (
-                    <p>
-                        Minūtes pārtraukums: {time} sekundes komandai{" "}
-                        {team1.name}.
-                    </p>
-                ) : (
-                    <p>
-                        Minūtes pārtraukums: {time} sekundes komandai{" "}
-                        {team2.name}.
-                    </p>
-                )
-            );
-            time -= 1;
-        }, 1000);
-        setTimeout(() => {
-            clearInterval(interval);
-            setInstructions(
-                <p>
-                    Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                    <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
-                </p>
-            );
-        }, 61000);
+
+        timer.current.postMessage({ message: "START TIMEOUT", interval: 1000 });
     };
 
     // Keyboard shortcuts
