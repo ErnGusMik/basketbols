@@ -1,5 +1,4 @@
-// TODO: responsive design, server-sent events for data sending
-// TODO: add modal for foul viewing (per player), use WebWorkers for timeout timer
+// TODO: set up to send: most points in row, lead changes, biggest lead, best players (add modal!)
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -54,6 +53,9 @@ export default function Game() {
         team2: 0,
     });
 
+    const [foulModalContent, setFoulModalContent] = React.useState(null);
+    const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
     // Set title
     document.title =
         team1.id && team2.id
@@ -103,7 +105,6 @@ export default function Game() {
         );
 
         setGameData(response[0]);
-        console.log(response[0]);
         return [response[0].team1id, response[0].team2id];
     };
 
@@ -269,7 +270,6 @@ export default function Game() {
         const handler = (e) => {
             if (e.data === "TICK") {
                 setTime((prev) => prev - 1);
-
             } else if (e.data === "TICK TIMEOUT") {
                 setTimeoutTime((prev) => prev - 1);
             }
@@ -282,6 +282,31 @@ export default function Game() {
         };
     }, []);
 
+    // Set up window resize listener
+    React.useEffect(() => {
+        const handler = () => {
+            setWindowWidth(window.innerWidth);
+            if (window.innerWidth < 700) {
+                console.log('[ERROR] Screen too small')
+                document.getElementsByClassName('gameFlex__container')[0].style = 'display: none;';
+            } else {
+                document.getElementsByClassName('gameFlex__container')[0].style = 'display: flex;';
+            }
+        };
+
+        window.addEventListener("resize", handler);
+
+        // Run on load
+        if (window.innerWidth < 700) {
+            console.log('[ERROR] Screen too small')
+            document.getElementsByClassName('gameFlex__container')[0].style = 'display: none;';
+        }
+
+        return () => {
+            window.removeEventListener("resize", handler);
+        };
+    }, []);
+
     // Every time timeout time changes, update the instructions
     React.useEffect(() => {
         if (timeoutTime === 0) {
@@ -289,8 +314,7 @@ export default function Game() {
             setInstructions(
                 <p>
                     Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                    <i className="fa-solid fa-play"></i> vai atsarpes
-                    taustiņu.
+                    <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
                 </p>
             );
             return;
@@ -299,17 +323,12 @@ export default function Game() {
         if (timeoutTime < 11) {
             setInstructions(
                 <p>
-                    <i className="fa-solid fa-triangle-exclamation"></i>{" "}
-                    <br />
+                    <i className="fa-solid fa-triangle-exclamation"></i> <br />
                     Minūtes pārtraukums: {timeoutTime} sekundes
                 </p>
             );
-        } else if (timeoutTime < 60){
-            setInstructions(
-                <p>
-                    Minūtes pārtraukums: {timeoutTime} sekundes
-                </p>
-            );
+        } else if (timeoutTime < 60) {
+            setInstructions(<p>Minūtes pārtraukums: {timeoutTime} sekundes</p>);
         }
     }, [timeoutTime]);
 
@@ -545,7 +564,35 @@ export default function Game() {
     const addPoints = (team, points) => {
         if (disabled) return;
         if (pause) return;
-        // setDisabled(true);
+
+        const game = gameData;
+
+        if (team === 1) {
+            if (points === 2) {
+                game.team12points += 1;
+            } else if (points === 3) {
+                game.team13points += 1;
+            }
+
+            game.team1lostpoints += 1;
+
+            if (game.team1points+points === game.team2points) {
+                game.timestied += 1;
+            }
+
+        } else {
+            if (points === 2) {
+                game.team22points += 1;
+            } else if (points === 3) {
+                game.team23points += 1;
+            }
+
+            game.team2lostpoints += 1;
+
+            if (game.team2points+points === game.team1points) {
+                game.timestied += 1;
+            }
+        }
 
         // Get animation ready
         document.getElementById("team" + team + "add").innerText = `+${points}`;
@@ -557,7 +604,6 @@ export default function Game() {
             document
                 .getElementById("team" + team + "points")
                 .classList.remove("active");
-            // setDisabled(false);
         }, 1500);
 
         // Add points to the team after 0.5s delay, to avoid showing before animation
@@ -580,6 +626,7 @@ export default function Game() {
                 }));
             }
         }, 500);
+
     };
 
     // Add or remove fouls from the team
@@ -732,7 +779,7 @@ export default function Game() {
                 }));
             } else {
                 console.log("[WARN] Team 1 has no more timeouts left.");
-                return
+                return;
             }
         } else if (team === 2) {
             if (timeouts.team2 < 6) {
@@ -745,7 +792,7 @@ export default function Game() {
                 }));
             } else {
                 console.log("[WARN] Team 2 has no more timeouts left.");
-                return
+                return;
             }
         }
 
@@ -865,6 +912,7 @@ export default function Game() {
                 team2points: gameData.team2points,
                 team1Blocks: gameData.team1blocks,
                 team13points: gameData.team13points,
+                // Cik x iemests pretinieka grozā 
                 team1LostPoints: gameData.team1lostpoints,
                 team12points: gameData.team12points,
                 team2Blocks: gameData.team2blocks,
@@ -885,6 +933,77 @@ export default function Game() {
             sendToServer(values, null);
         }
     }, [gameData]);
+
+    // Show foul modal
+    const showFoulModal = (team) => {
+        if (disabled) return;
+        if (!pause) pauseHandler();
+
+        const modal = document.getElementById("foulOverlay");
+        const detailsArray = team ? fouls.team1details : fouls.team2details;
+        const tableArray = [];
+
+        for (let i = 0; i < detailsArray.length; i++) {
+            // check if value is in tableArray
+            let includes = false;
+            for (let j = 0; j < tableArray.length; j++) {
+                if (tableArray[j][0] === detailsArray[i]) {
+                    includes = j;
+                    break;
+                }
+            }
+            if (includes !== false) {
+                tableArray[includes][1] += 1;
+            } else {
+                // if it isn't, add it to the tableArray
+                tableArray.push([detailsArray[i], 1]);
+            }
+        }
+
+        setFoulModalContent(
+                <div className="foulOverlay">
+                    <i
+                        className="fa-solid fa-close"
+                        onClick={(e) =>
+                            (e.target.parentNode.parentNode.style.display =
+                                "none")
+                        }
+                    ></i>
+                    <h2>{team ? team1.name : team2.name} piezīmes</h2>
+                    <h4>
+                        Kopā:{" "}
+                        {team
+                            ? fouls.team1details.length
+                            : fouls.team2details.length}
+                    </h4>
+                    <table>
+                        <tbody>
+                        {tableArray.map((item, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td>{item[0]}</td>
+                                    <td>
+                                        {item[1] > 4
+                                            ? [...Array(item[0])].map(
+                                                  (e, i) => (
+                                                      <span className="circle red"></span>
+                                                  )
+                                              )
+                                            : [...Array(item[1])].map(
+                                                  (e, i) => (
+                                                      <span className="circle"></span>
+                                                  )
+                                              )}
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        modal.style = "display: flex;";
+    };
 
     return (
         <div className="game__container">
@@ -925,6 +1044,7 @@ export default function Game() {
                                 ? "foul__container full"
                                 : "foul__container"
                         }
+                        onClick={() => showFoulModal(1)}
                     >
                         <span
                             className={
@@ -1037,6 +1157,7 @@ export default function Game() {
                                 ? "foul__container full"
                                 : "foul__container"
                         }
+                        onClick={() => showFoulModal(0)}
                     >
                         <span
                             className={
@@ -1155,6 +1276,20 @@ export default function Game() {
                     />
                     <button className="submitNr">OK &rarr;</button>
                 </div>
+            </div>
+
+            <div className="foulOverlay__cont" id="foulOverlay">
+                {foulModalContent}
+            </div>
+            <div className="smallScreenOverlay" style={windowWidth < 700 ? {display: 'flex'} : {display: 'none'}}>
+                <h1>Atvainojamies, uz šī ekrāna nevar skaitīt spēles statistiku</h1>
+                <p>Pamēģiniet:
+                    <ul>
+                        <li>Pagriezt ierīci horizontāli</li>
+                        <li>Izmantot citu ierīci/ekrānu</li>
+                    </ul>
+                </p>
+                <p>Ekrāni šaurāki par 700px netiek atbalstīti. (jums {windowWidth}px)</p>
             </div>
         </div>
     );
