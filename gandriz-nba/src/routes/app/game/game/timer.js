@@ -1,6 +1,3 @@
-// Create a function that posts a tick message every 100ms and a function that stops the timer
-// This is a web worker
-
 let timer;
 
 onmessage = e => {
@@ -13,6 +10,10 @@ onmessage = e => {
         console.log('START TIMEOUT');
         timer = setInterval(() => {
             postMessage('TICK TIMEOUT');
+        }, e.data.interval);
+    } else if (e.data.message === 'START 24S') {
+        timer = setInterval(() => {
+            postMessage('TICK 24S');
         }, e.data.interval);
     }
 }

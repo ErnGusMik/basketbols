@@ -1,4 +1,4 @@
-// TODO: set up to send: most points in row, lead changes, biggest lead, best players (add modal!)
+// TODO: 24s, 14s timer (send to server, pause on pause, reset on quarter end, start auto, fix x.0 when showed)
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -13,11 +13,26 @@ export default function Game() {
     const navigate = useNavigate();
     const params = useParams();
     const timer = useRef();
+    const timer24s = useRef();
 
     // Set states
     const [gameData, setGameData] = React.useState({
         team1points: 0,
         team2points: 0,
+    });
+
+    const [statisticsData, setStatisticsData] = React.useState({
+        team1: {
+            mostPointsInRow: 0,
+            biggestLead: 0,
+            currentPointsInRow: 0,
+        },
+        team2: {
+            mostPointsInRow: 0,
+            biggestLead: 0,
+            currentPointsInRow: 0,
+        },
+        previousTeam: null,
     });
 
     const [instructions, setInstructions] = React.useState(
@@ -38,6 +53,7 @@ export default function Game() {
     const [pause, setPause] = React.useState(true);
     const [time, setTime] = React.useState(6000); // 10 minutes in deciseconds
     const [timeoutTime, setTimeoutTime] = React.useState(60); // 1 minute in seconds
+    const [time24s, setTime24s] = React.useState(240); // 24 seconds in deciseconds
     const [quarter, setQuarter] = React.useState(1);
     const [timeInterval, setTimeInterval] = React.useState(null);
 
@@ -138,7 +154,6 @@ export default function Game() {
 
     // Create public game
     const createPublicGame = async () => {
-        console.log("Creating public game");
         if (gameData.public_id) {
             console.log("[INFO] Public game data found");
             const request = await fetch(
@@ -153,7 +168,6 @@ export default function Game() {
             );
             let response = await request.json();
             response = response[0];
-            console.log(response);
 
             setQuarter(response.quarter);
             setGameData((prev) => ({
@@ -161,6 +175,7 @@ export default function Game() {
                 team1points: response.team1_points,
                 team2points: response.team2_points,
             }));
+
             setFouls((prev) => ({
                 ...prev,
                 team1: response.team1_fouls,
@@ -168,6 +183,7 @@ export default function Game() {
                 team1details: JSON.parse(response.team1_fouls_details),
                 team2details: JSON.parse(response.team2_fouls_details),
             }));
+
             setTimeouts((prev) => ({
                 ...prev,
                 team1: response.team1_timeouts,
@@ -178,6 +194,7 @@ export default function Game() {
                 setStart("true");
                 setPause(true);
                 setTime(response.game_time);
+
                 setInstructions(
                     <p>
                         Spēle apturēta! Lai turpinātu spēli, spied{" "}
@@ -187,6 +204,7 @@ export default function Game() {
                 );
             } else if (!response.paused) {
                 setStart("true");
+
                 if (pause) {
                     setTimeInterval(
                         setInterval(() => {
@@ -194,15 +212,15 @@ export default function Game() {
                         }, 100)
                     );
                 }
+
                 setPause(false);
+
                 const updateTime = new Date(response.timestamp).getTime();
                 const currentTime = new Date().getTime();
                 const gameTime =
                     response.game_time -
                     Math.floor((currentTime - updateTime) / 100);
-                console.log(gameTime);
-                console.log(response.game_time);
-                console.log((currentTime - updateTime) / 100);
+
                 setTime(gameTime);
                 setInstructions(
                     <p>
@@ -236,6 +254,7 @@ export default function Game() {
                 }),
             }
         );
+
         const response = await request.json();
         setGameData((prev) => ({
             ...prev,
@@ -252,6 +271,7 @@ export default function Game() {
         setDisabled(false);
     };
 
+    // ! ---
     // Check if user has access token
     React.useEffect(() => {
         if (!localStorage.getItem("access_token")) {
@@ -260,8 +280,10 @@ export default function Game() {
         final();
 
         timer.current = new Worker(new URL("./timer.js", import.meta.url));
+        timer24s.current = new Worker(new URL("./timer.js", import.meta.url));
         return () => {
             timer.current.terminate();
+            timer24s.current.terminate();
         };
     }, []);
 
@@ -272,13 +294,17 @@ export default function Game() {
                 setTime((prev) => prev - 1);
             } else if (e.data === "TICK TIMEOUT") {
                 setTimeoutTime((prev) => prev - 1);
+            } else if (e.data === "TICK 24S") {
+                setTime24s((prev) => prev - 1);
             }
         };
 
         timer.current.addEventListener("message", (e) => handler(e));
+        timer24s.current.addEventListener("message", (e) => handler(e));
 
         return () => {
             timer.current.removeEventListener("message", (e) => handler(e));
+            timer24s.current.removeEventListener("message", (e) => handler(e));
         };
     }, []);
 
@@ -287,10 +313,14 @@ export default function Game() {
         const handler = () => {
             setWindowWidth(window.innerWidth);
             if (window.innerWidth < 700) {
-                console.log('[ERROR] Screen too small')
-                document.getElementsByClassName('gameFlex__container')[0].style = 'display: none;';
+                console.log("[ERROR] Screen too small");
+                document.getElementsByClassName(
+                    "gameFlex__container"
+                )[0].style = "display: none;";
             } else {
-                document.getElementsByClassName('gameFlex__container')[0].style = 'display: flex;';
+                document.getElementsByClassName(
+                    "gameFlex__container"
+                )[0].style = "display: flex;";
             }
         };
 
@@ -298,8 +328,9 @@ export default function Game() {
 
         // Run on load
         if (window.innerWidth < 700) {
-            console.log('[ERROR] Screen too small')
-            document.getElementsByClassName('gameFlex__container')[0].style = 'display: none;';
+            console.log("[ERROR] Screen too small");
+            document.getElementsByClassName("gameFlex__container")[0].style =
+                "display: none;";
         }
 
         return () => {
@@ -561,38 +592,109 @@ export default function Game() {
     };
 
     // Add points to the team
-    const addPoints = (team, points) => {
+    const addPoints = async (team, points) => {
         if (disabled) return;
         if (pause) return;
 
+        pauseHandler();
+
         const game = gameData;
+        const modal = await showModal();
+
+        if (!modal || modal == "") return;
+
+        game.team1bestplayers = JSON.parse(game.team1bestplayers);
+        game.team2bestplayers = JSON.parse(game.team2bestplayers);
 
         if (team === 1) {
+            // Points by 1, 2 or 3
             if (points === 2) {
                 game.team12points += 1;
+                game.team1bestplayers.points2 += modal + ";";
             } else if (points === 3) {
                 game.team13points += 1;
+                game.team1bestplayers.points3 += modal + ";";
+            } else {
+                game.team1bestplayers.points1 += modal + ";";
             }
 
+            // Lost points (points other team scored, dunno why this is here but ok)
             game.team1lostpoints += 1;
 
-            if (game.team1points+points === game.team2points) {
+            // Check if game is tied
+            if (game.team1points + points === game.team2points) {
                 game.timestied += 1;
             }
 
+            // Check if team has biggest lead now
+            if (
+                game.team1points + points - game.team2points >
+                game.team1biggestlead
+            ) {
+                game.team1biggestlead =
+                    game.team1points + points - game.team2points;
+            }
+
+            // Check if team has most points in a row
+            if (statisticsData.previousTeam === 1) {
+                statisticsData.team1.currentPointsInRow += points;
+                if (
+                    statisticsData.team1.currentPointsInRow >
+                    statisticsData.team1.mostPointsInRow
+                ) {
+                    statisticsData.team1.mostPointsInRow =
+                        statisticsData.team1.currentPointsInRow;
+                    gameData.team1mostpointsinrow =
+                        statisticsData.team1.mostPointsInRow;
+                }
+            } else {
+                statisticsData.team1.currentPointsInRow = points;
+            }
         } else {
             if (points === 2) {
                 game.team22points += 1;
+                game.team2bestplayers.points2 += modal + ";";
             } else if (points === 3) {
                 game.team23points += 1;
+                game.team2bestplayers.points3 += modal + ";";
+            } else {
+                game.team2bestplayers.points1 += modal + ";";
             }
 
             game.team2lostpoints += 1;
 
-            if (game.team2points+points === game.team1points) {
+            if (game.team2points + points === game.team1points) {
                 game.timestied += 1;
             }
+
+            if (
+                game.team2points + points - game.team1points >
+                game.team2biggestlead
+            ) {
+                game.team2biggestlead =
+                    game.team2points + points - game.team1points;
+            }
+
+            if (statisticsData.previousTeam === 2) {
+                statisticsData.team2.currentPointsInRow += points;
+                if (
+                    statisticsData.team2.currentPointsInRow >
+                    statisticsData.team2.mostPointsInRow
+                ) {
+                    statisticsData.team2.mostPointsInRow =
+                        statisticsData.team2.currentPointsInRow;
+                    gameData.team2mostpointsinrow =
+                        statisticsData.team2.mostPointsInRow;
+                }
+            } else {
+                statisticsData.team2.currentPointsInRow = points;
+            }
         }
+
+        game.team1bestplayers = JSON.stringify(game.team1bestplayers);
+        game.team2bestplayers = JSON.stringify(game.team2bestplayers);
+
+        setGameData(game);
 
         // Get animation ready
         document.getElementById("team" + team + "add").innerText = `+${points}`;
@@ -626,7 +728,6 @@ export default function Game() {
                 }));
             }
         }, 500);
-
     };
 
     // Add or remove fouls from the team
@@ -799,6 +900,23 @@ export default function Game() {
         timer.current.postMessage({ message: "START TIMEOUT", interval: 1000 });
     };
 
+    // Handle 24s timer
+    const handle24s = (seconds) => {
+        if (disabled) return;
+
+        setTime24s(seconds*10);
+        timer24s.current.postMessage({ message: "START 24S", interval: 100 });
+    };
+
+    // Check if 24s timer has ended
+   React.useEffect(() => {
+        if (time24s === 0) {
+            timer24s.current.postMessage("STOP");
+            console.log("[INFO] 24s timer has ended.");
+            return;
+        }
+    }, [time24s]); 
+
     // Keyboard shortcuts
     const keyDown = (e) => {
         const event = new MouseEvent("mousedown", {
@@ -912,7 +1030,7 @@ export default function Game() {
                 team2points: gameData.team2points,
                 team1Blocks: gameData.team1blocks,
                 team13points: gameData.team13points,
-                // Cik x iemests pretinieka grozā 
+                // Cik x iemests pretinieka grozā
                 team1LostPoints: gameData.team1lostpoints,
                 team12points: gameData.team12points,
                 team2Blocks: gameData.team2blocks,
@@ -929,7 +1047,6 @@ export default function Game() {
                 team2BestPlayers: gameData.team2bestplayers,
                 id: gameData.id,
             };
-            console.log(values);
             sendToServer(values, null);
         }
     }, [gameData]);
@@ -961,23 +1078,22 @@ export default function Game() {
         }
 
         setFoulModalContent(
-                <div className="foulOverlay">
-                    <i
-                        className="fa-solid fa-close"
-                        onClick={(e) =>
-                            (e.target.parentNode.parentNode.style.display =
-                                "none")
-                        }
-                    ></i>
-                    <h2>{team ? team1.name : team2.name} piezīmes</h2>
-                    <h4>
-                        Kopā:{" "}
-                        {team
-                            ? fouls.team1details.length
-                            : fouls.team2details.length}
-                    </h4>
-                    <table>
-                        <tbody>
+            <div className="foulOverlay">
+                <i
+                    className="fa-solid fa-close"
+                    onClick={(e) =>
+                        (e.target.parentNode.parentNode.style.display = "none")
+                    }
+                ></i>
+                <h2>{team ? team1.name : team2.name} piezīmes</h2>
+                <h4>
+                    Kopā:{" "}
+                    {team
+                        ? fouls.team1details.length
+                        : fouls.team2details.length}
+                </h4>
+                <table>
+                    <tbody>
                         {tableArray.map((item, index) => {
                             return (
                                 <tr key={index}>
@@ -998,10 +1114,10 @@ export default function Game() {
                                 </tr>
                             );
                         })}
-                        </tbody>
-                    </table>
-                </div>
-            );
+                    </tbody>
+                </table>
+            </div>
+        );
         modal.style = "display: flex;";
     };
 
@@ -1102,6 +1218,20 @@ export default function Game() {
                 </div>
 
                 <div className="flexCont" id="adminGameInstructions">
+                    <div className="btnCont">
+                        <KeyboardBtn
+                            pointer
+                            text="24"
+                            id="24s_button"
+                            onClick={() => handle24s(24)}
+                        />
+                        <KeyboardBtn
+                            pointer
+                            text="14"
+                            id="14s_button"
+                            onClick={() => handle24s(14)}
+                        />
+                    </div>
                     <span
                         className={
                             disabled
@@ -1215,10 +1345,8 @@ export default function Game() {
                 </div>
             </div>
             <div className="gameInfo">
+                <h5 style={time24s > 50 ? { margin: "0" } : { margin: '0', color: 'red'}}>{time24s > 100 ? Math.floor(time24s / 10) : !Number.isInteger(time / 100) ? time24s/10 : time24s/10 + '.0'}</h5>
                 <h3>
-                    {/* {time % 600 > 9
-                        ? (time - (time % 60)) / 60 + ":" + (time % 60)
-                        : (time - (time % 60)) / 60 + ":" + "0" + (time % 60)} */}
                     {time % 600 > 99
                         ? // If deciseconds are more than 99 (more than 10s, no matter about minutes)
                           time > 599
@@ -1281,15 +1409,28 @@ export default function Game() {
             <div className="foulOverlay__cont" id="foulOverlay">
                 {foulModalContent}
             </div>
-            <div className="smallScreenOverlay" style={windowWidth < 700 ? {display: 'flex'} : {display: 'none'}}>
-                <h1>Atvainojamies, uz šī ekrāna nevar skaitīt spēles statistiku</h1>
-                <p>Pamēģiniet:
+            <div
+                className="smallScreenOverlay"
+                style={
+                    windowWidth < 700
+                        ? { display: "flex" }
+                        : { display: "none" }
+                }
+            >
+                <h1>
+                    Atvainojamies, uz šī ekrāna nevar skaitīt spēles statistiku
+                </h1>
+                <p>
+                    Pamēģiniet:
                     <ul>
                         <li>Pagriezt ierīci horizontāli</li>
                         <li>Izmantot citu ierīci/ekrānu</li>
                     </ul>
                 </p>
-                <p>Ekrāni šaurāki par 700px netiek atbalstīti. (jums {windowWidth}px)</p>
+                <p>
+                    Ekrāni šaurāki par 700px netiek atbalstīti. (jums{" "}
+                    {windowWidth}px)
+                </p>
             </div>
         </div>
     );
