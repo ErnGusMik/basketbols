@@ -1,4 +1,4 @@
-// TODO: 24s, 14s timer (send to server, pause on pause, reset on quarter end, start auto, fix x.0 when showed)
+// TODO: styles for 24s, 14s buttons (tooo wide on thin screens), get updates from server (for multiple device control)
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -194,6 +194,7 @@ export default function Game() {
                 setStart("true");
                 setPause(true);
                 setTime(response.game_time);
+                setTime24s(response.timer_24s);
 
                 setInstructions(
                     <p>
@@ -204,15 +205,6 @@ export default function Game() {
                 );
             } else if (!response.paused) {
                 setStart("true");
-
-                if (pause) {
-                    setTimeInterval(
-                        setInterval(() => {
-                            setTime((prev) => prev - 1);
-                        }, 100)
-                    );
-                }
-
                 setPause(false);
 
                 const updateTime = new Date(response.timestamp).getTime();
@@ -220,8 +212,19 @@ export default function Game() {
                 const gameTime =
                     response.game_time -
                     Math.floor((currentTime - updateTime) / 100);
+                const time24s =
+                    response.timer_24s -
+                    Math.floor((currentTime - updateTime) / 100);
 
                 setTime(gameTime);
+                setTime24s(time24s);
+
+                timer24s.current.postMessage({
+                    message: "START 24S",
+                    interval: 100,
+                });
+                timer.current.postMessage({ message: "START", interval: 100 });
+
                 setInstructions(
                     <p>
                         Spēle turpinās! Lai apturētu spēli, spied{" "}
@@ -281,6 +284,7 @@ export default function Game() {
 
         timer.current = new Worker(new URL("./timer.js", import.meta.url));
         timer24s.current = new Worker(new URL("./timer.js", import.meta.url));
+
         return () => {
             timer.current.terminate();
             timer24s.current.terminate();
@@ -305,6 +309,7 @@ export default function Game() {
         return () => {
             timer.current.removeEventListener("message", (e) => handler(e));
             timer24s.current.removeEventListener("message", (e) => handler(e));
+
         };
     }, []);
 
@@ -492,9 +497,13 @@ export default function Game() {
                         team2_timeouts: liveData.team2_timeouts
                             ? liveData.team2_timeouts
                             : timeouts.team2,
+                        time_24s: liveData.time_24s
+                            ? liveData.time_24s
+                            : time24s,
                     }),
                 }
             );
+            console.log(liveData.time_24s);
             console.log(
                 "[INFO] Update status from server (live db): " + request.status
             );
@@ -542,6 +551,10 @@ export default function Game() {
                 console.log(
                     `[START] Game started at ${Date.now()} seconds since unix epoch.`
                 );
+                timer24s.current.postMessage({
+                    message: "START 24S",
+                    interval: 100,
+                });
             }, 11000);
 
             return;
@@ -552,6 +565,7 @@ export default function Game() {
             setPause(true);
             sendToServer(null, { paused: true });
             timer.current.postMessage({ message: "STOP" });
+            timer24s.current.postMessage({ message: "STOP" });
             console.log(`[PAUSE] Game paused at ${time} seconds remaining.`);
 
             setInstructions(
@@ -567,10 +581,20 @@ export default function Game() {
         // If game is paused, resume it
         if (pause) {
             setPause(false);
-            sendToServer(null, { paused: false });
+            if (time24s <= 0) {
+                setTime24s(240);
+                sendToServer(null, { paused: false, time_24s: 240 });
+            } else {
+                sendToServer(null, { paused: false });
+            }
 
             timer.current.postMessage({
                 message: "START",
+                interval: 100,
+            });
+
+            timer24s.current.postMessage({
+                message: "START 24S",
                 interval: 100,
             });
 
@@ -903,19 +927,20 @@ export default function Game() {
     // Handle 24s timer
     const handle24s = (seconds) => {
         if (disabled) return;
-
-        setTime24s(seconds*10);
+        sendToServer(null, { time_24s: seconds * 10 });
+        setTime24s(seconds * 10);
+        if (pause) return;
         timer24s.current.postMessage({ message: "START 24S", interval: 100 });
     };
 
     // Check if 24s timer has ended
-   React.useEffect(() => {
-        if (time24s === 0) {
+    React.useEffect(() => {
+        if (time24s <= 0) {
             timer24s.current.postMessage("STOP");
             console.log("[INFO] 24s timer has ended.");
-            return;
+            if (!pause) pauseHandler();
         }
-    }, [time24s]); 
+    }, [time24s]);
 
     // Keyboard shortcuts
     const keyDown = (e) => {
@@ -1345,7 +1370,19 @@ export default function Game() {
                 </div>
             </div>
             <div className="gameInfo">
-                <h5 style={time24s > 50 ? { margin: "0" } : { margin: '0', color: 'red'}}>{time24s > 100 ? Math.floor(time24s / 10) : !Number.isInteger(time / 100) ? time24s/10 : time24s/10 + '.0'}</h5>
+                <h5
+                    style={
+                        time24s > 50
+                            ? { margin: "0" }
+                            : { margin: "0", color: "red" }
+                    }
+                >
+                    {time24s > 100
+                        ? Math.floor(time24s / 10)
+                        : !Number.isInteger((time24s % 240) / 10)
+                        ? time24s / 10
+                        : time24s / 10 + ".0"}
+                </h5>
                 <h3>
                     {time % 600 > 99
                         ? // If deciseconds are more than 99 (more than 10s, no matter about minutes)

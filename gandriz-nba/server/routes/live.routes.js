@@ -48,6 +48,7 @@ const updateLiveGame = async (req, res, next) => {
         req.body.team2_timeouts,
         req.body.team1FoulDetails,
         req.body.team2FoulDetails,
+        req.body.time_24s,
         userID,
     ];
     await games.updatePublicGame(...values);
