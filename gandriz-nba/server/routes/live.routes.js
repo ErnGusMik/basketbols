@@ -51,6 +51,7 @@ const updateLiveGame = async (req, res, next) => {
         req.body.time_24s,
         userID,
     ];
+    console.log(values);
     await games.updatePublicGame(...values);
 
     const gameId = req.params.gameId;

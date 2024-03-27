@@ -1,4 +1,4 @@
-// TODO: styles for 24s, 14s buttons (tooo wide on thin screens), get updates from server (for multiple device control)
+// TODO: FIX: multiple client control -> won't pause on click (when sending pause=true, pause ALREADY is true), 24s click not updating, foul adds infinite loop
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -237,6 +237,8 @@ export default function Game() {
                 );
             }
 
+            getServerUpdates(gameData.public_id);
+
             return;
         }
         const request = await fetch(
@@ -259,11 +261,142 @@ export default function Game() {
         );
 
         const response = await request.json();
+        getServerUpdates(response.id);
         setGameData((prev) => ({
             ...prev,
             public_id: response.id,
         }));
     };
+
+    // Get updates from the server
+    const getServerUpdates = async (id) => {
+        if (!gameData.public_id) return;
+        const eventStream = new EventSource(
+            "http://localhost:8080/api/live/games/" + id
+        );
+        eventStream.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            console.log(data);
+            console.log(
+                data.paused !== pause
+                    ? "NOT EQUAL"
+                    : "EQUAL NOTHING HAPPENING -- pause: " +
+                          pause +
+                          ", sent: " +
+                          data.paused
+            );
+
+            if (data.paused !== pause) {
+                if (!start) setStart("true");
+                if (data.paused) {
+                    setPause(true);
+                    timer.current.postMessage({ message: "STOP" });
+                    timer24s.current.postMessage({ message: "STOP" });
+                    console.log(
+                        `[PAUSE] Game paused at ${time} seconds remaining.`
+                    );
+
+                    setInstructions(
+                        <p>
+                            Spēle apturēta! Lai turpinātu spēli, spied{" "}
+                            <i className="fa-solid fa-play"></i> vai atsarpes
+                            taustiņu.
+                        </p>
+                    );
+                } else {
+                    console.log(pause);
+
+                    setPause(false);
+                    if (time24s <= 0) {
+                        setTime24s(240);
+                        sendToServer(null, { time_24s: 240 });
+                    }
+
+                    timer.current.postMessage({
+                        message: "START",
+                        interval: 100,
+                    });
+
+                    timer24s.current.postMessage({
+                        message: "START 24S",
+                        interval: 100,
+                    });
+
+                    console.log(
+                        `[RESUME] Game resumed at ${time} seconds remaining.`
+                    );
+
+                    setInstructions(
+                        <p>
+                            Spēle turpinās! Lai apturētu spēli, spied{" "}
+                            <i className="fa-solid fa-pause"></i> vai atsarpes
+                            taustiņu.{" "}
+                            <i className="fa-solid fa-circle-xmark"></i> -
+                            piezīme, <i className="fa-solid fa-shield"></i> -
+                            bloks,{" "}
+                            <i className="fa-solid fa-hourglass-start"></i> -
+                            1min pārtraukums.
+                        </p>
+                    );
+                }
+            }
+            if (data.quarter !== quarter) setQuarter(data.quarter);
+
+            if (data.team1_timeouts !== timeouts.team1)
+                setTimeouts((prev) => ({
+                    ...prev,
+                    team1: data.team1_timeouts,
+                }));
+
+            if (data.team2_timeouts !== timeouts.team2)
+                setTimeouts((prev) => ({
+                    ...prev,
+                    team2: data.team2_timeouts,
+                }));
+
+            if (data.time_24s > time24s + 10 || data.time_24s < time24s - 10)
+                setTime24s(data.time_24s);
+
+            if (
+                data.timeRemaining > time + 10 ||
+                data.timeRemaining < time - 10
+            )
+                setTime(data.timeRemaining);
+
+            if (data.team1Points !== gameData.team1points)
+                setGameData((prev) => ({
+                    ...prev,
+                    team1points: data.team1Points,
+                }));
+
+            if (data.team2Points !== gameData.team2points)
+                setGameData((prev) => ({
+                    ...prev,
+                    team2points: data.team2Points,
+                }));
+
+            if (data.team1Fouls !== fouls.team1)
+                setFouls((prev) => ({ ...prev, team1: data.team1Fouls }));
+            if (data.team2Fouls !== fouls.team2)
+                setFouls((prev) => ({ ...prev, team2: data.team2Fouls }));
+
+            if (data.team1FoulDetails !== JSON.stringify(fouls.team1details))
+                setFouls((prev) => ({
+                    ...prev,
+                    team1details: data.team1FoulDetails,
+                }));
+
+            if (data.team2FoulDetails !== JSON.stringify(fouls.team2details))
+                setFouls((prev) => ({
+                    ...prev,
+                    team2details: data.team2FoulDetails,
+                }));
+        };
+    };
+
+    React.useEffect(() => {
+        console.log("paused: " + pause);
+    }, [pause]);
 
     // Bring it all together
     const final = async () => {
@@ -309,7 +442,6 @@ export default function Game() {
         return () => {
             timer.current.removeEventListener("message", (e) => handler(e));
             timer24s.current.removeEventListener("message", (e) => handler(e));
-
         };
     }, []);
 
@@ -317,7 +449,7 @@ export default function Game() {
     React.useEffect(() => {
         const handler = () => {
             setWindowWidth(window.innerWidth);
-            if (window.innerWidth < 700) {
+            if (window.innerWidth < 715) {
                 console.log("[ERROR] Screen too small");
                 document.getElementsByClassName(
                     "gameFlex__container"
@@ -332,7 +464,7 @@ export default function Game() {
         window.addEventListener("resize", handler);
 
         // Run on load
-        if (window.innerWidth < 700) {
+        if (window.innerWidth < 715) {
             console.log("[ERROR] Screen too small");
             document.getElementsByClassName("gameFlex__container")[0].style =
                 "display: none;";
@@ -503,7 +635,6 @@ export default function Game() {
                     }),
                 }
             );
-            console.log(liveData.time_24s);
             console.log(
                 "[INFO] Update status from server (live db): " + request.status
             );
@@ -528,7 +659,7 @@ export default function Game() {
         }
 
         // If game has not started, start it
-        if (!start) {
+        if (start === false && time >= 6000) {
             setStart(true);
             console.log(`[START] Game starting in 11 seconds.`);
 
@@ -938,6 +1069,7 @@ export default function Game() {
         if (time24s <= 0) {
             timer24s.current.postMessage("STOP");
             console.log("[INFO] 24s timer has ended.");
+            setTime24s(0);
             if (!pause) pauseHandler();
         }
     }, [time24s]);
@@ -1243,7 +1375,7 @@ export default function Game() {
                 </div>
 
                 <div className="flexCont" id="adminGameInstructions">
-                    <div className="btnCont">
+                    <div className="timeBtn__cont">
                         <KeyboardBtn
                             pointer
                             text="24"
@@ -1449,7 +1581,7 @@ export default function Game() {
             <div
                 className="smallScreenOverlay"
                 style={
-                    windowWidth < 700
+                    windowWidth < 715
                         ? { display: "flex" }
                         : { display: "none" }
                 }
@@ -1465,7 +1597,7 @@ export default function Game() {
                     </ul>
                 </p>
                 <p>
-                    Ekrāni šaurāki par 700px netiek atbalstīti. (jums{" "}
+                    Ekrāni šaurāki par 715px netiek atbalstīti. (jums{" "}
                     {windowWidth}px)
                 </p>
             </div>
