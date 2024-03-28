@@ -1,4 +1,4 @@
-// TODO: FIX: multiple client control -> won't pause on click (when sending pause=true, pause ALREADY is true), 24s click not updating, foul adds infinite loop
+// TODO: verify all functions work in multiple client control, remove some console.logs
 // ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -71,6 +71,8 @@ export default function Game() {
 
     const [foulModalContent, setFoulModalContent] = React.useState(null);
     const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
+    const [getUpdates, setGetUpdates] = React.useState(false);
 
     // Set title
     document.title =
@@ -151,6 +153,9 @@ export default function Game() {
             setTeam2(response);
         }
     };
+    // ! ----------------------------------------------
+
+    // ! ----------------------------------------------
 
     // Create public game
     const createPublicGame = async () => {
@@ -237,7 +242,7 @@ export default function Game() {
                 );
             }
 
-            getServerUpdates(gameData.public_id);
+            setGetUpdates(gameData.public_id);
 
             return;
         }
@@ -261,143 +266,151 @@ export default function Game() {
         );
 
         const response = await request.json();
-        getServerUpdates(response.id);
+        setGetUpdates(response.id);
         setGameData((prev) => ({
             ...prev,
             public_id: response.id,
         }));
     };
 
+    // Required for EventSource.onmessage functionality (who tf made this so weird?)
+    const [updateData, setUpdateData] = React.useState(null);
+    const updateRef = React.useRef(updateData);
+
     // Get updates from the server
-    const getServerUpdates = async (id) => {
-        if (!gameData.public_id) return;
-        const eventStream = new EventSource(
-            "http://localhost:8080/api/live/games/" + id
-        );
-        eventStream.onmessage = (e) => {
-            const data = JSON.parse(e.data);
-            console.log(data);
-            console.log(
-                data.paused !== pause
-                    ? "NOT EQUAL"
-                    : "EQUAL NOTHING HAPPENING -- pause: " +
-                          pause +
-                          ", sent: " +
-                          data.paused
-            );
-
-            if (data.paused !== pause) {
-                if (!start) setStart("true");
-                if (data.paused) {
-                    setPause(true);
-                    timer.current.postMessage({ message: "STOP" });
-                    timer24s.current.postMessage({ message: "STOP" });
-                    console.log(
-                        `[PAUSE] Game paused at ${time} seconds remaining.`
-                    );
-
-                    setInstructions(
-                        <p>
-                            Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                            <i className="fa-solid fa-play"></i> vai atsarpes
-                            taustiņu.
-                        </p>
-                    );
-                } else {
-                    console.log(pause);
-
-                    setPause(false);
-                    if (time24s <= 0) {
-                        setTime24s(240);
-                        sendToServer(null, { time_24s: 240 });
-                    }
-
-                    timer.current.postMessage({
-                        message: "START",
-                        interval: 100,
-                    });
-
-                    timer24s.current.postMessage({
-                        message: "START 24S",
-                        interval: 100,
-                    });
-
-                    console.log(
-                        `[RESUME] Game resumed at ${time} seconds remaining.`
-                    );
-
-                    setInstructions(
-                        <p>
-                            Spēle turpinās! Lai apturētu spēli, spied{" "}
-                            <i className="fa-solid fa-pause"></i> vai atsarpes
-                            taustiņu.{" "}
-                            <i className="fa-solid fa-circle-xmark"></i> -
-                            piezīme, <i className="fa-solid fa-shield"></i> -
-                            bloks,{" "}
-                            <i className="fa-solid fa-hourglass-start"></i> -
-                            1min pārtraukums.
-                        </p>
-                    );
-                }
-            }
-            if (data.quarter !== quarter) setQuarter(data.quarter);
-
-            if (data.team1_timeouts !== timeouts.team1)
-                setTimeouts((prev) => ({
-                    ...prev,
-                    team1: data.team1_timeouts,
-                }));
-
-            if (data.team2_timeouts !== timeouts.team2)
-                setTimeouts((prev) => ({
-                    ...prev,
-                    team2: data.team2_timeouts,
-                }));
-
-            if (data.time_24s > time24s + 10 || data.time_24s < time24s - 10)
-                setTime24s(data.time_24s);
-
-            if (
-                data.timeRemaining > time + 10 ||
-                data.timeRemaining < time - 10
-            )
-                setTime(data.timeRemaining);
-
-            if (data.team1Points !== gameData.team1points)
-                setGameData((prev) => ({
-                    ...prev,
-                    team1points: data.team1Points,
-                }));
-
-            if (data.team2Points !== gameData.team2points)
-                setGameData((prev) => ({
-                    ...prev,
-                    team2points: data.team2Points,
-                }));
-
-            if (data.team1Fouls !== fouls.team1)
-                setFouls((prev) => ({ ...prev, team1: data.team1Fouls }));
-            if (data.team2Fouls !== fouls.team2)
-                setFouls((prev) => ({ ...prev, team2: data.team2Fouls }));
-
-            if (data.team1FoulDetails !== JSON.stringify(fouls.team1details))
-                setFouls((prev) => ({
-                    ...prev,
-                    team1details: data.team1FoulDetails,
-                }));
-
-            if (data.team2FoulDetails !== JSON.stringify(fouls.team2details))
-                setFouls((prev) => ({
-                    ...prev,
-                    team2details: data.team2FoulDetails,
-                }));
-        };
-    };
-
     React.useEffect(() => {
-        console.log("paused: " + pause);
-    }, [pause]);
+        if (getUpdates === false) return;
 
+        const eventStream = new EventSource(
+            "http://localhost:8080/api/live/games/" + getUpdates
+        );
+
+        eventStream.onmessage = (e) => {
+            setUpdateData(e.data);
+        };
+
+        eventStream.onerror = (e) => {
+            console.log("[ERROR] Event stream error: " + e);
+            eventStream.close();
+        }
+
+        return () => {
+            eventStream.close();
+        };
+    }, [getUpdates]);
+
+    // Update game data according to server updates
+    React.useEffect(() => {
+        updateRef.current = updateData;
+        if (!updateData) return;
+        const data = JSON.parse(updateData);
+
+        console.log(data);
+
+        if (data.paused !== pause) {
+            setPause(!pause);
+            if (!start) setStart("true");
+            if (data.paused) {
+                timer.current.postMessage({ message: "STOP" });
+                timer24s.current.postMessage({ message: "STOP" });
+                console.log(
+                    `[PAUSE] Game paused at ${time} seconds remaining.`
+                );
+
+                setInstructions(
+                    <p>
+                        Spēle apturēta! Lai turpinātu spēli, spied{" "}
+                        <i className="fa-solid fa-play"></i> vai atsarpes
+                        taustiņu.
+                    </p>
+                );
+            } else {
+                console.log(pause);
+
+                if (time24s <= 0) {
+                    setTime24s(240);
+                    sendToServer(null, { time_24s: 240 });
+                }
+
+                timer.current.postMessage({
+                    message: "START",
+                    interval: 100,
+                });
+
+                timer24s.current.postMessage({
+                    message: "START 24S",
+                    interval: 100,
+                });
+
+                console.log(
+                    `[RESUME] Game resumed at ${time} seconds remaining.`
+                );
+
+                setInstructions(
+                    <p>
+                        Spēle turpinās! Lai apturētu spēli, spied{" "}
+                        <i className="fa-solid fa-pause"></i> vai atsarpes
+                        taustiņu. <i className="fa-solid fa-circle-xmark"></i> -
+                        piezīme, <i className="fa-solid fa-shield"></i> - bloks,{" "}
+                        <i className="fa-solid fa-hourglass-start"></i> - 1min
+                        pārtraukums.
+                    </p>
+                );
+            }
+        }
+        if (data.quarter !== quarter) setQuarter(data.quarter);
+
+        if (data.team1_timeouts !== timeouts.team1)
+            setTimeouts((prev) => ({
+                ...prev,
+                team1: data.team1_timeouts,
+            }));
+
+        if (data.team2_timeouts !== timeouts.team2)
+            setTimeouts((prev) => ({
+                ...prev,
+                team2: data.team2_timeouts,
+            }));
+
+        if (data.time_24s > time24s + 10 || data.time_24s < time24s - 10)
+            setTime24s(data.time_24s);
+
+        if (data.timeRemaining > time + 10 || data.timeRemaining < time - 10)
+            setTime(data.timeRemaining);
+
+        if (data.team1Points !== gameData.team1points)
+            setGameData((prev) => ({
+                ...prev,
+                team1points: data.team1Points,
+            }));
+
+        if (data.team2Points !== gameData.team2points)
+            setGameData((prev) => ({
+                ...prev,
+                team2points: data.team2Points,
+            }));
+
+        if (data.team1Fouls !== fouls.team1)
+            setFouls((prev) => ({ ...prev, team1: data.team1Fouls }));
+        if (data.team2Fouls !== fouls.team2)
+            setFouls((prev) => ({ ...prev, team2: data.team2Fouls }));
+
+        if (data.team1FoulDetails !== JSON.stringify(fouls.team1details))
+            setFouls((prev) => ({
+                ...prev,
+                team1details: JSON.parse(data.team1FoulDetails),
+            }));
+
+        if (data.team2FoulDetails !== JSON.stringify(fouls.team2details))
+            setFouls((prev) => ({
+                ...prev,
+                team2details: JSON.parse(data.team2FoulDetails),
+            }));
+    }, [updateData]);
+
+    // ! ----------------------------------------------
+
+    // ! ----------------------------------------------
     // Bring it all together
     const final = async () => {
         const teamIDs = await getGame();
@@ -957,6 +970,7 @@ export default function Game() {
                 team2FoulDetails: fouls.team2details,
             });
         }
+        console.log(fouls);
     }, [fouls]);
 
     // Add or remove block
