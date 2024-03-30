@@ -55,7 +55,6 @@ export default function Game() {
     const [timeoutTime, setTimeoutTime] = React.useState(60); // 1 minute in seconds
     const [time24s, setTime24s] = React.useState(240); // 24 seconds in deciseconds
     const [quarter, setQuarter] = React.useState(1);
-    const [timeInterval, setTimeInterval] = React.useState(null);
 
     const [fouls, setFouls] = React.useState({
         team1: 0,
@@ -153,14 +152,10 @@ export default function Game() {
             setTeam2(response);
         }
     };
-    // ! ----------------------------------------------
-
-    // ! ----------------------------------------------
 
     // Create public game
     const createPublicGame = async () => {
         if (gameData.public_id) {
-            console.log("[INFO] Public game data found");
             const request = await fetch(
                 "http://localhost:8080/api/live/games/once/" +
                     gameData.public_id,
@@ -195,8 +190,12 @@ export default function Game() {
                 team2: response.team2_timeouts,
             }));
 
-            if (response.paused && response.game_time < 6000) {
-                setStart("true");
+            if (response.paused) {
+                if (response.game_time === 6000 && response.quarter === 1) {
+                    setStart(false);
+                } else {
+                    setStart("true");
+                }
                 setPause(true);
                 setTime(response.game_time);
                 setTime24s(response.timer_24s);
@@ -273,6 +272,7 @@ export default function Game() {
         }));
     };
 
+    // ! SERVER UPDATES
     // Required for EventSource.onmessage functionality (who tf made this so weird?)
     const [updateData, setUpdateData] = React.useState(null);
     const updateRef = React.useRef(updateData);
@@ -292,7 +292,7 @@ export default function Game() {
         eventStream.onerror = (e) => {
             console.log("[ERROR] Event stream error: " + e);
             eventStream.close();
-        }
+        };
 
         return () => {
             eventStream.close();
@@ -305,8 +305,7 @@ export default function Game() {
         if (!updateData) return;
         const data = JSON.parse(updateData);
 
-        console.log(data);
-
+        // Pause handling
         if (data.paused !== pause) {
             setPause(!pause);
             if (!start) setStart("true");
@@ -325,8 +324,6 @@ export default function Game() {
                     </p>
                 );
             } else {
-                console.log(pause);
-
                 if (time24s <= 0) {
                     setTime24s(240);
                     sendToServer(null, { time_24s: 240 });
@@ -358,38 +355,88 @@ export default function Game() {
                 );
             }
         }
+
+        // Quarters
         if (data.quarter !== quarter) setQuarter(data.quarter);
 
-        if (data.team1_timeouts !== timeouts.team1)
+        // Timeouts
+        if (data.team1_timeouts !== timeouts.team1) {
+            setTimeoutTime(60);
             setTimeouts((prev) => ({
                 ...prev,
                 team1: data.team1_timeouts,
             }));
+            timer.current.postMessage({
+                message: "START TIMEOUT",
+                interval: 1000,
+            });
+        }
 
-        if (data.team2_timeouts !== timeouts.team2)
+        if (data.team2_timeouts !== timeouts.team2) {
+            setTimeoutTime(60);
             setTimeouts((prev) => ({
                 ...prev,
                 team2: data.team2_timeouts,
             }));
+            timer.current.postMessage({
+                message: "START TIMEOUT",
+                interval: 1000,
+            });
+        }
 
+        // Time
         if (data.time_24s > time24s + 10 || data.time_24s < time24s - 10)
             setTime24s(data.time_24s);
 
         if (data.timeRemaining > time + 10 || data.timeRemaining < time - 10)
             setTime(data.timeRemaining);
 
-        if (data.team1Points !== gameData.team1points)
-            setGameData((prev) => ({
-                ...prev,
-                team1points: data.team1Points,
-            }));
+        // Points
+        if (data.team1Points !== gameData.team1points) {
+            // Get animation ready
+            document.getElementById("team1add").innerText = `+${
+                data.team1Points - gameData.team1points
+            }`;
+            document.getElementById("team1points").classList.add("active");
 
-        if (data.team2Points !== gameData.team2points)
-            setGameData((prev) => ({
-                ...prev,
-                team2points: data.team2Points,
-            }));
+            setTimeout(() => {
+                document
+                    .getElementById("team1points")
+                    .classList.remove("active");
+            }, 1500);
 
+            // Add points to the team after 0.5s delay, to avoid showing before animation
+            setTimeout(() => {
+                setGameData((prev) => ({
+                    ...prev,
+                    team1points: data.team1Points,
+                }));
+            }, 500);
+        }
+
+        if (data.team2Points !== gameData.team2points) {
+            // Get animation ready
+            document.getElementById("team2add").innerText = `+${
+                data.team2Points - gameData.team2points
+            }`;
+            document.getElementById("team2points").classList.add("active");
+
+            setTimeout(() => {
+                document
+                    .getElementById("team2points")
+                    .classList.remove("active");
+            }, 1500);
+
+            // Add points to the team after 0.5s delay, to avoid showing before animation
+            setTimeout(() => {
+                setGameData((prev) => ({
+                    ...prev,
+                    team2points: data.team2Points,
+                }));
+            }, 500);
+        }
+
+        // Fouls
         if (data.team1Fouls !== fouls.team1)
             setFouls((prev) => ({ ...prev, team1: data.team1Fouls }));
         if (data.team2Fouls !== fouls.team2)
@@ -408,9 +455,6 @@ export default function Game() {
             }));
     }, [updateData]);
 
-    // ! ----------------------------------------------
-
-    // ! ----------------------------------------------
     // Bring it all together
     const final = async () => {
         const teamIDs = await getGame();
@@ -420,7 +464,7 @@ export default function Game() {
         setDisabled(false);
     };
 
-    // ! ---
+    // ! TIMER, RESIZE, LOGIN
     // Check if user has access token
     React.useEffect(() => {
         if (!localStorage.getItem("access_token")) {
@@ -524,6 +568,7 @@ export default function Game() {
         }
     }, [team1, team2]);
 
+    // ! GET & SEND DATA
     // Function to show input modal and get value (async)
     const showModal = async () => {
         window.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -573,10 +618,6 @@ export default function Game() {
                     },
                     body: JSON.stringify(statData),
                 }
-            );
-            console.log(
-                "[INFO] Update status from server (statistics db): " +
-                    request.status
             );
             if (request.status !== 204) {
                 console.log(
@@ -648,9 +689,6 @@ export default function Game() {
                     }),
                 }
             );
-            console.log(
-                "[INFO] Update status from server (live db): " + request.status
-            );
             if (request.status !== 204) {
                 console.log(
                     `[ERROR] Failed to update live game ${id} on server. (live db)`
@@ -664,12 +702,7 @@ export default function Game() {
 
     // Play/pause game
     const pauseHandler = () => {
-        if (disabled === true) {
-            console.log(
-                "[ERROR] Buttons are disabled. Cannot play/pause game. Probably loading data."
-            );
-            return;
-        }
+        if (disabled === true) return;
 
         // If game has not started, start it
         if (start === false && time >= 6000) {
@@ -914,9 +947,7 @@ export default function Game() {
             console.log(
                 "[INFO] Adding foul to team " +
                     team +
-                    " at time " +
-                    Date.now() +
-                    " since unix epoch. (" +
+                    " (" +
                     (parseInt(fouls["team" + team]) + 1) +
                     " fouls total)"
             );
@@ -934,16 +965,13 @@ export default function Game() {
         } else if (e.button == 2) {
             if (fouls["team" + team] > 0) {
                 console.log(
-                    "Removing foul from team " +
+                    "[INFO] Removing foul from team " +
                         team +
-                        " at time " +
-                        Date.now() +
-                        "since unix epoch. (" +
+                        " (" +
                         (parseInt(fouls["team" + team]) - 1) +
                         " fouls total)"
                 );
                 const index = fouls["team" + team + "details"].indexOf(value);
-                console.log(index);
                 if (index == -1) {
                     setDisabled(false);
                     return;
@@ -970,7 +998,6 @@ export default function Game() {
                 team2FoulDetails: fouls.team2details,
             });
         }
-        console.log(fouls);
     }, [fouls]);
 
     // Add or remove block
@@ -979,15 +1006,7 @@ export default function Game() {
 
         // Left click (default) adds a block
         if (e.button == 0) {
-            console.log(
-                "[INFO] Adding block to team " +
-                    team +
-                    " at time " +
-                    Date.now() +
-                    "since unix epoch."
-            );
-
-            console.log(gameData["team" + team + "blocks"]);
+            console.log("[INFO] Adding block to team " + team);
 
             setGameData((prev) => ({
                 ...prev,
@@ -995,13 +1014,7 @@ export default function Game() {
             }));
         } else if (e.button == 2) {
             if (gameData["team" + team + "blocks"] > 0) {
-                console.log(
-                    "[INFO] Removing block from team " +
-                        team +
-                        " at time " +
-                        Date.now() +
-                        "since unix epoch."
-                );
+                console.log("[INFO] Removing block from team " + team);
 
                 setGameData((prev) => ({
                     ...prev,
@@ -1012,7 +1025,7 @@ export default function Game() {
                 console.log("[WARNING] Team has no blocks to remove.");
             }
         } else {
-            console.log("Unknown mouse button clicked.");
+            console.log("[ERROR] Unknown mouse button clicked.");
         }
         document.getElementById("team" + team + "block").style =
             "color: #90ee98; border: 1px solid #90ee98; cursor: pointer; transition: 0.2s;";
@@ -1030,13 +1043,7 @@ export default function Game() {
         if (!pause) pauseHandler();
         setTimeoutTime(60);
 
-        console.log(
-            "[INFO] Adding 1 minute break to team " +
-                team +
-                " at time " +
-                Date.now() +
-                "since unix epoch."
-        );
+        console.log("[INFO] Adding 1 minute break to team " + team);
 
         if (team === 1) {
             if (timeouts.team1 < 6) {
@@ -1145,25 +1152,32 @@ export default function Game() {
     // Check if quarter has ended and set the next one up
     React.useEffect(() => {
         if (time === 0) {
-            clearInterval(timeInterval);
+            timer.current.postMessage("STOP");
+            setDisabled(true);
             setPause(true);
-            setTimeout(() => {
-                setTime(6000);
-                setQuarter((prev) => prev + 1);
-                setFouls((prev) => ({
-                    ...prev,
-                    team1: 0,
-                    team2: 0,
-                }));
-            }, 5000);
+            setTime(0);
+            sendToServer(null, { paused: true, timeRemaining: 0 });
             console.log(`[END] End of quarter ${quarter}.`);
+            if (quarter !== 4) {
+                setTimeout(() => {
+                    setTime(6000);
+                    setQuarter((prev) => prev + 1);
+                    setFouls((prev) => ({
+                        ...prev,
+                        team1: 0,
+                        team2: 0,
+                    }));
+                    setTime24s(240);
+                    setDisabled(false);
+                }, 5000);
+            }
 
             // Set break times
             if (quarter === 1 || quarter === 3) {
                 setInstructions(
                     <p>
-                        Pārtraukums pirms 2. ceturtdaļas. Spēle jāturpina pēc 2
-                        min. (
+                        Pārtraukums pirms {quarter + 1}. ceturtdaļas. Spēle
+                        jāturpina pēc 2 min. (
                         {new Date(
                             Date.now() + 60 * 1000 * 2
                         ).toLocaleTimeString("en-GB")}
@@ -1189,7 +1203,17 @@ export default function Game() {
                         taustiņu.
                     </p>
                 );
+                document.getElementById("gameSpaceBtn").onclick = () => {
+                    navigate(`/game/${gameData.id}/analysis`);
+                };
+                document.getElementById("gameSpaceBtn").style =
+                    "color: var(--keyboardBtn_color); border: 1px solid var(--keyboardBtn_color); cursor: pointer;";
             }
+        }
+
+        if (time <= time24s) {
+            timer24s.current.postMessage("STOP");
+            setTime24s(240);
         }
     }, [time]);
 
@@ -1292,6 +1316,7 @@ export default function Game() {
         modal.style = "display: flex;";
     };
 
+    // Render
     return (
         <div className="game__container">
             <StartAnimation start={start} />
@@ -1416,7 +1441,9 @@ export default function Game() {
                         <i
                             className={
                                 pause
-                                    ? "fa-solid fa-play fa-xl"
+                                    ? quarter === 4 && time === 0
+                                        ? "fa-solid fa-arrow-right fa-xl"
+                                        : "fa-solid fa-play fa-xl"
                                     : "fa-solid fa-pause fa-xl"
                             }
                         ></i>
