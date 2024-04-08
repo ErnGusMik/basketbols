@@ -28,8 +28,6 @@ router.get("/tournaments/:id/stats/best-blockers", routes.getBestBlockers);
 router.get("/tournaments/:id/stats/best-players", routes.getBestPlayers);
 
 router.post("/games/new/public", routes.newPublicGame);
-// router.put("/games/update/public/:id", routes.updatePublicGame);
-// router.get("/games/public/:id", routes.getPublicGame);
 
 router.get("/live/games/:id", liveRoutes.getLiveGame);
 router.get("/live/games/once/:id", liveRoutes.getLiveGameOnce);

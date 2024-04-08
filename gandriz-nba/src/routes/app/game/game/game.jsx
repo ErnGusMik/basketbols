@@ -1,5 +1,3 @@
-// TODO: verify all functions work in multiple client control, remove some console.logs
-// ! No need to follow design exactly -- that is for public page. This is for admin page.
 import React, { useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -1204,7 +1202,7 @@ export default function Game() {
                     </p>
                 );
                 document.getElementById("gameSpaceBtn").onclick = () => {
-                    navigate(`/game/${gameData.id}/analysis`);
+                    navigate(`/app/game/${gameData.id}/analysis`);
                 };
                 document.getElementById("gameSpaceBtn").style =
                     "color: var(--keyboardBtn_color); border: 1px solid var(--keyboardBtn_color); cursor: pointer;";

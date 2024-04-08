@@ -1,0 +1,191 @@
+.analysis__cont {
+    padding: 30px 0;
+}
+
+.analysis__cont .statRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 70%;
+    max-width: 700px;
+    margin: 10px auto;
+    border-radius: 30px;
+    background-color: #f5f5f5;
+}
+
+.top {
+    width: 75% !important;
+    max-width: 750px !important;
+    background-color: #fbcdbb !important;
+    align-items: stretch !important;
+}
+
+.teamCont {
+    width: 40%;
+    padding: 20px;
+    margin: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.teamCont:hover {
+    box-shadow: 0 7px 35px rgba(0, 0, 0, 0.2);
+    padding: 22px 20px;
+    margin: 13px 15px;
+}
+
+.teamCont h2,
+.teamCont h1 {
+    margin: 3px;
+}
+
+.top .vs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fbcdbb;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.top .vs__cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.team2__cont {
+    text-align: right;
+}
+
+.teamCont img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.statSection {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 20px;
+    background-color: #f5f5f5;
+    width: 40%;
+    background: rgba(251, 205, 187, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.statSection:hover {
+    box-shadow: 0 7px 35px rgba(0, 0, 0, 0.2);
+    padding: 12px 10px;
+    margin: 8px 10px;
+}
+
+.statSection p {
+    margin: 3px;
+    text-align: right;
+}
+
+.statSection h2 {
+    margin: 10px;
+    font-size: 2em;
+}
+
+.statVal {
+    margin: 10px 20px;
+    padding: 0 10px;
+}
+
+.statLabel {
+    text-align: center;
+}
+
+.bestPlayers {
+    line-height: 1.5;
+    padding: 15px;
+    background: rgba(251, 205, 187, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
+    color: gray;
+}
+
+.bestPlayers::first-line {
+    color: #daa520;
+}
+
+.bestPlayers:hover {
+    box-shadow: 0 7px 35px rgba(0, 0, 0, 0.2);
+    padding: 17px 15px;
+    margin: 8px 20px;
+}
+
+@media screen and (max-width: 1000px) {
+    .analysis__cont .statRow {
+        width: 90%;
+    }
+    .top {
+        width: 98% !important;
+    }
+
+    .teamCont {
+        width: 45%;
+    }
+
+    .statSection {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .statRow {
+        flex-direction: column;
+    }
+
+    .analysis__cont .statRow {
+        width: 60%;
+    }
+    .top {
+        width: 70% !important;
+    }
+
+    .statSection {
+        width: 90%;
+    }
+
+    .teamCont {
+        width: 90%;
+        text-align: center;
+        margin: 2px 15px;
+    }
+    .teamCont:hover {
+        margin: 0 15px;
+    }
+    .statLabel {
+        margin: 3px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .analysis__cont .statRow {
+        width: 85%;
+    }
+    .top {
+        width: 95% !important;
+    }
+}

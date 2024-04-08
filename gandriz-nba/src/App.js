@@ -27,6 +27,7 @@ import Keyboard from "./routes/app/game/pre-game/keyboard/keyboard";
 import Mouse from "./routes/app/game/pre-game/mouse/mouse";
 import Game404 from "./routes/app/game/pre-game/404/game404";
 import Game from "./routes/app/game/game/game";
+import Analysis from "./routes/app/game/analysis/analysis";
 
 function App() {
     const router = createBrowserRouter([
@@ -102,6 +103,11 @@ function App() {
                                 },
                             ],
                         },
+                        {
+                            path: "/app/game/:id/analysis",
+                            element: <Analysis />,
+                        },
+
                     ],
                     errorElement: <div>Game error</div>,
                 },
