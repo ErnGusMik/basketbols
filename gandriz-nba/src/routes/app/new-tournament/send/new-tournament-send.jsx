@@ -401,7 +401,7 @@ export default function NewTournamentSend() {
                 <span id="sendingNotes" ref={sendingNotes}>
                     Lūdzu, neatsvaidzini lapu!
                 </span>
-                <span id="sendingNotesSub" ref={sendingNotesSub}></span>
+                <span id="sendingNotesSub" ref={sendingNotesSub} />
             </div>
         </div>
     );

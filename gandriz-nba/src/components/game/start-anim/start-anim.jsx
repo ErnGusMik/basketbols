@@ -55,7 +55,7 @@ export default function StartAnimation({ start = false }) {
     return (
         <div className="anim__container">
             <div className="faded__backg">
-                <div className="backg"></div>
+                <div className="backg" />
             </div>
             <h1 className="main__outline" id="outline-top">
                 {go ? "Aiziet" : ""}

@@ -147,7 +147,7 @@ export default function TournamentTeams() {
                 <div className="descriptionCard">
                     <p className="description">{tournament.description}</p>
                     <div className="location">
-                        <i className="fa-solid fa-location-dot fa-lg"></i>
+                        <i className="fa-solid fa-location-dot fa-lg" />
                         <p className="locationText">{tournament.location}</p>
                     </div>
                     <p className="organizer">

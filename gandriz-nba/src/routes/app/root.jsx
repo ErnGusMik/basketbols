@@ -142,9 +142,9 @@ export default function Root() {
 
     return (
         <div className="root">
-            <div className="verticalNav-overlay"></div>
+            <div className="verticalNav-overlay" />
             <div className="verticalNav-menuButton" onClick={showMenu}>
-                <i className="fa-solid fa-bars-staggered"></i>
+                <i className="fa-solid fa-bars-staggered" />
             </div>
             <div className="horizontalNav-main">
                 <div className="horizontalNav-logo">
@@ -154,7 +154,7 @@ export default function Root() {
                 </div>
                 {/* HORIZONTAL BREADCRUMBS */}
                 <div className="horizontalNav-breadcrumbs">
-                    <i className="fa-solid fa-chevron-right horizontalNav-sign"></i>
+                    <i className="fa-solid fa-chevron-right horizontalNav-sign" />
                     <p id="breadcrumbs">{breadcrumbs}</p>
                 </div>
             </div>
@@ -164,7 +164,7 @@ export default function Root() {
                         className="verticalNav-menuButtonClose"
                         onClick={showMenu}
                     >
-                        <i className="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark" />
                     </div>
                     <div className="verticalNav-home">
                         <NavLink
@@ -177,7 +177,7 @@ export default function Root() {
                             end
                             unstable_viewTransition
                         >
-                            <i className="fa-solid fa-house"></i>
+                            <i className="fa-solid fa-house" />
                             <p>Sākums</p>
                         </NavLink>
                         <hr />
@@ -194,7 +194,7 @@ export default function Root() {
                                     }
                                     unstable_viewTransition
                                 >
-                                    <i className="fa-solid fa-basketball"></i>
+                                    <i className="fa-solid fa-basketball" />
                                     <p>{setWidth(tournament.name)}</p>
                                 </NavLink>
                             );
@@ -208,7 +208,7 @@ export default function Root() {
                             }
                             unstable_viewTransition
                         >
-                            <i className="fa-solid fa-plus"></i>
+                            <i className="fa-solid fa-plus" />
                             <p>Jauns turnīrs</p>
                         </NavLink>
                     </div>
@@ -223,7 +223,7 @@ export default function Root() {
                     end
                     unstable_viewTransition
                 >
-                    <i className="fa-solid fa-gear"></i>
+                    <i className="fa-solid fa-gear" />
                     <p>Iestatījumi</p>
                 </NavLink>
             </div>

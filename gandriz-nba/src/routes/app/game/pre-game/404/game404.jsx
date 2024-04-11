@@ -11,7 +11,7 @@ export default function Game404() {
     return (
         <div className="game404">
             <h1>
-                4<i class="fa-solid fa-basketball"></i>4
+                4<i class="fa-solid fa-basketball" />4
             </h1>
             <h2>Mums izskatās, ka esi ieradies nepareizajā stadionā...</h2>
             <p>Mēs neatradām spēli ko meklēji :-(</p>

@@ -96,7 +96,7 @@ export default function Keyboard() {
                 <KeyboardBtn text="H" caption="14s" />
             </div>
             <div className="spaceBtn__cont">
-                <span className="spaceBtn"></span>
+                <span className="spaceBtn" />
                 <p>Pauzēt/turpināt laika atskaiti</p>
             </div>
             <div className="keyboard__readyBtn">

@@ -337,7 +337,7 @@ export default function NewTournament4() {
                                         <span
                                             className="tableError"
                                             id={"tableError-" + group}
-                                        ></span>
+                                         />
                                     </p>
                                     <Table
                                         cols={[

@@ -115,7 +115,7 @@ export default function Game() {
         setInstructions(
             <p>
                 Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied{" "}
-                <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
+                <i className="fa-solid fa-play" /> vai atsarpes taustiņu.
             </p>
         );
 
@@ -201,7 +201,7 @@ export default function Game() {
                 setInstructions(
                     <p>
                         Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                        <i className="fa-solid fa-play"></i> vai atsarpes
+                        <i className="fa-solid fa-play" /> vai atsarpes
                         taustiņu.
                     </p>
                 );
@@ -230,10 +230,10 @@ export default function Game() {
                 setInstructions(
                     <p>
                         Spēle turpinās! Lai apturētu spēli, spied{" "}
-                        <i className="fa-solid fa-pause"></i> vai atsarpes
-                        taustiņu. <i className="fa-solid fa-circle-xmark"></i> -
-                        piezīme, <i className="fa-solid fa-shield"></i> - bloks,{" "}
-                        <i className="fa-solid fa-hourglass-start"></i> - 1min
+                        <i className="fa-solid fa-pause" /> vai atsarpes
+                        taustiņu. <i className="fa-solid fa-circle-xmark" /> -
+                        piezīme, <i className="fa-solid fa-shield" /> - bloks,{" "}
+                        <i className="fa-solid fa-hourglass-start" /> - 1min
                         pārtraukums.
                     </p>
                 );
@@ -317,7 +317,7 @@ export default function Game() {
                 setInstructions(
                     <p>
                         Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                        <i className="fa-solid fa-play"></i> vai atsarpes
+                        <i className="fa-solid fa-play" /> vai atsarpes
                         taustiņu.
                     </p>
                 );
@@ -344,10 +344,10 @@ export default function Game() {
                 setInstructions(
                     <p>
                         Spēle turpinās! Lai apturētu spēli, spied{" "}
-                        <i className="fa-solid fa-pause"></i> vai atsarpes
-                        taustiņu. <i className="fa-solid fa-circle-xmark"></i> -
-                        piezīme, <i className="fa-solid fa-shield"></i> - bloks,{" "}
-                        <i className="fa-solid fa-hourglass-start"></i> - 1min
+                        <i className="fa-solid fa-pause" /> vai atsarpes
+                        taustiņu. <i className="fa-solid fa-circle-xmark" /> -
+                        piezīme, <i className="fa-solid fa-shield" /> - bloks,{" "}
+                        <i className="fa-solid fa-hourglass-start" /> - 1min
                         pārtraukums.
                     </p>
                 );
@@ -537,7 +537,7 @@ export default function Game() {
             setInstructions(
                 <p>
                     Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                    <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
+                    <i className="fa-solid fa-play" /> vai atsarpes taustiņu.
                 </p>
             );
             return;
@@ -546,7 +546,7 @@ export default function Game() {
         if (timeoutTime < 11) {
             setInstructions(
                 <p>
-                    <i className="fa-solid fa-triangle-exclamation"></i> <br />
+                    <i className="fa-solid fa-triangle-exclamation" /> <br />
                     Minūtes pārtraukums: {timeoutTime} sekundes
                 </p>
             );
@@ -710,10 +710,10 @@ export default function Game() {
             setInstructions(
                 <p>
                     Spēle sākusies! Lai apturētu spēli, spied{" "}
-                    <i className="fa-solid fa-pause"></i> vai atsarpes taustiņu.{" "}
-                    <i className="fa-solid fa-circle-xmark"></i> - piezīme,{" "}
-                    <i className="fa-solid fa-shield"></i> - bloks,{" "}
-                    <i className="fa-solid fa-hourglass-start"></i> - 1min
+                    <i className="fa-solid fa-pause" /> vai atsarpes taustiņu.{" "}
+                    <i className="fa-solid fa-circle-xmark" /> - piezīme,{" "}
+                    <i className="fa-solid fa-shield" /> - bloks,{" "}
+                    <i className="fa-solid fa-hourglass-start" /> - 1min
                     pārtraukums.
                 </p>
             );
@@ -746,7 +746,7 @@ export default function Game() {
             setInstructions(
                 <p>
                     Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                    <i className="fa-solid fa-play"></i> vai atsarpes taustiņu.
+                    <i className="fa-solid fa-play" /> vai atsarpes taustiņu.
                 </p>
             );
 
@@ -778,10 +778,10 @@ export default function Game() {
             setInstructions(
                 <p>
                     Spēle turpinās! Lai apturētu spēli, spied{" "}
-                    <i className="fa-solid fa-pause"></i> vai atsarpes taustiņu.{" "}
-                    <i className="fa-solid fa-circle-xmark"></i> - piezīme,{" "}
-                    <i className="fa-solid fa-shield"></i> - bloks,{" "}
-                    <i className="fa-solid fa-hourglass-start"></i> - 1min
+                    <i className="fa-solid fa-pause" /> vai atsarpes taustiņu.{" "}
+                    <i className="fa-solid fa-circle-xmark" /> - piezīme,{" "}
+                    <i className="fa-solid fa-shield" /> - bloks,{" "}
+                    <i className="fa-solid fa-hourglass-start" /> - 1min
                     pārtraukums.
                 </p>
             );
@@ -1197,7 +1197,7 @@ export default function Game() {
                 setInstructions(
                     <p>
                         Spēle beigusies. Lai aizietu uz spēles analīzi, spied{" "}
-                        <i className="fa-solid fa-arrow-right"></i> vai atsarpes
+                        <i className="fa-solid fa-arrow-right" /> vai atsarpes
                         taustiņu.
                     </p>
                 );
@@ -1277,7 +1277,7 @@ export default function Game() {
                     onClick={(e) =>
                         (e.target.parentNode.parentNode.style.display = "none")
                     }
-                ></i>
+                 />
                 <h2>{team ? team1.name : team2.name} piezīmes</h2>
                 <h4>
                     Kopā:{" "}
@@ -1295,12 +1295,12 @@ export default function Game() {
                                         {item[1] > 4
                                             ? [...Array(item[0])].map(
                                                   (e, i) => (
-                                                      <span className="circle red"></span>
+                                                      <span className="circle red" />
                                                   )
                                               )
                                             : [...Array(item[1])].map(
                                                   (e, i) => (
-                                                      <span className="circle"></span>
+                                                      <span className="circle" />
                                                   )
                                               )}
                                     </td>
@@ -1325,7 +1325,7 @@ export default function Game() {
                     <div className="points__cont">
                         <h1 id="team1points">
                             {gameData.team1points} <br />
-                            <div id="team1add"></div>
+                            <div id="team1add" />
                         </h1>
                     </div>
                     <div className="btnCont">
@@ -1360,45 +1360,45 @@ export default function Game() {
                             className={
                                 fouls.team1 >= 1 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team1 >= 2 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team1 >= 3 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team1 >= 4 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team1 >= 5 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                     </div>
                     <div className="btnCont">
                         <KeyboardBtn
                             pointer
-                            text={<i className="fa-solid fa-circle-xmark"></i>}
+                            text={<i className="fa-solid fa-circle-xmark" />}
                             onClick={(e) => addRemoveFoul(e, 1)}
                             id="team1foul"
                         />
                         <KeyboardBtn
                             pointer
-                            text={<i className="fa-solid fa-shield"></i>}
+                            text={<i className="fa-solid fa-shield" />}
                             onClick={(e) => addRemoveBlock(e, 1)}
                             id="team1block"
                         />
                         <KeyboardBtn
                             pointer
                             text={
-                                <i className="fa-solid fa-hourglass-start"></i>
+                                <i className="fa-solid fa-hourglass-start" />
                             }
                             onClick={
                                 timeouts.team1 > 6
@@ -1444,7 +1444,7 @@ export default function Game() {
                                         : "fa-solid fa-play fa-xl"
                                     : "fa-solid fa-pause fa-xl"
                             }
-                        ></i>
+                         />
                     </span>
                     {instructions}
                 </div>
@@ -1489,45 +1489,45 @@ export default function Game() {
                             className={
                                 fouls.team2 >= 1 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team2 >= 2 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team2 >= 3 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team2 >= 4 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                         <span
                             className={
                                 fouls.team2 >= 5 ? "foul active" : "foul"
                             }
-                        ></span>
+                         />
                     </div>
                     <div className="btnCont">
                         <KeyboardBtn
                             pointer
-                            text={<i className="fa-solid fa-circle-xmark"></i>}
+                            text={<i className="fa-solid fa-circle-xmark" />}
                             onClick={(e) => addRemoveFoul(e, 2)}
                             id="team2foul"
                         />
                         <KeyboardBtn
                             pointer
-                            text={<i className="fa-solid fa-shield"></i>}
+                            text={<i className="fa-solid fa-shield" />}
                             onClick={(e) => addRemoveBlock(e, 2)}
                             id="team2block"
                         />
                         <KeyboardBtn
                             pointer
                             text={
-                                <i className="fa-solid fa-hourglass-start"></i>
+                                <i className="fa-solid fa-hourglass-start" />
                             }
                             onClick={
                                 timeouts.team2 > 6

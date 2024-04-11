@@ -39,7 +39,7 @@ export default function FileInput({
           <label htmlFor={inputID}>
             <p>{label}</p>
             <span className="customUplaod">
-              <i className="fa-solid fa-plus"></i>
+              <i className="fa-solid fa-plus" />
               <p>Pievienot bildi</p>
             </span>
           </label>
@@ -58,7 +58,7 @@ export default function FileInput({
             <br />
             {notes2}
           </p>
-          <p id={inputID + "-warning"} className="fileInput-warning"></p>
+          <p id={inputID + "-warning"} className="fileInput-warning" />
         </div>
         <div className="fileInput-image">
           <img id={inputID + "-image"} src={file} alt="Turnīra logo" />

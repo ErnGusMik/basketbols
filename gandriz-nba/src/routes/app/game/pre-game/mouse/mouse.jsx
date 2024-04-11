@@ -41,17 +41,17 @@ export default function Mouse() {
                 <div className="flexCont horizontalCont verticalStart mainBtns">
                     <KeyboardBtn
                         pointer
-                        text={<i class="fa-solid fa-circle-xmark"></i>}
+                        text={<i class="fa-solid fa-circle-xmark" />}
                         caption="+1 piezīme"
                     />
                     <KeyboardBtn
                         pointer
-                        text={<i class="fa-solid fa-shield"></i>}
+                        text={<i class="fa-solid fa-shield" />}
                         caption="+1 bloks"
                     />
                     <KeyboardBtn
                         pointer
-                        text={<i class="fa-solid fa-hourglass-start"></i>}
+                        text={<i class="fa-solid fa-hourglass-start" />}
                         caption="+1 min pārtraukums"
                     />
                 </div>
@@ -61,17 +61,17 @@ export default function Mouse() {
                 <div className="flexCont horizontalCont verticalStart mainBtns">
                     <KeyboardBtn
                         pointer
-                        text={<i class="fa-solid fa-circle-xmark"></i>}
+                        text={<i class="fa-solid fa-circle-xmark" />}
                         caption="+1 piezīme"
                     />
                     <KeyboardBtn
                         pointer
-                        text={<i class="fa-solid fa-shield"></i>}
+                        text={<i class="fa-solid fa-shield" />}
                         caption="+1 bloks"
                     />
                     <KeyboardBtn
                         pointer
-                        text={<i class="fa-solid fa-hourglass-start"></i>}
+                        text={<i class="fa-solid fa-hourglass-start" />}
                         caption="+1 min pārtraukums"
                     />
                 </div>
@@ -82,9 +82,9 @@ export default function Mouse() {
             </div>
             <div className="spaceBtn__cont">
                 <span className="spaceBtn">
-                    <i class="fa-solid fa-play"></i>
+                    <i class="fa-solid fa-play" />
                     <p>/</p>
-                    <i class="fa-solid fa-pause"></i>
+                    <i class="fa-solid fa-pause" />
                 </span>
                 <p>Pauzēt/turpināt laika atskaiti</p>
             </div>

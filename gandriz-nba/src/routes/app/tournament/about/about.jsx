@@ -240,11 +240,11 @@ export default function AboutTournament() {
             if (referee.finals) {
                 finals = (
                     <span className="outer">
-                        <span className="inner"></span>
+                        <span className="inner" />
                     </span>
                 );
             } else {
-                finals = <span className="outer"></span>;
+                finals = <span className="outer" />;
             }
 
             refereeArray.push([referee.name, finals]);
@@ -401,7 +401,7 @@ export default function AboutTournament() {
                 <div className="descriptionCard">
                     <p className="description">{tournament.description}</p>
                     <div className="location">
-                        <i className="fa-solid fa-location-dot fa-lg"></i>
+                        <i className="fa-solid fa-location-dot fa-lg" />
                         <p className="locationText">{tournament.location}</p>
                     </div>
                     <p className="organizer">
@@ -440,7 +440,7 @@ export default function AboutTournament() {
                         .
                     </p>
                     <div className="dates">
-                        <i className="fa-regular fa-calendar fa-lg"></i>
+                        <i className="fa-regular fa-calendar fa-lg" />
                         <p>{tournament.dates}</p>
                     </div>
                 </div>

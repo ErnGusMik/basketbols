@@ -824,7 +824,7 @@ export default function TournamentGames() {
                 <div className="descriptionCard">
                     <p className="description">{tournament.description}</p>
                     <div className="location">
-                        <i className="fa-solid fa-location-dot fa-lg"></i>
+                        <i className="fa-solid fa-location-dot fa-lg" />
                         <p className="locationText">{tournament.location}</p>
                     </div>
                     <p className="organizer">
@@ -834,7 +834,7 @@ export default function TournamentGames() {
                 </div>
             </div>
             <div className="tournamentGamesContainer flexCont">
-                {playoffs.length > 0 ? createPlayoffsChart() : <div></div>}
+                {playoffs.length > 0 ? createPlayoffsChart() : <div />}
 
                 <div className="tableContainer">
                     {games.map((group, index) => {

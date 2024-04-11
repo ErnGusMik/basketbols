@@ -153,10 +153,10 @@ export default function NewTournament3() {
                 referee[0],
                 referee[1] ? (
                     <span className="refereeOuter">
-                        <span className="refereeInner"></span>
+                        <span className="refereeInner" />
                     </span>
                 ) : (
-                    <span className="refereeOuter"></span>
+                    <span className="refereeOuter" />
                 ),
             ]);
         });
@@ -170,7 +170,7 @@ export default function NewTournament3() {
                     <Progress progress={3} />
                     <Button
                         text="Pievienot tiesnesi"
-                        icon={<i className="fa-solid fa-plus"></i>}
+                        icon={<i className="fa-solid fa-plus" />}
                         onClick={addReferee}
                     />
                     <div className="table__container">
@@ -253,7 +253,7 @@ export default function NewTournament3() {
                     </div>
                 </form>
             </div>
-            <div className="overlay" id="overlay3"></div>
+            <div className="overlay" id="overlay3" />
             <div className="addTeam" id="addReferee">
                 <form
                     className="addTeamForm"

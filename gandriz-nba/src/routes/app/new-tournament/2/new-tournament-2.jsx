@@ -378,7 +378,7 @@ export default function NewTournament2() {
                     <Progress progress={2} />
                     <Button
                         text="Pievienot komandu"
-                        icon={<i className="fa-solid fa-plus"></i>}
+                        icon={<i className="fa-solid fa-plus" />}
                         onClick={addTeam}
                         disabled={addedTeamNum >= teamNum}
                     />
@@ -452,7 +452,7 @@ export default function NewTournament2() {
                     </div>
                 </div>
             </div>
-            <div className="overlay" id="overlay"></div>
+            <div className="overlay" id="overlay" />
             <div className="addTeam" id="addTeam">
                 <form
                     className="addTeamForm"
@@ -476,7 +476,7 @@ export default function NewTournament2() {
                     <div className="buttonCont">
                         <Button
                             text="Pievienot rindu"
-                            icon={<i className="fa-solid fa-plus"></i>}
+                            icon={<i className="fa-solid fa-plus" />}
                             onClick={addPlayer}
                         />
                         <p className="tableError">{tableError}</p>

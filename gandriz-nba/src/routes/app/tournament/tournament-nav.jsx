@@ -35,7 +35,7 @@ export default function TournamentNav() {
                                     className={
                                         isActive ? "active tabLine" : "tabLine"
                                     }
-                                ></span>
+                                 />
                             </div>
                         )}
                     </NavLink>
@@ -54,7 +54,7 @@ export default function TournamentNav() {
                                     className={
                                         isActive ? "active tabLine" : "tabLine"
                                     }
-                                ></span>
+                                 />
                             </div>
                         )}
                     </NavLink>
@@ -73,7 +73,7 @@ export default function TournamentNav() {
                                     className={
                                         isActive ? "active tabLine" : "tabLine"
                                     }
-                                ></span>
+                                 />
                             </div>
                         )}
                     </NavLink>
@@ -92,7 +92,7 @@ export default function TournamentNav() {
                                     className={
                                         isActive ? "active tabLine" : "tabLine"
                                     }
-                                ></span>
+                                 />
                             </div>
                         )}
                     </NavLink>

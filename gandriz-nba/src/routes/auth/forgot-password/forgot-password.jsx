@@ -74,7 +74,7 @@ export default function Email() {
         <p className="copy">&copy; Gandrīz NBA 2023</p>
       </div>
       <div className="error-cont" id="error-cont">
-        <i className="fa-solid fa-triangle-exclamation"></i>
+        <i className="fa-solid fa-triangle-exclamation" />
         <p className="error-desc" id="error-desc">
           Konts netika atrasts
         </p>
