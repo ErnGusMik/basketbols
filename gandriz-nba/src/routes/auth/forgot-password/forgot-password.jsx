@@ -17,7 +17,7 @@ export default function Email() {
     });
     const response = await request.json();
     if (!response.error) {
-      document.getElementById("error-desc").innerHTML = 'E-pasts nosūtīts';
+      document.getElementById("error-desc").innerHTML = "E-pasts nosūtīts";
       document.getElementById("error-cont").style.backgroundColor = "#39a845";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
@@ -25,7 +25,6 @@ export default function Email() {
         document.getElementById("error-cont").style.visibility = "hidden";
         document.getElementById("error-cont").style.opacity = "0";
         document.getElementById("error-cont").style.backgroundColor = "red";
-
       }, 3000);
       return;
     } else {
@@ -74,7 +73,7 @@ export default function Email() {
         <p className="copy">&copy; Gandrīz NBA 2023</p>
       </div>
       <div className="error-cont" id="error-cont">
-        <i className="fa-solid fa-triangle-exclamation"></i>
+        <i className="fa-solid fa-triangle-exclamation" />
         <p className="error-desc" id="error-desc">
           Konts netika atrasts
         </p>

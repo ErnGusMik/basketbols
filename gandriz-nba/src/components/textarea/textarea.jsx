@@ -14,7 +14,7 @@ export default function Textarea({
         name={inputID}
         placeholder={placeholder}
         required={required}
-      ></textarea>
+      />
     </div>
   );
 }
