@@ -25,7 +25,7 @@ export default function Login() {
             data-ux_mode="popup"
             data-login_uri="http://localhost:3000/login"
             data-auto_prompt="false"
-           />
+          />
           <div
             class="g_id_signin"
             data-type="standard"
@@ -34,7 +34,7 @@ export default function Login() {
             data-text="signin_with"
             data-size="large"
             data-logo_alignment="left"
-           />
+          />
           {/* ------------------- */}
           <Link to="/">
             <button className="loginButton">

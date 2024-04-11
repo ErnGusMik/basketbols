@@ -3,13 +3,11 @@ import "./reset-password.css";
 import { Link } from "react-router-dom";
 import login from "./../main.jpg";
 
-
 export default function ResetPassword() {
   const manageReset = async (e) => {
     e.preventDefault();
     if (e.target.newPassword.value !== e.target.passwordConfirm.value) {
-      document.getElementById("error-desc").innerHTML =
-        'Paroles nav vienādas!'
+      document.getElementById("error-desc").innerHTML = "Paroles nav vienādas!";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
       setTimeout(() => {
@@ -19,8 +17,7 @@ export default function ResetPassword() {
       return;
     }
     if (e.target.newPassword.value.length < 8) {
-      document.getElementById("error-desc").innerHTML =
-        'Parole pārāk īsa!'
+      document.getElementById("error-desc").innerHTML = "Parole pārāk īsa!";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
       setTimeout(() => {
@@ -91,7 +88,11 @@ export default function ResetPassword() {
             required
             min="8"
           />
-          <input type="submit" className="loginSubmit" value="Atjaunot paroli" />
+          <input
+            type="submit"
+            className="loginSubmit"
+            value="Atjaunot paroli"
+          />
         </form>
         <p className="noAccount">
           Ir konts? Ienāc <Link to="/login">šeit</Link>.
