@@ -618,6 +618,48 @@ const getPlayer = async (req, res, next) => {
     res.status(200).send(result[0]);
 };
 
+const getPlayerByNumber = async (req, res, next) => {
+    /* GET /api/players/batch/:nums */
+    const teamID = await helpers.verifyTeamID(req.params.team);
+    if (!teamID) {
+        res.status(400).send({
+            error: "Team not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Komanda nav atrasta!",
+        });
+        return;
+    }
+    const playerList = req.params.nums.split("+");
+    const result = [];
+
+    if (playerList.length > 5) {
+        res.status(400).send({
+            error: "Too many players requested",
+            code: 400,
+            severity: "ERROR",
+            detail: "Pārāk daudz spēlētāji pieprasīti!",
+        });
+        return;
+    }
+
+    for (let i = 0; i < playerList.length; i++) {
+        const player = await players.getPlayerByNumber(
+            req.params.team,
+            playerList[i]
+        );
+        if (!player[0]) {
+            player[0] = {
+                firstname: 'Bez vārda',
+                lastname: '',
+            }
+        }
+        result.push(player[0]);
+    }
+
+    res.status(200).send(result);
+}
+
 const getTournamentPage = async (req, res, next) => {
     /* GET /:pageName */
     const pageID = req.params.pageName.toString();
@@ -733,6 +775,7 @@ module.exports = {
     getReferee,
     getTeam,
     getPlayer,
+    getPlayerByNumber,
     getTournamentPage,
     getUserTournaments,
     getRefereesInTournament,
