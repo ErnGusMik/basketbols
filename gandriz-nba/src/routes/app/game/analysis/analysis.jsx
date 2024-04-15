@@ -173,6 +173,7 @@ export default function Analysis() {
                                   player.lastname
                         )
                         .join("\n");
+                document.getElementById("team2players").classList.remove("skeleton");
             } else {
                 document.getElementById("team1players").innerText =
                     playerResponse
@@ -188,6 +189,7 @@ export default function Analysis() {
                                   player.lastname
                         )
                         .join("\n");
+                document.getElementById("team1players").classList.remove("skeleton");
             }
         }
     };
@@ -227,21 +229,19 @@ export default function Analysis() {
                 <div className="statSection">
                     <p>Vadība mainās</p>
                     <h2>
-                        {gameData.timesleadchanged ? gameData.timestied : "0"}x
+                        {gameData.timesleadchanged ? gameData.timesleadchanged : "0"}x
                     </h2>
                 </div>
             </div>
             <div className="statRow">
-                <h4 className="statVal bestPlayers" id="team1players">
-                    19 Toms Grēviņš
+                <h4 className="statVal bestPlayers skeleton" id="team1players">
                     <br />
-                    14 Kārlis Ozoliņš
+                    <br />
                 </h4>
                 <p className="statLabel">Rezultatīvākie spēlētāji</p>
-                <h4 className="statVal bestPlayers" id="team2players">
-                    25 Kārlis Ozoliņš
+                <h4 className="statVal bestPlayers skeleton" id="team2players">
                     <br />
-                    20 Toms Grēviņš
+                    <br />
                 </h4>
             </div>
             <div className="statRow">
@@ -263,7 +263,7 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team13points
                         ? Math.floor(
-                              (gameData.team13points / gameData.team1points) *
+                              (gameData.team13points / ((gameData.team1points - gameData.team12points*2 - gameData.team13points*3) + gameData.team12points + gameData.team13points)) *
                                   100
                           )
                         : "0"}
@@ -273,7 +273,7 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team23points
                         ? Math.floor(
-                              (gameData.team23points / gameData.team2points) *
+                              (gameData.team23points / ((gameData.team2points - gameData.team22points*2 - gameData.team23points*3) + gameData.team22points + gameData.team23points)) *
                                   100
                           )
                         : "0"}
@@ -284,7 +284,7 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team12points
                         ? Math.floor(
-                              (gameData.team12points / gameData.team1points) *
+                              (gameData.team12points / ((gameData.team1points - gameData.team12points*2 - gameData.team13points*3) + gameData.team12points + gameData.team13points)) *
                                   100
                           )
                         : "0"}
@@ -294,7 +294,7 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team22points
                         ? Math.floor(
-                              (gameData.team22points / gameData.team2points) *
+                              (gameData.team22points / ((gameData.team2points - gameData.team22points*2 - gameData.team23points*3) + gameData.team22points + gameData.team23points)) *
                                   100
                           )
                         : "0"}
