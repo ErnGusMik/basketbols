@@ -17,7 +17,7 @@ export default function Login() {
         <div className="loginContainer">
           <h1>Ienākt</h1>
           {/* Google Sign In button */}
-          <script src="https://accounts.google.com/gsi/client"></script>
+          <script src="https://accounts.google.com/gsi/client" />
           <div
             id="g_id_onload"
             data-client_id="114902243360-qe6gqj8req465d5jh9da61sil8ecpcqt.apps.googleusercontent.com"
@@ -25,7 +25,7 @@ export default function Login() {
             data-ux_mode="popup"
             data-login_uri="http://localhost:3000/login"
             data-auto_prompt="false"
-          ></div>
+          />
           <div
             class="g_id_signin"
             data-type="standard"
@@ -34,7 +34,7 @@ export default function Login() {
             data-text="signin_with"
             data-size="large"
             data-logo_alignment="left"
-          ></div>
+          />
           {/* ------------------- */}
           <Link to="/">
             <button className="loginButton">
