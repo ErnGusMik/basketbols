@@ -8,9 +8,9 @@ Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitīt
 | ------------------------- | ---------------------- |
 | Serveris, Datubāze        | 🧪 Testēšana           |
 | Jauna turnīra lapa, login | ✔️ Pabeigts            |
-| Spēles, turnīra lapa      | ⚠️ Problēmu risināšana |
-| Pēcspēles analīze         | 🟢 Procesā             |
-| Publiskās funkcijas       | 🟡 Nav uzsākts         |
+| Spēles, turnīra lapa      | ✔️ Pabeigts            |
+| Pēcspēles analīze         | ✔️ Pabeigts            |
+| Publiskās funkcijas       | 🟢 Procesā             |
 | Testēšana, pabeigšana     | 🟡 Nav uzsākts         |
 
 Iespējamie statusi:
