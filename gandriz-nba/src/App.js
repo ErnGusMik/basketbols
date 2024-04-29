@@ -28,6 +28,7 @@ import Mouse from "./routes/app/game/pre-game/mouse/mouse";
 import Game404 from "./routes/app/game/pre-game/404/game404";
 import Game from "./routes/app/game/game/game";
 import Analysis from "./routes/app/game/analysis/analysis";
+import PublicPage from "./routes/public/public";
 
 function App() {
     const router = createBrowserRouter([
@@ -149,6 +150,12 @@ function App() {
             path: "/reset-password",
             element: <ResetPassword />,
             errorElement: <div>Reset password error</div>,
+            children: [],
+        },
+        {
+            path: '/*',
+            element: <PublicPage />,
+            errorElement: <div>Public page error</div>,
             children: [],
         },
     ]);
