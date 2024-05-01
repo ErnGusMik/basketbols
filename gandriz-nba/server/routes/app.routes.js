@@ -660,12 +660,28 @@ const getPlayerByNumber = async (req, res, next) => {
     res.status(200).send(result);
 }
 
-const getTournamentPage = async (req, res, next) => {
-    /* GET /:pageName */
-    const pageID = req.params.pageName.toString();
-    const lowercase = pageID.toLowerCase();
+const getTournamentIDfromPage = async (req, res, next) => {
+    /* GET /tournaments/getIDfromName?name=xxxxx */
+    const pageName = req.query.name;
+    const lowercase = pageName.toLowerCase();
     const result = await tournaments.getTournamentPage(lowercase);
-    res.send({ result: result[0] ? result[0] : 0 });
+    res.send(
+        result[0] ?
+        {
+            id: result[0].id,
+            name: result[0].name,
+            description: result[0].description,
+            organizer: result[0].organizer,
+            location: result[0].location,
+            logo: result[0].logo,
+        } : {
+            id: null,
+            errror: "Tournament not found",
+            code: 404,
+            severity: "ERROR",
+            detail: "Turnīrs nav atrasts!",
+        }
+    );
     return;
 };
 
@@ -757,12 +773,6 @@ const getBestPlayers = async (req, res, next) => {
     res.status(200).send(result);
 };
 
-// const getPublicGame = async (req, res, next) => {
-//     /* GET /api/games/public/:id */
-//     const result = await games.getPublicGame(req.params.id);
-//     res.status(200).send(result[0]);
-// };
-
 module.exports = {
     newTournament,
     newTeam,
@@ -776,7 +786,7 @@ module.exports = {
     getTeam,
     getPlayer,
     getPlayerByNumber,
-    getTournamentPage,
+    getTournamentIDfromPage,
     getUserTournaments,
     getRefereesInTournament,
     getGamesInTournament,

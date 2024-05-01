@@ -6,8 +6,8 @@ export default function Table({
     content = [],
     setColWidth = false,
     id = "",
+    pubTable = false,
 }) {
-    
     return (
         <table className="table" id={id}>
             <thead>
@@ -15,7 +15,13 @@ export default function Table({
                     {cols.map((col, index) => (
                         <th
                             key={index}
-                            style={setColWidth ? { width: setColWidth } : {}}
+                            style={
+                                setColWidth
+                                    ? { width: setColWidth }
+                                    : pubTable
+                                    ? { backgroundColor: "#EE6730", color: '#000' }
+                                    : {}
+                            }
                         >
                             {col}
                         </th>
@@ -29,7 +35,11 @@ export default function Table({
                             <td
                                 key={indx}
                                 style={
-                                    setColWidth ? { width: setColWidth } : {}
+                                    setColWidth
+                                        ? { width: setColWidth }
+                                        : pubTable
+                                        ? { backgroundColor: "#fff", color: "#000", fontWeight: 500}
+                                        : {}
                                 }
                                 id={id + "-row-" + index + "-cell-" + indx}
                             >

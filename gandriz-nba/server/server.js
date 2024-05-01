@@ -32,7 +32,7 @@ app.use('/api', apiRouter)
 const authRouter = require('./controllers/auth.controllers')
 app.use('/auth', authRouter)
 
-app.get('/:pageName', routes.getTournamentPage)
+// app.get('/:pageName', routes.getTournamentPage)
 
 
 
