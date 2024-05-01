@@ -1,270 +1,272 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 .publicPage__cont * {
-    font-family: 'Montserrat Alternates', sans-serif;
-    color: white;
+  font-family: "Montserrat Alternates", sans-serif;
+  color: white;
 }
 
 html {
-    scroll-behavior: smooth;
-
+  scroll-behavior: smooth;
 }
 
 .publicPage__cont i {
-    font-family: 'Font Awesome\ 5 Free';
+  font-family: "Font Awesome\ 5 Free";
 }
 
 .publicPage__cont {
-    background-color: #212121;
-    min-height: 100vh;
-    padding-top: 30px;
+  background-color: #212121;
+  min-height: 100vh;
+  padding-top: 30px;
 }
 
 .publicPage__cont .banner {
-    width: 90%;
-    font-size: 2.5rem;
-    margin: 0 auto;
-    background-color: #313131;
-    border-radius: 50px;
-    height: 300px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('main.jpg') no-repeat center center/cover;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 20px;
+  width: 90%;
+  font-size: 2.5rem;
+  margin: 0 auto;
+  background-color: #313131;
+  border-radius: 50px;
+  height: 300px;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)),
+    url("main.jpg") no-repeat center center/cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
 }
 
 .publicPage__cont .banner h1 {
-    font-weight: 900;
-    margin: 0;
+  font-weight: 900;
+  margin: 0;
 }
 
 /* ELEMENTS */
 
 .element {
-    background-color: #313131;
-    border-radius: 50px;
+  background-color: #313131;
+  border-radius: 50px;
 }
 
 .row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 90%;
-    margin: 30px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+  margin: 30px auto;
 }
 
 .desc__cont {
-    max-width: 50%;
-    min-width: 40%;
-    padding: 10px 20px;
+  max-width: 50%;
+  min-width: 40%;
+  padding: 10px 20px;
 }
 
 .desc__cont p {
-    margin: 15px 10px;
-    font-weight: 400;
+  margin: 15px 10px;
+  font-weight: 400;
 }
 
 .desc__cont div {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px;
 }
 
 .spacerImg {
-    background: url('main.jpg') no-repeat center center/cover;
-    display: block;
-    min-width: 30%;
-    max-width: 40%;
-    height: auto;
-    margin: 0 40px;
+  background: url("main.jpg") no-repeat center center/cover;
+  display: block;
+  min-width: 30%;
+  max-width: 40%;
+  height: auto;
+  margin: 0 40px;
 }
 
 .jump__cont {
-    width: 100%;
-    padding: 10px 30px;
+  width: 100%;
+  padding: 10px 30px;
 }
 
 .jump__cont ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 .jump__cont ul li {
-    margin: 20px 0;
-    font-weight: 400;
+  margin: 20px 0;
+  font-weight: 400;
 }
 
 .jump__cont ul a {
-    text-decoration: underline;
-    color: #EE6730;
-    cursor: pointer;
+  text-decoration: underline;
+  color: #ee6730;
+  cursor: pointer;
 }
 
 /* GAMES */
 .game {
-    background-color: #fff;
-    width: 28%;
-    border-radius: 50px;
-    padding: 20px;
-    position: relative;
+  background-color: #fff;
+  width: 28%;
+  border-radius: 50px;
+  padding: 20px;
+  position: relative;
 }
 
 .game * {
-    color: black;
+  color: black;
 }
 
 .game img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 }
 
 .game .teams {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
 }
 
 .game .team h3 {
-    margin: 5px;
+  margin: 5px;
 }
 
 .game .team {
-    width: 40%;
+  width: 40%;
 }
 
 .game .vs {
-    font-weight: 900;
+  font-weight: 900;
 }
 
 .game .gameData__cont {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  text-align: center;
 }
 
 .game .gameData__cont h2 {
-    width: 40%;
-    font-weight: 900;
-    font-size: 1.7rem;
+  width: 40%;
+  font-weight: 900;
+  font-size: 1.7rem;
 }
 .game .gameData__cont p {
-    margin: 7px;
-    font-weight: 400;
+  margin: 7px;
+  font-weight: 400;
 }
 
 .game .live__content {
-    display: none;
+  display: none;
 }
 
 .live .live__content {
-    display: inline-block;
+  display: inline-block;
 }
 .live {
-    cursor: pointer;
-    transition: 0.1s all;
+  cursor: pointer;
+  transition: 0.1s all;
 }
 .live:hover {
-    margin: -2px -2px;
-    width: calc(28% + 4px);
-    height: calc(100% + 4px);
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  margin: -2px -2px;
+  width: calc(28% + 4px);
+  height: calc(100% + 4px);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .live__content {
-    position: absolute;
-    top: 10px;
-    right: 50%;
-    background-color: #FD9687;
-    transform: translateX(50%);
-    padding: 3px;
-    border: 5px solid #FF2200;
-    border-radius: 10px;
-    color: black;
-    font-size: 13px;
+  position: absolute;
+  top: 10px;
+  right: 50%;
+  background-color: #fd9687;
+  transform: translateX(50%);
+  padding: 3px;
+  border: 5px solid #ff2200;
+  border-radius: 10px;
+  color: black;
+  font-size: 13px;
 }
 
 .live__content i {
-    color: #FF2200;
-    animation: fade 1s linear 0s infinite normal;
-    font-size: 10px;
+  color: #ff2200;
+  animation: fade 1s linear 0s infinite normal;
+  font-size: 10px;
 }
 
 .live__content p {
-    display: inline-block;
-    color: black;
-    font-weight: 900;
-    margin: 0;
-    margin-left: 2px;
+  display: inline-block;
+  color: black;
+  font-weight: 900;
+  margin: 0;
+  margin-left: 2px;
 }
 
 @keyframes fade {
-    20% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    80% {
-        opacity: 1;
-    }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
 }
 
 /* FOOTER */
 .publicPage__cont footer {
-    background-color: #313131;
-    width: 100%;
-    padding: 40px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #313131;
+  width: 100%;
+  padding: 40px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .publicPage__cont footer p {
-    font-family: 'Montserrat';
-    font-weight: 200;
-    margin: 5px;
+  font-family: "Montserrat";
+  font-weight: 200;
+  margin: 5px;
 }
 
 .publicPage__cont footer a {
-    color: #EE6730;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #ee6730;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.games, .groups {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 50px auto;
+.games,
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 50px auto;
 }
 
 .statCard {
-    background-color: #313131;
-    border-radius: 50px;
-    padding: 20px;
-    width: 28%;
-    margin: 20px;
-    text-align: center;
-    height: 200px;
+  background-color: #313131;
+  border-radius: 50px;
+  padding: 20px;
+  width: 28%;
+  margin: 20px;
+  text-align: center;
+  height: 200px;
 }
 
 .statCard h2 {
-    font-weight: 900;
-    margin: 0;
+  font-weight: 900;
+  margin: 0;
 }
 
 .stats {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
-    margin: 100px auto;
-    max-width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 100px auto;
+  max-width: 90%;
 }
