@@ -21,6 +21,36 @@ export default function PublicPage() {
     const [bestScorers, setBestScorers] = React.useState([]);
     const [bestBlockers, setBestBlockers] = React.useState([]);
 
+    const [now, setNow] = React.useState({
+        previous: {
+            team1: "Komanda 1",
+            team2: "Komanda 2",
+            team1points: 0,
+            team2points: 0,
+            time: new Date(),
+            group: "A",
+            ongoing: false,
+        },
+        current: {
+            team1: "Komanda 1",
+            team2: "Komanda 2",
+            team1points: 0,
+            team2points: 0,
+            time: new Date(),
+            group: "A",
+            ongoing: true,
+        },
+        next: {
+            team1: "Komanda 1",
+            team2: "Komanda 2",
+            team1points: 0,
+            team2points: 0,
+            time: new Date(),
+            group: "A",
+            ongoing: false,
+        },
+    });
+
     const params = useParams();
     const navigate = useNavigate();
 
@@ -199,26 +229,64 @@ export default function PublicPage() {
     };
 
     React.useEffect(() => {
+        // Sort games by timestamp
+        const sortedGames = games.flat().sort((a, b) => {
+            return a.time - b.time;
+        });
+
+        const gamesWithPublicIDs = sortedGames
+            .filter((game) => {
+                return game.public_id !== null;
+            })
+            .flat()
+            .sort((a, b) => {
+                return a.time - b.time;
+            });
+        
+        // TODO: get last 2 games with public IDs and first game without public ID
+        // TODO: if no games with public IDs, get first 3 games
+        // TODO: if no games without, getlast 3 games with public IDs
+
+        // TODO: get all 3 games' publicGames and check if time is not <0 (to check if game is ongoing)
+        // TODO: set hrefs, etc.
+
+
+        console.log(gamesWithPublicIDs);
+    }, [games]);
+
+    React.useEffect(() => {
         getData();
     }, []);
 
     return (
         <div className="publicPage__cont">
             <div className="banner">
-                <h1>{tournament ? tournament.name : 'Lādējās...'}</h1>
+                <h1>{tournament ? tournament.name : "Lādējās..."}</h1>
             </div>
             <div className="row">
                 <div className="desc__cont element">
-                    <p>
-                        {tournament ? tournament.description : 'Lādējās...'}
-                    </p>
+                    <p>{tournament ? tournament.description : "Lādējās..."}</p>
                     <div>
                         <i class="fa-solid fa-location-dot"></i>
-                        <p>{tournament ? tournament.location : 'Lādējās...'}</p>
+                        <p>{tournament ? tournament.location : "Lādējās..."}</p>
                     </div>
-                    <p>Organizē {tournament ? tournament.organizer : 'Lādējās...'}</p>
+                    <p>
+                        Organizē{" "}
+                        {tournament ? tournament.organizer : "Lādējās..."}
+                    </p>
                 </div>
-                <div className="spacerImg element" style={tournament && tournament.logo ? {background: "url('" + tournament.logo + "')", backgroundPosition: 'center', backgroundSize: 'contian'} : {}}></div>
+                <div
+                    className="spacerImg element"
+                    style={
+                        tournament && tournament.logo
+                            ? {
+                                  background: "url('" + tournament.logo + "')",
+                                  backgroundPosition: "center",
+                                  backgroundSize: "contian",
+                              }
+                            : {}
+                    }
+                ></div>
                 <div className="jump__cont element">
                     <p>Lekt uz:</p>
                     <ul>
@@ -238,14 +306,14 @@ export default function PublicPage() {
                 </div>
             </div>
             <div className="row" id="now">
-                <div className="game">
+                <div className={now.previous.ongoing ? "game live" : "game"}>
                     <div className="teams">
                         <div className="team">
                             <img
                                 src="main.jpg"
                                 alt="Team logo (symbolic meaning)"
                             />
-                            <h3>Čempionu komanda!</h3>
+                            <h3>{now.previous.team1}</h3>
                         </div>
                         <h3 className="vs">VS</h3>
                         <div className="team">
@@ -253,31 +321,45 @@ export default function PublicPage() {
                                 src="main.jpg"
                                 alt="Team logo (symbolic meaning)"
                             />
-                            <h3>Ceturtās klases vilki</h3>
+                            <h3>{now.previous.team2}</h3>
                         </div>
                     </div>
                     <div className="gameData__cont">
-                        <h2>130</h2>
+                        <h2>{now.previous.team1points}</h2>
                         <div className="gameData">
-                            <p>A grupa</p>
-                            <p>03/12/2024</p>
-                            <p>12:00</p>
+                            <p>{now.previous.group} grupa</p>
+                            <p>
+                                {new Date(now.previous.time).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                        year: "2-digit",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                    }
+                                )}
+                            </p>
+                            <p>
+                                {new Date(now.previous.time).toLocaleTimeString(
+                                    "en-GB",
+                                    { hour: "2-digit", minute: "2-digit" }
+                                )}
+                            </p>
                         </div>
-                        <h2>89</h2>
+                        <h2>{now.previous.team2points}</h2>
                     </div>
                     <div className="live__content">
                         <i className="fa-solid fa-circle"></i>
                         <p>LIVE</p>
                     </div>
                 </div>
-                <div className="game live">
+                <div className={now.current.ongoing ? "game live" : "game"}>
                     <div className="teams">
                         <div className="team">
                             <img
                                 src="main.jpg"
                                 alt="Team logo (symbolic meaning)"
                             />
-                            <h3>Čempionu komanda!</h3>
+                            <h3>{now.current.team1}</h3>
                         </div>
                         <h3 className="vs">VS</h3>
                         <div className="team">
@@ -285,31 +367,45 @@ export default function PublicPage() {
                                 src="main.jpg"
                                 alt="Team logo (symbolic meaning)"
                             />
-                            <h3>Ceturtās klases vilki</h3>
+                            <h3>{now.current.team2}</h3>
                         </div>
                     </div>
                     <div className="gameData__cont">
-                        <h2>130</h2>
+                        <h2>{now.current.team1points}</h2>
                         <div className="gameData">
-                            <p>A grupa</p>
-                            <p>03/12/2024</p>
-                            <p>12:00</p>
+                            <p>{now.current.group} grupa</p>
+                            <p>
+                                {new Date(now.current.time).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                        year: "2-digit",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                    }
+                                )}
+                            </p>
+                            <p>
+                                {new Date(now.current.time).toLocaleTimeString(
+                                    "en-GB",
+                                    { hour: "2-digit", minute: "2-digit" }
+                                )}
+                            </p>
                         </div>
-                        <h2>89</h2>
+                        <h2>{now.current.team2points}</h2>
                     </div>
                     <div className="live__content">
                         <i className="fa-solid fa-circle"></i>
                         <p>LIVE</p>
                     </div>
                 </div>
-                <div className="game">
+                <div className={now.next.ongoing ? "game live" : "game"}>
                     <div className="teams">
                         <div className="team">
                             <img
                                 src="main.jpg"
                                 alt="Team logo (symbolic meaning)"
                             />
-                            <h3>Čempionu komanda!</h3>
+                            <h3>{now.next.team1}</h3>
                         </div>
                         <h3 className="vs">VS</h3>
                         <div className="team">
@@ -317,17 +413,31 @@ export default function PublicPage() {
                                 src="main.jpg"
                                 alt="Team logo (symbolic meaning)"
                             />
-                            <h3>Ceturtās klases vilki</h3>
+                            <h3>{now.next.team2}</h3>
                         </div>
                     </div>
                     <div className="gameData__cont">
-                        <h2>130</h2>
+                        <h2>{now.next.team1points}</h2>
                         <div className="gameData">
-                            <p>A grupa</p>
-                            <p>03/12/2024</p>
-                            <p>12:00</p>
+                            <p>{now.next.group} grupa</p>
+                            <p>
+                                {new Date(now.next.time).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                        year: "2-digit",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                    }
+                                )}
+                            </p>
+                            <p>
+                                {new Date(now.next.time).toLocaleTimeString(
+                                    "en-GB",
+                                    { hour: "2-digit", minute: "2-digit" }
+                                )}
+                            </p>
                         </div>
-                        <h2>89</h2>
+                        <h2>{now.next.team2points}</h2>
                     </div>
                     <div className="live__content">
                         <i className="fa-solid fa-circle"></i>
