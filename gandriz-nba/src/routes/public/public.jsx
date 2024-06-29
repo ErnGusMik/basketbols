@@ -54,6 +54,7 @@ export default function PublicPage() {
     const params = useParams();
     const navigate = useNavigate();
 
+    // Get data from API
     const getData = async () => {
         // Get tournament ID
         const tournamentIDreq = await fetch(
@@ -228,6 +229,7 @@ export default function PublicPage() {
         setPlayoffs(playoffsArr);
     };
 
+    // Set the ongoing/live game row
     const setNowGames = async () => {
         // Alphabet for groups
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -355,6 +357,11 @@ export default function PublicPage() {
     React.useEffect(() => {
         getData();
     }, []);
+
+    // Show player overlay
+    const showPlayers = (teamID) => {
+
+    };
 
     return (
         <div className="publicPage__cont">
@@ -840,9 +847,68 @@ export default function PublicPage() {
                 </p>
             </footer>
             <div className="playersOverlay" id="playersOverlay">
-                <div className="overlayData">
+                <div className="playersOverlayData">
+                    <i className="fa-solid fa-close closeBtn"></i>
                     <h2>Komanda 1</h2>
-                    <p><b>Spēlētāji</b></p>
+                    <p>
+                        <b>Spēlētāji</b>
+                    </p>
+                    <div className="cardCont">
+                        <div className="playerCard">
+                            <h2>11</h2>
+                            <p>Pts: 30</p>
+                            <p>Blocks: 2</p>
+                            <h3>
+                                Vārds <span className="uppercase">Uzvārds</span>
+                            </h3>
+                            <div className="backg"></div>
+                        </div>
+                        <div className="playerCard">
+                            <h2>11</h2>
+                            <p>Pts: 30</p>
+                            <p>Blocks: 2</p>
+                            <h3>
+                                Vārds <span className="uppercase">Uzvārds</span>
+                            </h3>
+                            <div className="backg"></div>
+                        </div>
+                        <div className="playerCard">
+                            <h2>11</h2>
+                            <p>Pts: 30</p>
+                            <p>Blocks: 2</p>
+                            <h3>
+                                Vārds <span className="uppercase">Uzvārds</span>
+                            </h3>
+                            <div className="backg"></div>
+                        </div>
+                        <div className="playerCard">
+                            <h2>11</h2>
+                            <p>Pts: 30</p>
+                            <p>Blocks: 2</p>
+                            <h3>
+                                Vārds <span className="uppercase">Uzvārds</span>
+                            </h3>
+                            <div className="backg"></div>
+                        </div>
+                        <div className="playerCard">
+                            <h2>11</h2>
+                            <p>Pts: 30</p>
+                            <p>Blocks: 2</p>
+                            <h3>
+                                Vārds <span className="uppercase">Uzvārds</span>
+                            </h3>
+                            <div className="backg"></div>
+                        </div>
+                        <div className="playerCard">
+                            <h2>11</h2>
+                            <p>Pts: 30</p>
+                            <p>Blocks: 2</p>
+                            <h3>
+                                Vārds <span className="uppercase">Uzvārds</span>
+                            </h3>
+                            <div className="backg"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
