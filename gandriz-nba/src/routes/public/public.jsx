@@ -63,7 +63,7 @@ export default function PublicPage() {
         const tournamentID = await tournamentIDreq.json();
 
         // If tournament ID is not found, navigate to 404
-        if (!tournamentID) {
+        if (!tournamentID.id) {
             navigate("/404");
             return;
         }
@@ -229,12 +229,32 @@ export default function PublicPage() {
     };
 
     const setNowGames = async () => {
+        // Alphabet for groups
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
         // Get all games
         const allGames = games.flat().concat(playoffs);
 
         // Sort games by timestamp
-        const sortedGames = allGames.sort((a, b) => {
+        const sortedGames1 = allGames.sort((a, b) => {
             return new Date(a.time) - new Date(b.time);
+        });
+
+        const sortedGames = [];
+        sortedGames1.forEach((game) => {
+            sortedGames.push({
+                team1: teams.flat().find((team) => {
+                    return team.id === game.team1id;
+                }).name,
+                team2: teams.flat().find((team) => {
+                    return team.id === game.team2id;
+                }).name,
+                team1points: game.team1points,
+                team2points: game.team2points,
+                time: new Date(game.time),
+                group: alphabet[game.gamegroup],
+                public_id: game.public_id,
+            });
         });
 
         const gamesWithPublicIDs = sortedGames
@@ -278,7 +298,7 @@ export default function PublicPage() {
                 previous: null,
                 current: sortedGames[0],
                 next: null,
-            })
+            });
         }
 
         // If only two games in total
@@ -287,7 +307,7 @@ export default function PublicPage() {
                 previous: null,
                 current: sortedGames[0],
                 next: sortedGames[1],
-            })
+            });
         }
 
         if (sortedGames.length === 3) {
@@ -295,26 +315,37 @@ export default function PublicPage() {
                 previous: sortedGames[0],
                 current: sortedGames[1],
                 next: sortedGames[2],
-            })  
+            });
         }
 
         if (sortedGames.length > 3) {
             const lastGame = sortedGames.toReversed().find((game) => {
                 return new Date(game.time) < new Date();
-            })
-            console.log(lastGame);  
+            });
+            const lastGameIndex = sortedGames.indexOf(lastGame);
+            if (lastGameIndex === 0) {
+                setNow({
+                    previous: sortedGames[0],
+                    current: sortedGames[1],
+                    next: sortedGames[2],
+                });
+            } else if (lastGameIndex === sortedGames.length - 1) {
+                setNow({
+                    previous: sortedGames[lastGameIndex - 2],
+                    current: sortedGames[lastGameIndex - 1],
+                    next: sortedGames[lastGameIndex],
+                });
+            } else {
+                setNow({
+                    previous: sortedGames[lastGameIndex - 1],
+                    current: sortedGames[lastGameIndex],
+                    next: sortedGames[lastGameIndex + 1],
+                });
+            }
         }
 
-
-        // TODO: get last 2 games with public IDs and first game without public ID
-        // TODO: if no games with public IDs, get first 3 games
-        // TODO: if no games without, getlast 3 games with public IDs
-
-        // TODO: get all 3 games' publicGames and check if time is not <0 (to check if game is ongoing)
-        // TODO: set hrefs, etc.
-
-        // console.log(gamesWithPublicIDs);
-        console.log(sortedGames);
+        console.log(teams);
+        console.log(games);
     };
 
     React.useEffect(() => {
@@ -374,8 +405,13 @@ export default function PublicPage() {
             </div>
             <div className="row" id="now">
                 {now.previous && (
-                    <div
+                    <a
                         className={now.previous.ongoing ? "game live" : "game"}
+                        href={
+                            now.previous.ongoing
+                                ? "/game/" + now.previous.public_id + "/watch"
+                                : ""
+                        }
                     >
                         <div className="teams">
                             <div className="team">
@@ -422,10 +458,17 @@ export default function PublicPage() {
                             <i className="fa-solid fa-circle"></i>
                             <p>LIVE</p>
                         </div>
-                    </div>
+                    </a>
                 )}
                 {now.current && (
-                    <div className={now.current.ongoing ? "game live" : "game"}>
+                    <a
+                        className={now.current.ongoing ? "game live" : "game"}
+                        href={
+                            now.current.ongoing
+                                ? "/game/" + now.current.public_id + "/watch"
+                                : ""
+                        }
+                    >
                         <div className="teams">
                             <div className="team">
                                 <img
@@ -471,10 +514,17 @@ export default function PublicPage() {
                             <i className="fa-solid fa-circle"></i>
                             <p>LIVE</p>
                         </div>
-                    </div>
+                    </a>
                 )}
                 {now.next && (
-                    <div className={now.next.ongoing ? "game live" : "game"}>
+                    <a
+                        className={now.next.ongoing ? "game live" : "game"}
+                        href={
+                            now.next.ongoing
+                                ? "/game/" + now.next.public_id + "/watch"
+                                : "#"
+                        }
+                    >
                         <div className="teams">
                             <div className="team">
                                 <img
@@ -519,12 +569,15 @@ export default function PublicPage() {
                             <i className="fa-solid fa-circle"></i>
                             <p>LIVE</p>
                         </div>
-                    </div>
+                    </a>
                 )}
             </div>
             <div className="games" id="games">
                 {games.map((group, index) => {
                     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    group.sort((a, b) => {
+                        return new Date(a.time) - new Date(b.time);
+                    });
 
                     return (
                         <div>
@@ -546,6 +599,7 @@ export default function PublicPage() {
                                     "Vieta",
                                     "Rezultāts",
                                     "Tiesneši",
+                                    "Skatīt",
                                 ]}
                                 content={group.map((game) => {
                                     const refArr = JSON.parse(game.refereeids);
@@ -600,6 +654,19 @@ export default function PublicPage() {
                                                 return ref.name;
                                             })
                                             .join(", "),
+                                        game.public_id ? (
+                                            <a
+                                                href={
+                                                    "/game/" +
+                                                    game.public_id +
+                                                    "/watch"
+                                                }
+                                            >
+                                                skatīt
+                                            </a>
+                                        ) : (
+                                            ""
+                                        ),
                                     ];
                                 })}
                                 id={"publicGameTable-" + index}
@@ -772,6 +839,12 @@ export default function PublicPage() {
                     Izveidots izmantojot <a href="#">Gandrīz NBA</a>
                 </p>
             </footer>
+            <div className="playersOverlay" id="playersOverlay">
+                <div className="overlayData">
+                    <h2>Komanda 1</h2>
+                    <p><b>Spēlētāji</b></p>
+                </div>
+            </div>
         </div>
     );
 }

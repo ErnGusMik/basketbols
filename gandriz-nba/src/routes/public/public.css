@@ -112,6 +112,7 @@ html {
     border-radius: 50px;
     padding: 20px;
     position: relative;
+    cursor: default;
 }
 
 .game * {
@@ -273,3 +274,4 @@ html {
     margin: 100px auto;
     max-width: 90%;
 }
+
