@@ -234,7 +234,7 @@ export default function PublicPage() {
 
         // Sort games by timestamp
         const sortedGames = allGames.sort((a, b) => {
-            return a.time - b.time;
+            return new Date(a.time) - new Date(b.time);
         });
 
         const gamesWithPublicIDs = sortedGames
@@ -245,17 +245,17 @@ export default function PublicPage() {
             .sort((a, b) => {
                 return a.time - b.time;
             });
-       
+
         // Fetch ongoing game public IDs
         const ongoingGames = await fetch(
-            'http://localhost:8080/api/games/live',
+            "http://localhost:8080/api/games/live",
             {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                }
+                    "Content-Type": "application/json",
+                },
             }
-        )
+        );
         const ongoingData = await ongoingGames.json();
 
         //Add ongoing property to games
@@ -264,49 +264,45 @@ export default function PublicPage() {
                 game.ongoing = false;
             } else {
                 game.ongoing = false;
-                ongoingData.forEach(ongoingGame => {
+                ongoingData.forEach((ongoingGame) => {
                     if (game.public_id === ongoingGame.id) {
                         game.ongoing = true;
                     }
-                })
+                });
             }
-            
         });
-        
+
+        // If only one game in total
         if (sortedGames.length === 1) {
-            if (gamesWithPublicIDs.length === 1) {
-                if (gamesWithPublicIDs[0].ongoing) {
-                    setNow({
-                        previous: null,
-                        current: gamesWithPublicIDs[0],
-                        next: null
-                    });
-                } else {
-                    setNow({
-                        previous: gamesWithPublicIDs[0],
-                        current: null,
-                        next: null
-                    });
-                }
-            }
+            setNow({
+                previous: null,
+                current: sortedGames[0],
+                next: null,
+            })
         }
-        
+
+        // If only two games in total
         if (sortedGames.length === 2) {
-            if (gamesWithPublicIDs.length === 1) {
-                if (gamesWithPublicIDs[0].ongoing) {
-                    setNow({
-                        previous: null,
-                        current: gamesWithPublicIDs[0],
-                        next: sortedGames[1]
-                    });
-                } else {
-                    setNow({
-                        previous: gamesWithPublicIDs[0],
-                        current: sortedGames[1],
-                        next: null
-                    });
-                }
-            }
+            setNow({
+                previous: null,
+                current: sortedGames[0],
+                next: sortedGames[1],
+            })
+        }
+
+        if (sortedGames.length === 3) {
+            setNow({
+                previous: sortedGames[0],
+                current: sortedGames[1],
+                next: sortedGames[2],
+            })  
+        }
+
+        if (sortedGames.length > 3) {
+            const lastGame = sortedGames.toReversed().find((game) => {
+                return new Date(game.time) < new Date();
+            })
+            console.log(lastGame);  
         }
 
 
@@ -317,7 +313,7 @@ export default function PublicPage() {
         // TODO: get all 3 games' publicGames and check if time is not <0 (to check if game is ongoing)
         // TODO: set hrefs, etc.
 
-        console.log(gamesWithPublicIDs);
+        // console.log(gamesWithPublicIDs);
         console.log(sortedGames);
     };
 
