@@ -1,5 +1,5 @@
-// TODO: Sort games, get previous 3, next 3
-// TODO: Add data to 'current' section (sort so in middle is current or next game)
+// TODO: Add loading screen 
+// ! IDEA: Ball bouncing on dark empty screen, when loaded, balll zooms in and screen fades in
 import React from "react";
 
 import Table from "../../components/tables/tables";
@@ -20,6 +20,18 @@ export default function PublicPage() {
     const [teamPointsAgainst, setTeamPointsAgainst] = React.useState([]);
     const [bestScorers, setBestScorers] = React.useState([]);
     const [bestBlockers, setBestBlockers] = React.useState([]);
+    const [tempPlayers, setTempPlayers] = React.useState({
+        teamName: "Komanda 1",
+        players: [
+            {
+                firstname: "Vārds",
+                lastname: "Uzvārds",
+                number: 11,
+                points: 30,
+                blocks: 2,
+            }
+        ]
+    });
 
     const [now, setNow] = React.useState({
         previous: {
@@ -220,7 +232,6 @@ export default function PublicPage() {
 
         // Set teams
         setTeams(teamsInGroups);
-        console.log(teamsInGroups);
 
         // Set games
         setGames(gamesByGroups);
@@ -346,8 +357,6 @@ export default function PublicPage() {
             }
         }
 
-        console.log(teams);
-        console.log(games);
     };
 
     React.useEffect(() => {
@@ -359,9 +368,39 @@ export default function PublicPage() {
     }, []);
 
     // Show player overlay
-    const showPlayers = (teamID) => {
+    const showPlayers = async (teamID) => {
+        // Fetch players from API
+        const teamRequest = await fetch(
+            'http://localhost:8080/api/teams/' + teamID + '/players',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        )
 
+        const teamData = await teamRequest.json();
+
+        // Set temp players state
+        setTempPlayers({
+            teamName: teams.flat().find((team) => {
+                return team.id === teamID;
+            }).name,
+            players: teamData
+        });
+
+        // Show overlay
+        const overlay = document.getElementById('playersOverlay');
+        overlay.style.display = 'flex';
     };
+
+    // Close overlay
+    const closeOverlay = () => {
+        const overlay = document.getElementById('playersOverlay');
+        overlay.style.display = 'none';
+    };
+
 
     return (
         <div className="publicPage__cont">
@@ -633,7 +672,6 @@ export default function PublicPage() {
                                         .filter(
                                             (team) => team.length > 0
                                         )[0][0];
-                                    console.log(team1);
                                     return [
                                         team1.name,
                                         team2.name,
@@ -710,13 +748,16 @@ export default function PublicPage() {
                                     return [
                                         team.name,
                                         <a
-                                            href="#"
+                                            onClick={() => {
+                                                showPlayers(team.id);
+                                            }}
                                             id={
                                                 "viewPlayers-" +
                                                 team.id +
                                                 "-group-" +
                                                 index
                                             }
+                                            style={{ cursor: "pointer" }}
                                         >
                                             skatīt
                                         </a>,
@@ -848,66 +889,28 @@ export default function PublicPage() {
             </footer>
             <div className="playersOverlay" id="playersOverlay">
                 <div className="playersOverlayData">
-                    <i className="fa-solid fa-close closeBtn"></i>
-                    <h2>Komanda 1</h2>
+                    <i className="fa-solid fa-close closeBtn" onClick={closeOverlay}></i>
+                    <h2>{tempPlayers.teamName}</h2>
                     <p>
                         <b>Spēlētāji</b>
                     </p>
                     <div className="cardCont">
-                        <div className="playerCard">
-                            <h2>11</h2>
-                            <p>Pts: 30</p>
-                            <p>Blocks: 2</p>
-                            <h3>
-                                Vārds <span className="uppercase">Uzvārds</span>
-                            </h3>
-                            <div className="backg"></div>
-                        </div>
-                        <div className="playerCard">
-                            <h2>11</h2>
-                            <p>Pts: 30</p>
-                            <p>Blocks: 2</p>
-                            <h3>
-                                Vārds <span className="uppercase">Uzvārds</span>
-                            </h3>
-                            <div className="backg"></div>
-                        </div>
-                        <div className="playerCard">
-                            <h2>11</h2>
-                            <p>Pts: 30</p>
-                            <p>Blocks: 2</p>
-                            <h3>
-                                Vārds <span className="uppercase">Uzvārds</span>
-                            </h3>
-                            <div className="backg"></div>
-                        </div>
-                        <div className="playerCard">
-                            <h2>11</h2>
-                            <p>Pts: 30</p>
-                            <p>Blocks: 2</p>
-                            <h3>
-                                Vārds <span className="uppercase">Uzvārds</span>
-                            </h3>
-                            <div className="backg"></div>
-                        </div>
-                        <div className="playerCard">
-                            <h2>11</h2>
-                            <p>Pts: 30</p>
-                            <p>Blocks: 2</p>
-                            <h3>
-                                Vārds <span className="uppercase">Uzvārds</span>
-                            </h3>
-                            <div className="backg"></div>
-                        </div>
-                        <div className="playerCard">
-                            <h2>11</h2>
-                            <p>Pts: 30</p>
-                            <p>Blocks: 2</p>
-                            <h3>
-                                Vārds <span className="uppercase">Uzvārds</span>
-                            </h3>
-                            <div className="backg"></div>
-                        </div>
+                        {tempPlayers.players.map((player, index) => {
+                            return (
+                                <div className="playerCard" key={index}>
+                                    <h2>{player.number}</h2>
+                                    <p>Points: <b>{player.points}</b></p>
+                                    <p>Blocks: <b>{player.blocks}</b></p>
+                                    <h3>
+                                        {player.firstname}{" "}
+                                        <span className="uppercase">
+                                            {player.lastname}
+                                        </span>
+                                    </h3>
+                                    <div className="backg"></div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

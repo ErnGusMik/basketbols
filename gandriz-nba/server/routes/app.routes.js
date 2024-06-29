@@ -666,6 +666,22 @@ const getPlayerByNumber = async (req, res, next) => {
     res.status(200).send(result);
 };
 
+const getPlayersInTeam = async (req, res, next) => {
+    /* GET /api/teams/:id/players */
+    const teamID = await helpers.verifyTeamID(req.params.id);
+    if (!teamID) {
+        res.status(400).send({
+            error: "Team not found",
+            code: 400,
+            severity: "ERROR",
+            detail: "Komanda nav atrasta!",
+        });
+        return;
+    }
+    const result = await players.getPlayersInTeam(req.params.id);
+    res.status(200).send(result);
+};
+
 const getTournamentIDfromPage = async (req, res, next) => {
     /* GET /tournaments/getIDfromName?name=xxxxx */
     const pageName = req.query.name;
@@ -805,4 +821,5 @@ module.exports = {
     // updatePublicGame,
     // getPublicGame,
     getLiveGames,
+    getPlayersInTeam
 };

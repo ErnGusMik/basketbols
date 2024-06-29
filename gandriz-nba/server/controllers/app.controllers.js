@@ -23,6 +23,7 @@ router.get("/tournaments/:id/teams", routes.getTeamsInTournament);
 router.get("/referees/:id", routes.getReferee);
 router.get("/teams/:id", routes.getTeam);
 router.get("/teams/batch/:id", routes.getTeams);
+router.get("/teams/:id/players", routes.getPlayersInTeam);
 router.get("/players/:id", routes.getPlayer);
 router.get("/players/batch/:team/:nums", routes.getPlayerByNumber);
 
