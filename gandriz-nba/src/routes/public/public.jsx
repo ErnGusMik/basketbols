@@ -242,7 +242,7 @@ export default function PublicPage() {
             .sort((a, b) => {
                 return a.time - b.time;
             });
-        
+
         // TODO: get last 2 games with public IDs and first game without public ID
         // TODO: if no games with public IDs, get first 3 games
         // TODO: if no games without, getlast 3 games with public IDs
@@ -250,8 +250,8 @@ export default function PublicPage() {
         // TODO: get all 3 games' publicGames and check if time is not <0 (to check if game is ongoing)
         // TODO: set hrefs, etc.
 
-
         console.log(gamesWithPublicIDs);
+        console.log(sortedGames);
     }, [games]);
 
     React.useEffect(() => {
@@ -306,144 +306,154 @@ export default function PublicPage() {
                 </div>
             </div>
             <div className="row" id="now">
-                <div className={now.previous.ongoing ? "game live" : "game"}>
-                    <div className="teams">
-                        <div className="team">
-                            <img
-                                src="main.jpg"
-                                alt="Team logo (symbolic meaning)"
-                            />
-                            <h3>{now.previous.team1}</h3>
+                {now.previous && (
+                    <div
+                        className={now.previous.ongoing ? "game live" : "game"}
+                    >
+                        <div className="teams">
+                            <div className="team">
+                                <img
+                                    src="main.jpg"
+                                    alt="Team logo (symbolic meaning)"
+                                />
+                                <h3>{now.previous.team1}</h3>
+                            </div>
+                            <h3 className="vs">VS</h3>
+                            <div className="team">
+                                <img
+                                    src="main.jpg"
+                                    alt="Team logo (symbolic meaning)"
+                                />
+                                <h3>{now.previous.team2}</h3>
+                            </div>
                         </div>
-                        <h3 className="vs">VS</h3>
-                        <div className="team">
-                            <img
-                                src="main.jpg"
-                                alt="Team logo (symbolic meaning)"
-                            />
-                            <h3>{now.previous.team2}</h3>
-                        </div>
-                    </div>
-                    <div className="gameData__cont">
-                        <h2>{now.previous.team1points}</h2>
-                        <div className="gameData">
-                            <p>{now.previous.group} grupa</p>
-                            <p>
-                                {new Date(now.previous.time).toLocaleDateString(
-                                    "en-GB",
-                                    {
+                        <div className="gameData__cont">
+                            <h2>{now.previous.team1points}</h2>
+                            <div className="gameData">
+                                <p>{now.previous.group} grupa</p>
+                                <p>
+                                    {new Date(
+                                        now.previous.time
+                                    ).toLocaleDateString("en-GB", {
                                         year: "2-digit",
                                         month: "2-digit",
                                         day: "2-digit",
-                                    }
-                                )}
-                            </p>
-                            <p>
-                                {new Date(now.previous.time).toLocaleTimeString(
-                                    "en-GB",
-                                    { hour: "2-digit", minute: "2-digit" }
-                                )}
-                            </p>
+                                    })}
+                                </p>
+                                <p>
+                                    {new Date(
+                                        now.previous.time
+                                    ).toLocaleTimeString("en-GB", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
+                                </p>
+                            </div>
+                            <h2>{now.previous.team2points}</h2>
                         </div>
-                        <h2>{now.previous.team2points}</h2>
-                    </div>
-                    <div className="live__content">
-                        <i className="fa-solid fa-circle"></i>
-                        <p>LIVE</p>
-                    </div>
-                </div>
-                <div className={now.current.ongoing ? "game live" : "game"}>
-                    <div className="teams">
-                        <div className="team">
-                            <img
-                                src="main.jpg"
-                                alt="Team logo (symbolic meaning)"
-                            />
-                            <h3>{now.current.team1}</h3>
-                        </div>
-                        <h3 className="vs">VS</h3>
-                        <div className="team">
-                            <img
-                                src="main.jpg"
-                                alt="Team logo (symbolic meaning)"
-                            />
-                            <h3>{now.current.team2}</h3>
+                        <div className="live__content">
+                            <i className="fa-solid fa-circle"></i>
+                            <p>LIVE</p>
                         </div>
                     </div>
-                    <div className="gameData__cont">
-                        <h2>{now.current.team1points}</h2>
-                        <div className="gameData">
-                            <p>{now.current.group} grupa</p>
-                            <p>
-                                {new Date(now.current.time).toLocaleDateString(
-                                    "en-GB",
-                                    {
+                )}
+                {now.current && (
+                    <div className={now.current.ongoing ? "game live" : "game"}>
+                        <div className="teams">
+                            <div className="team">
+                                <img
+                                    src="main.jpg"
+                                    alt="Team logo (symbolic meaning)"
+                                />
+                                <h3>{now.current.team1}</h3>
+                            </div>
+                            <h3 className="vs">VS</h3>
+                            <div className="team">
+                                <img
+                                    src="main.jpg"
+                                    alt="Team logo (symbolic meaning)"
+                                />
+                                <h3>{now.current.team2}</h3>
+                            </div>
+                        </div>
+                        <div className="gameData__cont">
+                            <h2>{now.current.team1points}</h2>
+                            <div className="gameData">
+                                <p>{now.current.group} grupa</p>
+                                <p>
+                                    {new Date(
+                                        now.current.time
+                                    ).toLocaleDateString("en-GB", {
                                         year: "2-digit",
                                         month: "2-digit",
                                         day: "2-digit",
-                                    }
-                                )}
-                            </p>
-                            <p>
-                                {new Date(now.current.time).toLocaleTimeString(
-                                    "en-GB",
-                                    { hour: "2-digit", minute: "2-digit" }
-                                )}
-                            </p>
+                                    })}
+                                </p>
+                                <p>
+                                    {new Date(
+                                        now.current.time
+                                    ).toLocaleTimeString("en-GB", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
+                                </p>
+                            </div>
+                            <h2>{now.current.team2points}</h2>
                         </div>
-                        <h2>{now.current.team2points}</h2>
-                    </div>
-                    <div className="live__content">
-                        <i className="fa-solid fa-circle"></i>
-                        <p>LIVE</p>
-                    </div>
-                </div>
-                <div className={now.next.ongoing ? "game live" : "game"}>
-                    <div className="teams">
-                        <div className="team">
-                            <img
-                                src="main.jpg"
-                                alt="Team logo (symbolic meaning)"
-                            />
-                            <h3>{now.next.team1}</h3>
-                        </div>
-                        <h3 className="vs">VS</h3>
-                        <div className="team">
-                            <img
-                                src="main.jpg"
-                                alt="Team logo (symbolic meaning)"
-                            />
-                            <h3>{now.next.team2}</h3>
+                        <div className="live__content">
+                            <i className="fa-solid fa-circle"></i>
+                            <p>LIVE</p>
                         </div>
                     </div>
-                    <div className="gameData__cont">
-                        <h2>{now.next.team1points}</h2>
-                        <div className="gameData">
-                            <p>{now.next.group} grupa</p>
-                            <p>
-                                {new Date(now.next.time).toLocaleDateString(
-                                    "en-GB",
-                                    {
-                                        year: "2-digit",
-                                        month: "2-digit",
-                                        day: "2-digit",
-                                    }
-                                )}
-                            </p>
-                            <p>
-                                {new Date(now.next.time).toLocaleTimeString(
-                                    "en-GB",
-                                    { hour: "2-digit", minute: "2-digit" }
-                                )}
-                            </p>
+                )}
+                {now.next && (
+                    <div className={now.next.ongoing ? "game live" : "game"}>
+                        <div className="teams">
+                            <div className="team">
+                                <img
+                                    src="main.jpg"
+                                    alt="Team logo (symbolic meaning)"
+                                />
+                                <h3>{now.next.team1}</h3>
+                            </div>
+                            <h3 className="vs">VS</h3>
+                            <div className="team">
+                                <img
+                                    src="main.jpg"
+                                    alt="Team logo (symbolic meaning)"
+                                />
+                                <h3>{now.next.team2}</h3>
+                            </div>
                         </div>
-                        <h2>{now.next.team2points}</h2>
+                        <div className="gameData__cont">
+                            <h2>{now.next.team1points}</h2>
+                            <div className="gameData">
+                                <p>{now.next.group} grupa</p>
+                                <p>
+                                    {new Date(now.next.time).toLocaleDateString(
+                                        "en-GB",
+                                        {
+                                            year: "2-digit",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                        }
+                                    )}
+                                </p>
+                                <p>
+                                    {new Date(now.next.time).toLocaleTimeString(
+                                        "en-GB",
+                                        { hour: "2-digit", minute: "2-digit" }
+                                    )}
+                                </p>
+                            </div>
+                            <h2>{now.next.team2points}</h2>
+                        </div>
+                        <div className="live__content">
+                            <i className="fa-solid fa-circle"></i>
+                            <p>LIVE</p>
+                        </div>
                     </div>
-                    <div className="live__content">
-                        <i className="fa-solid fa-circle"></i>
-                        <p>LIVE</p>
-                    </div>
-                </div>
+                )}
             </div>
             <div className="games" id="games">
                 {games.map((group, index) => {

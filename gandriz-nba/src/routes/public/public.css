@@ -254,7 +254,6 @@ html {
     width: 28%;
     margin: 20px;
     text-align: center;
-    height: 200px;
 }
 
 .publicPage__cont .statCard h2 {
@@ -262,10 +261,14 @@ html {
     margin: 0;
 }
 
+.publicPage__cont .statCard .listContainer {
+    margin-bottom: auto;
+}
+
 .publicPage__cont .stats {
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
     margin: 100px auto;
     max-width: 90%;

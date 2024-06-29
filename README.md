@@ -1,5 +1,7 @@
 # Gandrīz NBA
 
+English version of this README can be found [here](README_EN.md).
+
 Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitītājs.
 
 ### Darba plānojums
