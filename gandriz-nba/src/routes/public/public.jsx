@@ -1,4 +1,4 @@
-// TODO: Add loading screen 
+// TODO: Add loading screen
 // ! IDEA: Ball bouncing on dark empty screen, when loaded, balll zooms in and screen fades in
 import React from "react";
 
@@ -6,6 +6,7 @@ import Table from "../../components/tables/tables";
 
 import "./public.css";
 import { useNavigate, useParams } from "react-router-dom";
+import basketballImg from "./basketball.png";
 
 export default function PublicPage() {
     // Set states
@@ -29,8 +30,8 @@ export default function PublicPage() {
                 number: 11,
                 points: 30,
                 blocks: 2,
-            }
-        ]
+            },
+        ],
     });
 
     const [now, setNow] = React.useState({
@@ -356,7 +357,6 @@ export default function PublicPage() {
                 });
             }
         }
-
     };
 
     React.useEffect(() => {
@@ -371,14 +371,14 @@ export default function PublicPage() {
     const showPlayers = async (teamID) => {
         // Fetch players from API
         const teamRequest = await fetch(
-            'http://localhost:8080/api/teams/' + teamID + '/players',
+            "http://localhost:8080/api/teams/" + teamID + "/players",
             {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                }
+                    "Content-Type": "application/json",
+                },
             }
-        )
+        );
 
         const teamData = await teamRequest.json();
 
@@ -387,23 +387,27 @@ export default function PublicPage() {
             teamName: teams.flat().find((team) => {
                 return team.id === teamID;
             }).name,
-            players: teamData
+            players: teamData,
         });
 
         // Show overlay
-        const overlay = document.getElementById('playersOverlay');
-        overlay.style.display = 'flex';
+        const overlay = document.getElementById("playersOverlay");
+        overlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
     };
 
     // Close overlay
     const closeOverlay = () => {
-        const overlay = document.getElementById('playersOverlay');
-        overlay.style.display = 'none';
+        const overlay = document.getElementById("playersOverlay");
+        overlay.style.display = "none";
+        document.body.style.overflow = "auto";
     };
-
 
     return (
         <div className="publicPage__cont">
+            <div className="loadingOverlay">
+                <img src={basketballImg} alt="Basketball image" />
+            </div>
             <div className="banner">
                 <h1>{tournament ? tournament.name : "Lādējās..."}</h1>
             </div>
@@ -889,7 +893,10 @@ export default function PublicPage() {
             </footer>
             <div className="playersOverlay" id="playersOverlay">
                 <div className="playersOverlayData">
-                    <i className="fa-solid fa-close closeBtn" onClick={closeOverlay}></i>
+                    <i
+                        className="fa-solid fa-close closeBtn"
+                        onClick={closeOverlay}
+                    ></i>
                     <h2>{tempPlayers.teamName}</h2>
                     <p>
                         <b>Spēlētāji</b>
@@ -899,8 +906,12 @@ export default function PublicPage() {
                             return (
                                 <div className="playerCard" key={index}>
                                     <h2>{player.number}</h2>
-                                    <p>Points: <b>{player.points}</b></p>
-                                    <p>Blocks: <b>{player.blocks}</b></p>
+                                    <p>
+                                        Punkti: <b>{player.points}</b>
+                                    </p>
+                                    <p>
+                                        Bloki: <b>{player.blocks}</b>
+                                    </p>
                                     <h3>
                                         {player.firstname}{" "}
                                         <span className="uppercase">

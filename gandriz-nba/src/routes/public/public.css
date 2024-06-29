@@ -388,3 +388,36 @@ html {
 .uppercase {
     text-transform: uppercase;
 }
+
+/* LOADING SCREEN */
+.loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #212121;
+    z-index: 110;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loadingOverlay img {
+    animation: loadingRotate 5s linear 0s infinite normal;
+    width: 70px;
+    height: 70px;
+}
+
+@keyframes loadingRotate {
+    0% {
+        transform: translateY(0) rotate(180deg);
+    }
+    50% {
+        transform: translateY(45vh) rotate(360deg);
+    }
+    100% {
+        transform: translateY(0) rotate(520deg);
+    }
+    
+}
