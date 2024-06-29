@@ -113,7 +113,7 @@ const updateGame = async (
     team1MostPointsInRow,
     team2MostPointsInRow,
     team1BestPlayers,
-    team2BestPlayers,
+    team2BestPlayers
 ) => {
     const text =
         "UPDATE games SET team1Points = $2, team2Points = $3, team1Blocks = $4, team13points = $5, team1LostPoints = $6, team12points = $7, team2Blocks = $8, team23points = $9, team2LostPoints = $10, team22points = $11, timesTied = $12, timesLeadChanged = $13, team2BiggestLead = $14, team1BiggestLead = $15, team1MostPointsInRow = $16, team2MostPointsInRow = $17, team1BestPlayers = $18, team2BestPlayers = $19 WHERE id = $1";
@@ -145,7 +145,7 @@ const addPublicID = async (gameID, publicID) => {
     const text = "UPDATE games SET public_id = $2 WHERE id = $1";
     const values = [gameID, publicID];
     return await db.query(text, values);
-}
+};
 
 const getGame = async (gameID) => {
     const text = "SELECT * FROM games WHERE id = $1";
@@ -248,6 +248,14 @@ const getPublicGame = async (gameID) => {
     return await db.query(text, values);
 };
 
+// Live games
+const getLiveGames = async () => {
+    // Select id from game_public where not game_time = 0 in quarter 4
+    const text =
+        "SELECT id FROM game_public WHERE NOT game_time = 0 AND NOT quarter = 4 ORDER BY timestamp DESC";
+    return await db.query(text);
+};
+
 module.exports = {
     modelGame,
     updateGame,
@@ -257,5 +265,6 @@ module.exports = {
     updatePublicGame,
     deletePublicGame,
     getPublicGame,
-    addPublicID
+    addPublicID,
+    getLiveGames,
 };

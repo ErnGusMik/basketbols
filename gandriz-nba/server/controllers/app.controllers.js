@@ -12,7 +12,9 @@ router.post("/games/new/batch", routes.newGame);
 
 router.put("/games/update/:id", routes.updateGame);
 
+router.get("/games/live", routes.getLiveGames);
 router.get("/games/:id", routes.getGame);
+
 router.get("/tournaments/getIDfromName", routes.getTournamentIDfromPage);
 router.get("/tournaments/:id", routes.getTournament);
 router.get("/tournaments/:id/referees", routes.getRefereesInTournament);

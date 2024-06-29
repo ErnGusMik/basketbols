@@ -228,9 +228,12 @@ export default function PublicPage() {
         setPlayoffs(playoffsArr);
     };
 
-    React.useEffect(() => {
+    const setNowGames = async () => {
+        // Get all games
+        const allGames = games.flat().concat(playoffs);
+
         // Sort games by timestamp
-        const sortedGames = games.flat().sort((a, b) => {
+        const sortedGames = allGames.sort((a, b) => {
             return a.time - b.time;
         });
 
@@ -242,6 +245,70 @@ export default function PublicPage() {
             .sort((a, b) => {
                 return a.time - b.time;
             });
+       
+        // Fetch ongoing game public IDs
+        const ongoingGames = await fetch(
+            'http://localhost:8080/api/games/live',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        )
+        const ongoingData = await ongoingGames.json();
+
+        //Add ongoing property to games
+        sortedGames.forEach((game) => {
+            if (!game.public_id) {
+                game.ongoing = false;
+            } else {
+                game.ongoing = false;
+                ongoingData.forEach(ongoingGame => {
+                    if (game.public_id === ongoingGame.id) {
+                        game.ongoing = true;
+                    }
+                })
+            }
+            
+        });
+        
+        if (sortedGames.length === 1) {
+            if (gamesWithPublicIDs.length === 1) {
+                if (gamesWithPublicIDs[0].ongoing) {
+                    setNow({
+                        previous: null,
+                        current: gamesWithPublicIDs[0],
+                        next: null
+                    });
+                } else {
+                    setNow({
+                        previous: gamesWithPublicIDs[0],
+                        current: null,
+                        next: null
+                    });
+                }
+            }
+        }
+        
+        if (sortedGames.length === 2) {
+            if (gamesWithPublicIDs.length === 1) {
+                if (gamesWithPublicIDs[0].ongoing) {
+                    setNow({
+                        previous: null,
+                        current: gamesWithPublicIDs[0],
+                        next: sortedGames[1]
+                    });
+                } else {
+                    setNow({
+                        previous: gamesWithPublicIDs[0],
+                        current: sortedGames[1],
+                        next: null
+                    });
+                }
+            }
+        }
+
 
         // TODO: get last 2 games with public IDs and first game without public ID
         // TODO: if no games with public IDs, get first 3 games
@@ -252,6 +319,10 @@ export default function PublicPage() {
 
         console.log(gamesWithPublicIDs);
         console.log(sortedGames);
+    };
+
+    React.useEffect(() => {
+        setNowGames();
     }, [games]);
 
     React.useEffect(() => {

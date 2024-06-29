@@ -408,14 +408,14 @@ const newGame = async (req, res, next) => {
             0,
             0,
             JSON.stringify({
-                points1: '',
-                points2: '',
-                points3: '',
+                points1: "",
+                points2: "",
+                points3: "",
             }),
             JSON.stringify({
-                points1: '',
-                points2: '',
-                points3: '',
+                points1: "",
+                points2: "",
+                points3: "",
             }),
             req.body.games[i].finals,
             req.body.games[i].group,
@@ -541,6 +541,12 @@ const newPublicGame = async (req, res, next) => {
     res.status(201).send(gameID[0]);
 };
 
+const getLiveGames = async (req, res, next) => {
+    /* GET /api/games/live */
+    const result = await games.getLiveGames();
+    res.status(200).send(result);
+};
+
 // const updatePublicGame = async (req, res, next) => {
 //     /* PUT /api/games/update/public/:id */
 //     const values = [
@@ -650,15 +656,15 @@ const getPlayerByNumber = async (req, res, next) => {
         );
         if (!player[0]) {
             player[0] = {
-                firstname: 'Bez vārda',
-                lastname: '',
-            }
+                firstname: "Bez vārda",
+                lastname: "",
+            };
         }
         result.push(player[0]);
     }
 
     res.status(200).send(result);
-}
+};
 
 const getTournamentIDfromPage = async (req, res, next) => {
     /* GET /tournaments/getIDfromName?name=xxxxx */
@@ -666,21 +672,22 @@ const getTournamentIDfromPage = async (req, res, next) => {
     const lowercase = pageName.toLowerCase();
     const result = await tournaments.getTournamentPage(lowercase);
     res.send(
-        result[0] ?
-        {
-            id: result[0].id,
-            name: result[0].name,
-            description: result[0].description,
-            organizer: result[0].organizer,
-            location: result[0].location,
-            logo: result[0].logo,
-        } : {
-            id: null,
-            errror: "Tournament not found",
-            code: 404,
-            severity: "ERROR",
-            detail: "Turnīrs nav atrasts!",
-        }
+        result[0]
+            ? {
+                  id: result[0].id,
+                  name: result[0].name,
+                  description: result[0].description,
+                  organizer: result[0].organizer,
+                  location: result[0].location,
+                  logo: result[0].logo,
+              }
+            : {
+                  id: null,
+                  errror: "Tournament not found",
+                  code: 404,
+                  severity: "ERROR",
+                  detail: "Turnīrs nav atrasts!",
+              }
     );
     return;
 };
@@ -797,4 +804,5 @@ module.exports = {
     newPublicGame,
     // updatePublicGame,
     // getPublicGame,
+    getLiveGames,
 };
