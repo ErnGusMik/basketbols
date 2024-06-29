@@ -1,5 +1,6 @@
-// TODO: Add loading screen
-// ! IDEA: Ball bouncing on dark empty screen, when loaded, balll zooms in and screen fades in
+// TODO: Responsive design
+// TODO: If want to, add basketball decorations here and there (for example overlay corner)
+// TODO: If not, move on to game watch page
 import React from "react";
 
 import Table from "../../components/tables/tables";
@@ -63,6 +64,7 @@ export default function PublicPage() {
             ongoing: false,
         },
     });
+    const [loaded, setLoaded] = React.useState(false);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -239,6 +241,9 @@ export default function PublicPage() {
 
         // Set playoffs
         setPlayoffs(playoffsArr);
+
+        // Finish loading animation
+        setLoaded(true);
     };
 
     // Set the ongoing/live game row
@@ -367,6 +372,24 @@ export default function PublicPage() {
         getData();
     }, []);
 
+    // Set up loading animation
+    React.useEffect(() => {
+        if (loaded) {
+            document.querySelector(".loadingOverlay img").addEventListener("animationiteration", () => {
+                document.querySelector(".loadingOverlay").style.opacity = "0";
+                document.querySelector(".loadingOverlay img").style.animation =
+                    "loadingFade 3s linear 0s normal";
+                setTimeout(() => {
+                    document.querySelector(".loadingOverlay").style.display = "none";
+                }, 3000);
+            });
+        }
+
+        return () => {
+            document.querySelector(".loadingOverlay img").removeEventListener("animationiteration", () => {})
+        }
+    }, [loaded]);
+
     // Show player overlay
     const showPlayers = async (teamID) => {
         // Fetch players from API
@@ -407,6 +430,13 @@ export default function PublicPage() {
         <div className="publicPage__cont">
             <div className="loadingOverlay">
                 <img src={basketballImg} alt="Basketball image" />
+                <svg width={300} height={3}>
+                    <rect
+                        width={300}
+                        height={3}
+                        style={{ fill: "rgb(0,0,0)" }}
+                    />
+                </svg>
             </div>
             <div className="banner">
                 <h1>{tournament ? tournament.name : "Lādējās..."}</h1>

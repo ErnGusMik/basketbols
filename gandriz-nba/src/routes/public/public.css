@@ -401,12 +401,18 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    transition: all 2s ease-out;
 }
 
 .loadingOverlay img {
-    animation: loadingRotate 5s linear 0s infinite normal;
+    animation: loadingRotate 2s linear 0s infinite normal;
     width: 70px;
     height: 70px;
+}
+
+.loadingOverlay svg {
+    margin-top: 100px;
 }
 
 @keyframes loadingRotate {
@@ -414,10 +420,18 @@ html {
         transform: translateY(0) rotate(180deg);
     }
     50% {
-        transform: translateY(45vh) rotate(360deg);
+        transform: translateY(105px) rotate(360deg);
     }
     100% {
-        transform: translateY(0) rotate(520deg);
+        transform: translateY(0) rotate(540deg);
     }
-    
+}
+
+@keyframes loadingFade {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(70);
+    }
 }
