@@ -464,6 +464,11 @@ html {
     .game {
         width: 32%;
     }
+
+    .live:hover {
+        width: calc(32% + 4px);
+    }
+
     .publicPage__cont div:has(table) {
         max-width: 95%;
         margin: auto;

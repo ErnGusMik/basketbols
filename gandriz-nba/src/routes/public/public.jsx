@@ -1,4 +1,3 @@
-// TODO: error fix Cannot read properties of null (reading 'removeEventListener') on page switch
 import React from "react";
 
 import Table from "../../components/tables/tables";
@@ -378,12 +377,11 @@ export default function PublicPage() {
             document.querySelector(".loadingOverlay img").style.animation =
                 "loadingFade 3s linear 0s normal";
             setTimeout(() => {
-                document.querySelector(".loadingOverlay").style.display =
-                    "none";
+                document
+                    .querySelector(".loadingOverlay img")
+                    .removeEventListener("animationiteration", iterationFunc);
+                document.querySelector(".loadingOverlay").style.display = 'none';
             }, 3000);
-            document
-                .querySelector(".loadingOverlay img")
-                .removeEventListener("animationiteration", iterationFunc);
         };
 
         // If loaded, add event listener to get animation end
@@ -393,14 +391,14 @@ export default function PublicPage() {
                 .addEventListener("animationiteration", iterationFunc);
         }
 
-        // Cleanup
-        if (loaded) {
-            return () => {
-                document
-                    .querySelector(".loadingOverlay img")
-                    .removeEventListener("animationiteration", iterationFunc);
-            };
-        }
+        // Cleanup (throws error on page switch)
+        // if (loaded) {
+        //     return () => {
+        //         document
+        //             .querySelector(".loadingOverlay img")
+        //             .removeEventListener("animationiteration", iterationFunc);
+        //     };
+        // }
     }, [loaded]);
 
     // Show player overlay
