@@ -7,7 +7,45 @@ import "./watch.css";
 const Watch = () => {
     return (
         <div className="watch__cont">
-            <h2></h2>
+            <div className="teamsCont">
+                <div className="team">
+                    <h3 className="name">Čempionu komanda!</h3>
+                    <h2 className="score">126</h2>
+                    <div className="foul__container">
+                        <span className="foul active"></span>
+                        <span className="foul active"></span>
+                        <span className="foul active"></span>
+                        <span className="foul"></span>
+                        <span className="foul"></span>
+                    </div>
+                </div>
+                <div className="team right">
+                    <h3 className="name">Ogres SC</h3>
+                    <h2 className="score">89</h2>
+                    <div className="foul__container full">
+                        <span className="foul active"></span>
+                        <span className="foul active"></span>
+                        <span className="foul active"></span>
+                        <span className="foul active"></span>
+                        <span className="foul active"></span>
+                    </div>
+                </div>
+            </div>
+            <div className="largeInfoCont">
+                <div className="timeCont">
+                    <h3>9:34</h3>
+                    <p>
+                        <b>Periods 4</b>
+                    </p>
+                </div>
+                <div className="infoCont">
+                    <p>
+                        <b>A</b> grupa
+                    </p>
+                    <p>Skolas čempis 2024, Ogre</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-pen editBtn"></i>
         </div>
     );
 };
