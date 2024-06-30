@@ -5,11 +5,11 @@ import React from "react";
 import "./watch.css";
 
 const Watch = () => {
-    return (
-        <div className="watch__cont">
-            <h2></h2>
-        </div>
-    );
+  return (
+    <div className="watch__cont">
+      <h2></h2>
+    </div>
+  );
 };
 
 export default Watch;

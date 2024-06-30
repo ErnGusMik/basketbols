@@ -1,612 +1,612 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 .publicPage__cont * {
-    font-family: 'Montserrat Alternates', sans-serif;
-    color: white;
+  font-family: "Montserrat Alternates", sans-serif;
+  color: white;
 }
 
 html {
-    scroll-behavior: smooth;
-
+  scroll-behavior: smooth;
 }
 
 .publicPage__cont i {
-    font-family: 'Font Awesome\ 5 Free';
+  font-family: "Font Awesome\ 5 Free";
 }
 
 .publicPage__cont {
-    background-color: #212121;
-    min-height: 100vh;
-    padding-top: 30px;
+  background-color: #212121;
+  min-height: 100vh;
+  padding-top: 30px;
 }
 
 .publicPage__cont .banner {
-    width: 90%;
-    font-size: 2.5rem;
-    margin: 0 auto;
-    background-color: #313131;
-    border-radius: 50px;
-    height: 300px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('main.jpg') no-repeat center center/cover;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 20px;
+  width: 90%;
+  font-size: 2.5rem;
+  margin: 0 auto;
+  background-color: #313131;
+  border-radius: 50px;
+  height: 300px;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)),
+    url("main.jpg") no-repeat center center/cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
 }
 
 .publicPage__cont .banner h1 {
-    font-weight: 900;
-    margin: 0;
-    text-align: center;
+  font-weight: 900;
+  margin: 0;
+  text-align: center;
 }
 
 /* ELEMENTS */
 
 .element {
-    background-color: #313131;
-    border-radius: 50px;
+  background-color: #313131;
+  border-radius: 50px;
 }
 
 .row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    width: 90%;
-    margin: 30px auto;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 90%;
+  margin: 30px auto;
+  height: 100%;
 }
 
 .desc__cont {
-    max-width: 50%;
-    min-width: 40%;
-    padding: 10px 20px;
+  max-width: 50%;
+  min-width: 40%;
+  padding: 10px 20px;
 }
 
 .desc__cont p {
-    margin: 15px 10px;
-    font-weight: 400;
+  margin: 15px 10px;
+  font-weight: 400;
 }
 
 .desc__cont div {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px;
 }
 
 .spacerImg {
-    background: url('main.jpg') no-repeat center center/cover;
-    display: block;
-    min-width: 30%;
-    max-width: 40%;
-    height: auto;
-    margin: 0 40px;
+  background: url("main.jpg") no-repeat center center/cover;
+  display: block;
+  min-width: 30%;
+  max-width: 40%;
+  height: auto;
+  margin: 0 40px;
 }
 
 .jump__cont {
-    width: 100%;
-    padding: 10px 30px;
+  width: 100%;
+  padding: 10px 30px;
 }
 
 .jump__cont ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 .jump__cont ul li {
-    margin: 20px 0;
-    font-weight: 400;
+  margin: 20px 0;
+  font-weight: 400;
 }
 
 .jump__cont ul a {
-    text-decoration: underline;
-    color: #EE6730;
-    cursor: pointer;
+  text-decoration: underline;
+  color: #ee6730;
+  cursor: pointer;
 }
 
 /* GAMES */
 .game {
-    background-color: #fff;
-    width: 28%;
-    border-radius: 50px;
-    padding: 20px;
-    position: relative;
-    cursor: default;
+  background-color: #fff;
+  width: 28%;
+  border-radius: 50px;
+  padding: 20px;
+  position: relative;
+  cursor: default;
 }
 
 .game * {
-    color: black;
+  color: black;
 }
 
 .game img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 }
 
 .game .teams {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
 }
 
 .game .team h3 {
-    margin: 5px;
+  margin: 5px;
 }
 
 .game .team {
-    width: 40%;
+  width: 40%;
 }
 
 .game .vs {
-    font-weight: 900;
+  font-weight: 900;
 }
 
 .game .gameData__cont {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  text-align: center;
 }
 
 .game .gameData__cont h2 {
-    width: 40%;
-    font-weight: 900;
-    font-size: 1.7rem;
+  width: 40%;
+  font-weight: 900;
+  font-size: 1.7rem;
 }
 .game .gameData__cont p {
-    margin: 7px;
-    font-weight: 400;
+  margin: 7px;
+  font-weight: 400;
 }
 
 .game .live__content {
-    display: none;
+  display: none;
 }
 
 .live .live__content {
-    display: inline-block;
+  display: inline-block;
 }
 .live {
-    cursor: pointer;
-    transition: 0.1s all;
+  cursor: pointer;
+  transition: 0.1s all;
 }
 .live:hover {
-    margin: -2px -2px;
-    width: calc(28% + 4px);
-    height: calc(height + 4px);
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  margin: -2px -2px;
+  width: calc(28% + 4px);
+  height: calc(height + 4px);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .live__content {
-    position: absolute;
-    top: 10px;
-    right: 50%;
-    background-color: #FD9687;
-    transform: translateX(50%);
-    padding: 3px;
-    border: 5px solid #FF2200;
-    border-radius: 10px;
-    color: black;
-    font-size: 13px;
+  position: absolute;
+  top: 10px;
+  right: 50%;
+  background-color: #fd9687;
+  transform: translateX(50%);
+  padding: 3px;
+  border: 5px solid #ff2200;
+  border-radius: 10px;
+  color: black;
+  font-size: 13px;
 }
 
 .live__content i {
-    color: #FF2200;
-    animation: fade 1s linear 0s infinite normal;
-    font-size: 10px;
+  color: #ff2200;
+  animation: fade 1s linear 0s infinite normal;
+  font-size: 10px;
 }
 
 .live__content p {
-    display: inline-block;
-    color: black;
-    font-weight: 900;
-    margin: 0;
-    margin-left: 2px;
+  display: inline-block;
+  color: black;
+  font-weight: 900;
+  margin: 0;
+  margin-left: 2px;
 }
 
 @keyframes fade {
-    20% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    80% {
-        opacity: 1;
-    }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
 }
 
 /* FOOTER */
 .publicPage__cont footer {
-    background-color: #313131;
-    width: 100%;
-    padding: 40px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #313131;
+  width: 100%;
+  padding: 40px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .publicPage__cont footer p {
-    font-family: 'Montserrat';
-    font-weight: 200;
-    margin: 5px;
+  font-family: "Montserrat";
+  font-weight: 200;
+  margin: 5px;
 }
 
 .publicPage__cont footer a {
-    color: #EE6730;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #ee6730;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.games, .groups {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 50px auto;
+.games,
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 50px auto;
 }
 
 .publicPage__cont .statCard {
-    background-color: #313131;
-    border-radius: 50px;
-    padding: 20px;
-    width: 28%;
-    margin: 20px 0;
-    text-align: center;
+  background-color: #313131;
+  border-radius: 50px;
+  padding: 20px;
+  width: 28%;
+  margin: 20px 0;
+  text-align: center;
 }
 
 .publicPage__cont .statCard h2 {
-    font-weight: 900;
-    margin: 0;
+  font-weight: 900;
+  margin: 0;
 }
 
 .publicPage__cont .statCard .listContainer {
-    margin-bottom: auto;
+  margin-bottom: auto;
 }
 
 .publicPage__cont .stats {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: stretch;
-    flex-wrap: wrap;
-    margin: 100px auto;
-    max-width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin: 100px auto;
+  max-width: 90%;
 }
 
 .playersOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
 }
 
 .playersOverlayData {
-    border-radius: 20px;
-    background-color: #212121;
-    padding: 20px;
-    width: 40%;
-    height: 80%;
-    overflow-y: scroll;
-    text-align: center;
-    box-shadow: 10px 10px 35px 0px rgba(0,0,0,0.75);
-    position: relative;
-    overflow-x: visible;
+  border-radius: 20px;
+  background-color: #212121;
+  padding: 20px;
+  width: 40%;
+  height: 80%;
+  overflow-y: scroll;
+  text-align: center;
+  box-shadow: 10px 10px 35px 0px rgba(0, 0, 0, 0.75);
+  position: relative;
+  overflow-x: visible;
 }
 
 .playersOverlayData .closeBtn {
-    cursor: pointer;
-    float: right;
+  cursor: pointer;
+  float: right;
 }
 
 .playersOverlayData .cardCont {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .playersOverlayData .playerCard {
-    background-color: #313131;
-    border-radius: 50px;
-    padding: 20px;
-    width: 180px;
-    margin: 20px;
-    text-align: center;
-    position: relative;
-    height: 300px;
+  background-color: #313131;
+  border-radius: 50px;
+  padding: 20px;
+  width: 180px;
+  margin: 20px;
+  text-align: center;
+  position: relative;
+  height: 300px;
 }
 
 .playersOverlayData .playerCard h3 {
-    margin: 0;
-    font-weight: 200;
-    z-index: 102;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+  margin: 0;
+  font-weight: 200;
+  z-index: 102;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .playersOverlayData .playerCard span {
-    font-weight: 800;
-    z-index: 102;
-    position: relative;
+  font-weight: 800;
+  z-index: 102;
+  position: relative;
 }
 
 .playersOverlayData .playerCard h2 {
-    margin: 40px 0;
-    font-weight: 900;
-    font-size: 100px;
-    z-index: 102;
-    position: relative;
-    user-select: none;
-    transition: all 0.2s ease-out;
+  margin: 40px 0;
+  font-weight: 900;
+  font-size: 100px;
+  z-index: 102;
+  position: relative;
+  user-select: none;
+  transition: all 0.2s ease-out;
 }
 
 .playersOverlayData .playerCard p {
-    position: relative;
-    z-index: 102;
-    opacity: 0;
-    transition: all 0.1s ease-out;
-    transition-delay: 0.1s;
+  position: relative;
+  z-index: 102;
+  opacity: 0;
+  transition: all 0.1s ease-out;
+  transition-delay: 0.1s;
 }
 
 .playersOverlayData .backg {
-    background-color: #EE6730;
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 25%;
-    z-index: 101;
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
-    transition: all 0.3s ease-out;
+  background-color: #ee6730;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 25%;
+  z-index: 101;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  transition: all 0.3s ease-out;
 }
 
 .playersOverlayData .playerCard:hover > .backg {
-    height: 100%;
-    border-radius: 50px;
+  height: 100%;
+  border-radius: 50px;
 }
 
 .playersOverlayData .playerCard:hover > h2 {
-    font-size: 50px;
-    margin: 30px;
+  font-size: 50px;
+  margin: 30px;
 }
 
 .playersOverlayData .playerCard:hover > p {
-    opacity: 1;
+  opacity: 1;
 }
 
 .uppercase {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 /* LOADING SCREEN */
 .loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #212121;
-    z-index: 110;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: all 2s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #212121;
+  z-index: 110;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 2s ease-out;
 }
 
 .loadingOverlay img {
-    animation: loadingRotate 2s linear 0s infinite normal;
-    width: 70px;
-    height: 70px;
+  animation: loadingRotate 2s linear 0s infinite normal;
+  width: 70px;
+  height: 70px;
 }
 
 .loadingOverlay svg {
-    margin-top: 100px;
+  margin-top: 100px;
 }
 
 @keyframes loadingRotate {
-    0% {
-        transform: translateY(0) rotate(180deg);
-    }
-    50% {
-        transform: translateY(105px) rotate(360deg);
-    }
-    100% {
-        transform: translateY(0) rotate(540deg);
-    }
+  0% {
+    transform: translateY(0) rotate(180deg);
+  }
+  50% {
+    transform: translateY(105px) rotate(360deg);
+  }
+  100% {
+    transform: translateY(0) rotate(540deg);
+  }
 }
 
 @keyframes loadingFade {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(70);
-    }
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(70);
+  }
 }
 
 @keyframes rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .absoluteDecor {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 100px;
-    height: 100px;
-    transform: rotate(30deg);
-    animation: rotate 10s linear 0s infinite normal;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 100px;
+  height: 100px;
+  transform: rotate(30deg);
+  animation: rotate 10s linear 0s infinite normal;
 }
-
 
 /* Less than 1100px */
 @media screen and (max-width: 1100px) {
-    .game {
-        width: 32%;
-    }
+  .game {
+    width: 32%;
+  }
 
-    .live:hover {
-        width: calc(32% + 4px);
-    }
+  .live:hover {
+    width: calc(32% + 4px);
+  }
 
-    .publicPage__cont div:has(table) {
-        max-width: 95%;
-        margin: auto;
-    }
-    .publicPage__cont .statCard {
-        width: 40%;
-    }
+  .publicPage__cont div:has(table) {
+    max-width: 95%;
+    margin: auto;
+  }
+  .publicPage__cont .statCard {
+    width: 40%;
+  }
 
-    .playersOverlayData {
-        width: 60%;
-    }
+  .playersOverlayData {
+    width: 60%;
+  }
 }
 
 /* Less than 900px */
 @media screen and (max-width: 900px) {
-    .game {
-        width: 300px;
-        margin: 0 20px;
-    }
+  .game {
+    width: 300px;
+    margin: 0 20px;
+  }
 
-    .live:hover {
-        margin: -2px 18px;
-        width: 304px;
-        height: calc(height + 4px);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    }
-    #now {
-        overflow-x: auto;
-    }
+  .live:hover {
+    margin: -2px 18px;
+    width: 304px;
+    height: calc(height + 4px);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  }
+  #now {
+    overflow-x: auto;
+  }
 
-    .publicPage__cont div:has(table) {
-        max-width: 95%;
-        margin: auto;
-    }
-    .publicPage__cont .statCard {
-        width: 45%;
-    }
+  .publicPage__cont div:has(table) {
+    max-width: 95%;
+    margin: auto;
+  }
+  .publicPage__cont .statCard {
+    width: 45%;
+  }
 
-    .publicPage__cont .spacerImg {
-       width: 0;
-       min-width: 0;
+  .publicPage__cont .spacerImg {
+    width: 0;
+    min-width: 0;
+  }
 
-    }
+  .publicPage__cont .desc__cont {
+    max-width: 70%;
+    min-width: 60%;
+  }
 
-    .publicPage__cont .desc__cont {
-        max-width: 70%;
-        min-width: 60%;
-    }
+  .publicPage__cont h1 {
+    font-size: 50px;
+  }
 
-    .publicPage__cont h1 {
-        font-size: 50px;
-    }
-    
-    .playersOverlayData {
-        width: 80%;
-    }
+  .playersOverlayData {
+    width: 80%;
+  }
 }
 
 /* Less than 700px */
 @media screen and (max-width: 700px) {
-    .row {
-        flex-direction: column;
-    }
-    .element {
-        width: 100%;
-        min-width: 100% !important;
-        max-width: 100% !important;
-        margin: 10px 0;
-    }
+  .row {
+    flex-direction: column;
+  }
+  .element {
+    width: 100%;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0;
+  }
 
-    .jump__cont ul li {
-        display: inline;
-        margin: 5px;
-    }   
+  .jump__cont ul li {
+    display: inline;
+    margin: 5px;
+  }
 
-    .jump__cont ul {
-        display: flex;
-        width: 70%;
-        justify-content: space-evenly;
-    }
+  .jump__cont ul {
+    display: flex;
+    width: 70%;
+    justify-content: space-evenly;
+  }
 
-    .jump__cont p {
-        display: inline;
-        margin: 5px;
-    }
+  .jump__cont p {
+    display: inline;
+    margin: 5px;
+  }
 
-    .jump__cont {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+  .jump__cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .game {
-        margin: 10px 0;
-    }
+  .game {
+    margin: 10px 0;
+  }
 
-    #now {
-        width: fit-content;
-        overflow-x: visible;
-    }
+  #now {
+    width: fit-content;
+    overflow-x: visible;
+  }
 
-    .live:hover {
-        margin: 10px -2px;
-        width: 304px;
-        height: calc(height + 4px);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    }
+  .live:hover {
+    margin: 10px -2px;
+    width: 304px;
+    height: calc(height + 4px);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  }
 
-    .publicPage__cont .statCard {
-        width: 60%;
-    }
+  .publicPage__cont .statCard {
+    width: 60%;
+  }
 
-    .publicPage__cont .groups {
-        margin: 50px auto;
-    }
+  .publicPage__cont .groups {
+    margin: 50px auto;
+  }
 
-    .publicPage__cont footer {
-        flex-direction: column;
-        padding: 20px;
-    }
+  .publicPage__cont footer {
+    flex-direction: column;
+    padding: 20px;
+  }
 
-    .publicPage__cont footer p {
-        text-align: center;
-        margin-top: 10px;
-    }
+  .publicPage__cont footer p {
+    text-align: center;
+    margin-top: 10px;
+  }
 }
 
 /* Less than 500px */
 @media screen and (max-width: 500px) {
-    .publicPage__cont .statCard {
-        width: 90%;
-    }
+  .publicPage__cont .statCard {
+    width: 90%;
+  }
 
-    .jump__cont {
-        flex-direction: column;
-    }
+  .jump__cont {
+    flex-direction: column;
+  }
 
-    .jump__cont ul {
-        width: 100%;
-    }
+  .jump__cont ul {
+    width: 100%;
+  }
 }
