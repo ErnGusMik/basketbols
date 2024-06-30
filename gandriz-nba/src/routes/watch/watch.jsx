@@ -1,4 +1,4 @@
-// TODO: Populate without data
+// TODO: Add designs
 // TODO: Every design has a class name, so it is easy to style it
 import React from "react";
 

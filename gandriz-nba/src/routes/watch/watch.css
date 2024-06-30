@@ -6,6 +6,7 @@
     min-height: 100vh;
     margin: 0;
     padding: 30px;
+    background: url("./defaultBackg.jpg") center / contain no-repeat fixed black;
 }
 
 .watch__cont p, .watch__cont h2, .watch__cont h3 {
