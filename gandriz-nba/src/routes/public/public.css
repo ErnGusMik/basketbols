@@ -39,6 +39,7 @@ html {
 .publicPage__cont .banner h1 {
     font-weight: 900;
     margin: 0;
+    text-align: center;
 }
 
 /* ELEMENTS */
@@ -253,7 +254,7 @@ html {
     border-radius: 50px;
     padding: 20px;
     width: 28%;
-    margin: 20px;
+    margin: 20px 0;
     text-align: center;
 }
 
@@ -316,7 +317,7 @@ html {
     background-color: #313131;
     border-radius: 50px;
     padding: 20px;
-    width: 40%;
+    width: 180px;
     margin: 20px;
     text-align: center;
     position: relative;
@@ -433,5 +434,152 @@ html {
     }
     100% {
         transform: scale(70);
+    }
+}
+
+/* Less than 1100px */
+@media screen and (max-width: 1100px) {
+    .game {
+        width: 32%;
+    }
+    .publicPage__cont div:has(table) {
+        max-width: 95%;
+        margin: auto;
+    }
+    .publicPage__cont .statCard {
+        width: 40%;
+    }
+
+    .playersOverlayData {
+        width: 60%;
+    }
+}
+
+/* Less than 900px */
+@media screen and (max-width: 900px) {
+    .game {
+        width: 300px;
+        margin: 0 20px;
+    }
+
+    .live:hover {
+        margin: -2px 18px;
+        width: 304px;
+        height: calc(height + 4px);
+        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    }
+    #now {
+        overflow-x: auto;
+    }
+
+    .publicPage__cont div:has(table) {
+        max-width: 95%;
+        margin: auto;
+    }
+    .publicPage__cont .statCard {
+        width: 45%;
+    }
+
+    .publicPage__cont .spacerImg {
+       width: 0;
+       min-width: 0;
+
+    }
+
+    .publicPage__cont .desc__cont {
+        max-width: 70%;
+        min-width: 60%;
+    }
+
+    .publicPage__cont h1 {
+        font-size: 50px;
+    }
+    
+    .playersOverlayData {
+        width: 80%;
+    }
+}
+
+/* Less than 700px */
+@media screen and (max-width: 700px) {
+    .row {
+        flex-direction: column;
+    }
+    .element {
+        width: 100%;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin: 10px 0;
+    }
+
+    .jump__cont ul li {
+        display: inline;
+        margin: 5px;
+    }   
+
+    .jump__cont ul {
+        display: flex;
+        width: 70%;
+        justify-content: space-evenly;
+    }
+
+    .jump__cont p {
+        display: inline;
+        margin: 5px;
+    }
+
+    .jump__cont {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .game {
+        margin: 10px 0;
+    }
+
+    #now {
+        width: fit-content;
+        overflow-x: visible;
+    }
+
+    .live:hover {
+        margin: 10px -2px;
+        width: 304px;
+        height: calc(height + 4px);
+        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    }
+
+    .publicPage__cont .statCard {
+        width: 60%;
+    }
+
+    .publicPage__cont .groups {
+        margin: 50px auto;
+    }
+
+    .publicPage__cont footer {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .publicPage__cont footer p {
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+/* Less than 500px */
+@media screen and (max-width: 500px) {
+    .publicPage__cont .statCard {
+        width: 90%;
+    }
+
+    .jump__cont {
+        flex-direction: column;
+    }
+
+    .jump__cont ul {
+        width: 100%;
     }
 }
