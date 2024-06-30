@@ -30,6 +30,9 @@ import Game from "./routes/app/game/game/game";
 import Analysis from "./routes/app/game/analysis/analysis";
 import PublicPage from "./routes/public/public";
 
+import NotFound from "./routes/404/404";
+import Watch from "./routes/watch/watch";
+
 function App() {
     const router = createBrowserRouter([
         {
@@ -123,6 +126,11 @@ function App() {
             element: <Game />,
         },
         {
+            path: "/game/:id/watch",
+            element: <Watch />,
+            errorElement: <div>Watch error</div>,
+        },
+        {
             path: "login",
             element: <Login />,
             errorElement: <div>Login error</div>,
@@ -150,6 +158,12 @@ function App() {
             path: "/reset-password",
             element: <ResetPassword />,
             errorElement: <div>Reset password error</div>,
+            children: [],
+        },
+        {
+            path: "/404",
+            element: <NotFound />,
+            errorElement: <NotFound />,
             children: [],
         },
         {

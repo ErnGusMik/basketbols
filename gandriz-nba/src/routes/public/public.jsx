@@ -1,12 +1,10 @@
-// TODO: Responsive design
-// TODO: If want to, add basketball decorations here and there (for example overlay corner)
-// TODO: If not, move on to game watch page
+// TODO: error fix Cannot read properties of null (reading 'removeEventListener') on page switch
 import React from "react";
 
 import Table from "../../components/tables/tables";
 
 import "./public.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import basketballImg from "./basketball.png";
 
 export default function PublicPage() {
@@ -374,19 +372,34 @@ export default function PublicPage() {
 
     // Set up loading animation
     React.useEffect(() => {
+        // Define iteration function that runs when animation ends
+        const iterationFunc = () => {
+            document.querySelector(".loadingOverlay").style.opacity = "0";
+            document.querySelector(".loadingOverlay img").style.animation =
+                "loadingFade 3s linear 0s normal";
+            setTimeout(() => {
+                document.querySelector(".loadingOverlay").style.display =
+                    "none";
+            }, 3000);
+            document
+                .querySelector(".loadingOverlay img")
+                .removeEventListener("animationiteration", iterationFunc);
+        };
+
+        // If loaded, add event listener to get animation end
         if (loaded) {
-            document.querySelector(".loadingOverlay img").addEventListener("animationiteration", () => {
-                document.querySelector(".loadingOverlay").style.opacity = "0";
-                document.querySelector(".loadingOverlay img").style.animation =
-                    "loadingFade 3s linear 0s normal";
-                setTimeout(() => {
-                    document.querySelector(".loadingOverlay").style.display = "none";
-                }, 3000);
-            });
+            document
+                .querySelector(".loadingOverlay img")
+                .addEventListener("animationiteration", iterationFunc);
         }
 
-        return () => {
-            document.querySelector(".loadingOverlay img").removeEventListener("animationiteration", () => {})
+        // Cleanup
+        if (loaded) {
+            return () => {
+                document
+                    .querySelector(".loadingOverlay img")
+                    .removeEventListener("animationiteration", iterationFunc);
+            };
         }
     }, [loaded]);
 
@@ -485,9 +498,9 @@ export default function PublicPage() {
             </div>
             <div className="row" id="now">
                 {now.previous && (
-                    <a
+                    <Link
                         className={now.previous.ongoing ? "game live" : "game"}
-                        href={
+                        to={
                             now.previous.ongoing
                                 ? "/game/" + now.previous.public_id + "/watch"
                                 : ""
@@ -538,12 +551,12 @@ export default function PublicPage() {
                             <i className="fa-solid fa-circle"></i>
                             <p>LIVE</p>
                         </div>
-                    </a>
+                    </Link>
                 )}
                 {now.current && (
-                    <a
+                    <Link
                         className={now.current.ongoing ? "game live" : "game"}
-                        href={
+                        to={
                             now.current.ongoing
                                 ? "/game/" + now.current.public_id + "/watch"
                                 : ""
@@ -594,12 +607,12 @@ export default function PublicPage() {
                             <i className="fa-solid fa-circle"></i>
                             <p>LIVE</p>
                         </div>
-                    </a>
+                    </Link>
                 )}
                 {now.next && (
-                    <a
+                    <Link
                         className={now.next.ongoing ? "game live" : "game"}
-                        href={
+                        to={
                             now.next.ongoing
                                 ? "/game/" + now.next.public_id + "/watch"
                                 : "#"
@@ -649,7 +662,7 @@ export default function PublicPage() {
                             <i className="fa-solid fa-circle"></i>
                             <p>LIVE</p>
                         </div>
-                    </a>
+                    </Link>
                 )}
             </div>
             <div className="games" id="games">
@@ -734,15 +747,15 @@ export default function PublicPage() {
                                             })
                                             .join(", "),
                                         game.public_id ? (
-                                            <a
-                                                href={
+                                            <Link
+                                                to={
                                                     "/game/" +
                                                     game.public_id +
                                                     "/watch"
                                                 }
                                             >
                                                 skatīt
-                                            </a>
+                                            </Link>
                                         ) : (
                                             ""
                                         ),
@@ -918,11 +931,16 @@ export default function PublicPage() {
                     <p>Visas tiesības aizsargātas.</p>
                 </div>
                 <p>
-                    Izveidots izmantojot <a href="#">Gandrīz NBA</a>
+                    Izveidots izmantojot <Link to="/">Gandrīz NBA</Link>
                 </p>
             </footer>
             <div className="playersOverlay" id="playersOverlay">
                 <div className="playersOverlayData">
+                    <img
+                        src={basketballImg}
+                        alt="Basketball"
+                        className="absoluteDecor"
+                    />
                     <i
                         className="fa-solid fa-close closeBtn"
                         onClick={closeOverlay}
