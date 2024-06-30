@@ -1,100 +1,100 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 .notFound * {
-    font-family: "Montserrat Alternates", sans-serif;
-    color: white;
+  font-family: "Montserrat Alternates", sans-serif;
+  color: white;
 }
 
 .notFound {
-    background-color: #212121;
-    min-height: 100vh;
-    padding-top: 30px;
-    text-align: center;
+  background-color: #212121;
+  min-height: 100vh;
+  padding-top: 30px;
+  text-align: center;
 }
 
 .notFound h1 {
-    font-size: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px;
-    font-weight: 900;
+  font-size: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  font-weight: 900;
 }
 
 .notFound img {
-    height: 200px;
+  height: 200px;
 }
 
 .notFound h2 {
-    font-size: 35px;
-    margin-top: 30px;
-    font-weight: 800;
-    max-width: 95%;
+  font-size: 35px;
+  margin-top: 30px;
+  font-weight: 800;
+  max-width: 95%;
 }
 
 .notFound button {
-    background-color: #ee6730;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 20px;
-    margin-top: 30px;
-    cursor: pointer;
-    border-radius: 50px;
-    transition: 0.3s;
-    font-weight: 300;
+  background-color: #ee6730;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 20px;
+  margin-top: 30px;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: 0.3s;
+  font-weight: 300;
 }
 
 .notFound button:hover {
-    background-color: #d25a2b;
+  background-color: #d25a2b;
 }
 
 .notFound footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background-color: #313131;
-    padding: 10px 0;
-    font-size: 15px;
-    font-weight: 300;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #313131;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 300;
 }
 
 @media screen and (max-width: 550px) {
-    .notFound h1 {
-        font-size: 150px;
-    }
+  .notFound h1 {
+    font-size: 150px;
+  }
 
-    .notFound img {
-        height: 150px;
-    }
+  .notFound img {
+    height: 150px;
+  }
 
-    .notFound h2 {
-        font-size: 25px;
-    }
+  .notFound h2 {
+    font-size: 25px;
+  }
 
-    .notFound button {
-        font-size: 15px;
-    }
+  .notFound button {
+    font-size: 15px;
+  }
 
-    .notFound footer {
-        font-size: 12px;
-    }
+  .notFound footer {
+    font-size: 12px;
+  }
 }
 
 @media screen and (max-width: 400px) {
-    .notFound h1 {
-        font-size: 100px;
-    }
+  .notFound h1 {
+    font-size: 100px;
+  }
 
-    .notFound img {
-        height: 100px;
-    }
+  .notFound img {
+    height: 100px;
+  }
 
-    .notFound h2 {
-        font-size: 20px;
-    }
+  .notFound h2 {
+    font-size: 20px;
+  }
 
-    .notFound h3 {
-        font-size: 15px;
-    }
+  .notFound h3 {
+    font-size: 15px;
+  }
 }
