@@ -1,5 +1,7 @@
-// TODO: Add designs
-// TODO: Every design has a class name, so it is easy to style it
+// TODO: Get data, add score adding animation
+// TODO: create countdown animation
+// TODO: responsive design
+// TODO: foul overlay
 import React from "react";
 
 import "./watch.css";
@@ -38,6 +40,8 @@ const Watch = () => {
 
     return (
         <div className="watch__cont defaultBackg">
+            <div className="colorBar" id="topBar"></div>
+            <p className="topBarText">#Atbalsti<span className="bold">Savējos</span></p>
             <div className="teamsCont">
                 <div className="team">
                     <h3 className="name">Čempionu komanda!</h3>
@@ -79,6 +83,7 @@ const Watch = () => {
                     <p>Skolas čempis 2024, Ogre</p>
                 </div>
             </div>
+            <div className="colorBar" id="bottomBar"></div>
             <i
                 class="fa-solid fa-pen editBtn"
                 onClick={() => {

@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap');
 
 @font-face {
     font-family: "Digital Numbers";
@@ -12,14 +14,16 @@
     padding: 30px;
 }
 
-.watch__cont .foulNum, .watch__cont .periodNum {
+.watch__cont .foulNum, .watch__cont .periodNum, .watch__cont .colorBar, .watch__cont .topBarText {
     display: none;
 }
 
-.watch__cont p,
-.watch__cont h2,
-.watch__cont h3 {
-    font-family: "Montserrat Alternates", sans-serif;
+.watch__cont *{
+    font-family: "Montserrat Alternates", sans-serif !important;
+}
+
+.watch__cont i {
+    font-family: 'Font Awesome\ 5 Free' !important;
 }
 
 .watch__cont h2 {
@@ -42,6 +46,10 @@
     max-width: 90%;
     margin: auto;
     height: 70vh;
+}
+
+.watch__cont .foul {
+    cursor: default;
 }
 
 .team {
@@ -94,8 +102,8 @@
 
 .customizeOverlay {
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     position: fixed;
     top: 0;
     left: 0;
@@ -219,7 +227,7 @@
 }
 
 .watch__cont.backg5 .team h2 {
-    font-family: "Digital Numbers";
+    font-family: "Digital Numbers" !important;
     font-size: 60px;
     border: 1px solid #fff;
     color: #ECE65E;
@@ -230,7 +238,7 @@
 .watch__cont.backg5 .team h2::before {
     content: "Home";
     text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif !important;
     font-style: italic;
     color: #fff;
     font-size: 30px;
@@ -245,7 +253,7 @@
 .watch__cont.backg5 .team.right h2::before {
     content: "Guest";
     text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif !important;
     font-style: italic;
     color: #fff;
     font-size: 30px;
@@ -258,7 +266,7 @@
 }
 
 .watch__cont.backg5 .timeCont h3 {
-    font-family: "Digital Numbers";
+    font-family: "Digital Numbers" !important;
     font-size: 60px;
     color: #FD3A3A;
     border: 1px solid #fff;
@@ -266,7 +274,7 @@
 }
 
 .watch__cont.backg5 .periodNum {
-    font-family: "Digital Numbers";
+    font-family: "Digital Numbers" !important;
     font-size: 60px;
     color: #FD3A3A;
     border: 1px solid #fff;
@@ -278,7 +286,7 @@
 .watch__cont.backg5 .periodNum::before {
     content: "Period";
     text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif !important;
     font-style: italic;
     color: #fff;
     font-size: 30px;
@@ -299,7 +307,7 @@
 }
 
 .watch__cont.backg5 .foulNum {
-    font-family: "Digital Numbers";
+    font-family: "Digital Numbers" !important;
     font-size: 60px;
     color: #FD3A3A;
     border: 1px solid #fff;
@@ -312,7 +320,7 @@
 .watch__cont.backg5 .foulNum::before {
     content: "Fouls";
     text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif !important;
     font-style: italic;
     color: #fff;
     font-size: 30px;
@@ -350,5 +358,148 @@
 }
 
 /* TRIANGLES */
+.watch__cont.backg6 {
+    background: url("./backg6.png") bottom / cover no-repeat white;
+    color: black;
+}
+
+.watch__cont.backg6 .team h3 {
+    background: linear-gradient(to right, #F12711, #F5AF19);
+    padding: 20px 30px;
+    border-radius: 50px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.watch__cont.backg6 .team {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.watch__cont.backg6 .foul {
+    border: 2px solid #000;
+}
+
+.watch__cont.backg6 .timeCont {
+    background: linear-gradient(to right, #F12711, #F5AF19);
+    padding: 5px 50px;
+    border-radius: 50px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.watch__cont.backg6 .timeCont h3 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.watch__cont.backg6 .timeCont p {
+    margin-top: -5px;
+}
+
+.watch__cont.backg6 .infoCont p {
+    font-weight: 500;
+}
+
+.watch__cont.backg6 .largeInfoCont {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.watch__cont.backg6 .timeCont {
+    margin-top: 30vh;
+}
 
 /* SUPPORT HOME */
+.watch__cont.backg7 {
+    background: #000 !important;
+    padding: 0;
+    overflow: hidden;
+    max-height: 100vh;
+}
+
+.watch__cont.backg7 .colorBar {
+    display: block;
+    height: 150px;
+    background-color: #b5093c;
+    transform: rotate(-5deg);
+    width: 110vw;
+    margin-left: -50px;
+}
+
+#topBar {
+    margin-top: -85px;
+}
+
+#bottomBar {
+    position: fixed;
+    bottom: -85px;
+    left: -50px;
+}
+
+.watch__cont.backg7 .topBarText {
+    display: block;
+    color: white;
+    font-size: 40px;
+    transform: rotate(-5deg);
+    margin-top: 5px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif !important;
+    text-align: center;
+}
+
+.watch__cont.backg7 .topBarText span {
+    font-family: 'Tomorrow', sans-serif !important;
+    font-weight: 900;
+}
+
+.watch__cont.backg7 .teamsCont {
+    height: 50vh;
+}
+
+.watch__cont.backg7 .largeInfoCont {
+    bottom: 70px;
+    height: calc(100vh - 150px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.watch__cont.backg7 .timeCont {
+    margin-top: 30vh;
+}
+
+.watch__cont.backg7 .timeCont h3 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 800;
+    font-family: 'Tomorrow', sans-serif !important;
+}
+
+.watch__cont.backg7 .timeCont p {
+    font-family: 'Tomorrow', sans-serif !important;
+    font-size: 15px;
+}
+
+.watch__cont.backg7 .infoCont {
+    transform: rotate(-5deg);
+}
+
+.watch__cont.backg7 .infoCont b {
+    font-family: 'Tomorrow', sans-serif !important;
+    font-weight: 800;
+}
+
+.watch__cont.backg7 .editBtn {
+    color: #8c8c8c;
+}
+
+.watch__cont.backg7 .editBtn:hover {
+    color: #717171;
+}
