@@ -82,3 +82,95 @@
 .watch__cont .editBtn:hover {
     color: #8e8e8e;
 }
+
+.customizeOverlay {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customizeOverlayData {
+    background-color: #212121;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    width: 50%;
+    max-width: 500px;
+    text-align: center;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+}
+
+.customizeOverlayData i {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.customizeOverlayData i:hover {
+    color: #c8c8c8;
+}
+
+.displaysCont {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.display {
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #000;
+    border: 3px solid #212121;
+    transition: 0.2s;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+.display.active {
+    border: 3px solid #EE6730;
+}
+
+#defaultDisplay {
+    background: url("./defaultBackg.jpg") center / contain no-repeat black;
+}
+
+#display2 {
+    background: url("./backg2.jpg") center / contain no-repeat black;
+}
+
+#display3 {
+    background: url("./backg3.jpg") center / contain no-repeat black;
+}
+
+#display4 {
+    background: url("./backg4.jpg") center / contain no-repeat black;
+}
+
+#display5 {
+    background: url("./backg4.jpg") center / contain no-repeat black;
+}
+
+#display6 {
+    background: url("./backg6disp.png") center / contain no-repeat white;
+}
+
+#display7 {
+    background: url("./backg7.png") center / contain no-repeat #B5093C;
+}
