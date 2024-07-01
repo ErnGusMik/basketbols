@@ -9,11 +9,11 @@ const Watch = () => {
 
 
     const changeBackground = (newID) => {
-        document.querySelector('.watch__cont').classList.add(newID);
+        document.querySelector('.watch__cont').classList = 'watch__cont ' + newID;
     };
 
     return (
-        <div className="watch__cont">
+        <div className="watch__cont defaultBackg">
             <div className="teamsCont">
                 <div className="team">
                     <h3 className="name">Čempionu komanda!</h3>
@@ -58,13 +58,13 @@ const Watch = () => {
                     <i className="fa-solid fa-close"></i>
                     <h3>Pielāgot</h3>
                     <div className="displaysCont">
-                        <div className="display active" id="defaultDisplay"></div>
-                        <div className="display" id="display2"></div>
-                        <div className="display" id="display3"></div>
-                        <div className="display" id="display4"></div>
-                        <div className="display" id="display5"></div>
-                        <div className="display" id="display6"></div>
-                        <div className="display" id="display7"></div>
+                        <div className="display active" id="defaultDisplay" onClick={() => changeBackground('defaultBackg')}></div>
+                        <div className="display" id="display2" onClick={() => changeBackground('backg2')}></div>
+                        <div className="display" id="display3" onClick={() => changeBackground('backg3')}></div>
+                        <div className="display" id="display4" onClick={() => changeBackground('backg4')}></div>
+                        <div className="display" id="display5" onClick={() => changeBackground('backg5')}></div>
+                        <div className="display" id="display6" onClick={() => changeBackground('backg6')}></div>
+                        <div className="display" id="display7" onClick={() => changeBackground('backg7')}></div>
                     </div>
                 </div>
             </div>
