@@ -824,7 +824,7 @@ export default function Game() {
             if (game.team1points + points === game.team2points) {
                 game.timestied += 1;
             }
-            
+
             // Check if lead has changed
             if (
                 game.team1points + points > game.team2points &&
@@ -832,7 +832,6 @@ export default function Game() {
             ) {
                 game.timesleadchanged += 1;
             }
-
 
             // Check if team has biggest lead now
             if (
