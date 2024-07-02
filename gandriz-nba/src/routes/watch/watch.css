@@ -1,568 +1,571 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap");
 
 @font-face {
-    font-family: "Digital Numbers";
-    src: url("./DigitalNumbers-Regular.ttf") format("truetype");
+  font-family: "Digital Numbers";
+  src: url("./DigitalNumbers-Regular.ttf") format("truetype");
 }
 
 .watch__cont {
-    color: white;
-    min-height: 100vh;
-    margin: 0;
-    padding: 30px;
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+  padding: 30px;
 }
 
-.watch__cont .foulNum, .watch__cont .periodNum, .watch__cont .colorBar, .watch__cont .topBarText {
-    display: none;
+.watch__cont .foulNum,
+.watch__cont .periodNum,
+.watch__cont .colorBar,
+.watch__cont .topBarText {
+  display: none;
 }
 
-.watch__cont *{
-    font-family: "Montserrat Alternates", sans-serif !important;
+.watch__cont * {
+  font-family: "Montserrat Alternates", sans-serif !important;
 }
 
 .watch__cont i {
-    font-family: 'Font Awesome\ 5 Free' !important;
+  font-family: "Font Awesome\ 5 Free" !important;
 }
 
 .watch__cont h2 {
-    font-size: 75px;
-    margin-bottom: 50px;
-    font-weight: 900;
-    white-space: nowrap;
-    line-height: 1;
+  font-size: 75px;
+  margin-bottom: 50px;
+  font-weight: 900;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .watch__cont h2 div {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .watch__cont h2.active {
-    animation: movePtsWatch 1.5s ease-out;
-
+  animation: movePtsWatch 1.5s ease-out;
 }
 
 .watch__cont .points__cont {
-    height: 75px;
+  height: 75px;
 }
 
 @keyframes movePtsWatch {
-    0% {
-        transform: translateY(0);
-    }
-    30% {
-        transform: translateY(-75px);
-    }
-    70% {
-        transform: translateY(-75px);
-    }
-    100% {
-        transform: translateY(0);
-    }
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-75px);
+  }
+  70% {
+    transform: translateY(-75px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .watch__cont h3 {
-    font-size: 30px;
-    margin-bottom: 50px;
-    font-weight: 700;
+  font-size: 30px;
+  margin-bottom: 50px;
+  font-weight: 700;
 }
 
 .watch__cont .teamsCont {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    align-items: center;
-    max-width: 90%;
-    margin: auto;
-    height: 70vh;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+  max-width: 90%;
+  margin: auto;
+  height: 70vh;
 }
 
 .watch__cont .foul {
-    cursor: default;
+  cursor: default;
 }
 
 .team {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .team.right {
-    align-items: flex-end;
+  align-items: flex-end;
 }
 
 .watch__cont .largeInfoCont {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .watch__cont .largeInfoCont p {
-    margin: 2px;
-    font-size: 12px;
+  margin: 2px;
+  font-size: 12px;
 }
 
 .watch__cont .infoCont {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 .watch__cont .infoCont b {
-    font-weight: 900;
+  font-weight: 900;
 }
 
 .watch__cont .largeInfoCont h3 {
-    font-size: 25px;
-    margin: 0;
+  font-size: 25px;
+  margin: 0;
 }
 
 .watch__cont .editBtn {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    color: #717171;
-    cursor: pointer;
-    transition: 0.2s;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  color: #717171;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .watch__cont .editBtn:hover {
-    color: #8e8e8e;
+  color: #8e8e8e;
 }
 
 .customizeOverlay {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    display: none;
-    justify-content: center;
-    align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: none;
+  justify-content: center;
+  align-items: center;
 }
 
 .customizeOverlayData {
-    background-color: #212121;
-    color: white;
-    padding: 20px;
-    border-radius: 20px;
-    width: 50%;
-    max-width: 500px;
-    text-align: center;
-    max-height: 80%;
-    overflow-y: auto;
-    position: relative;
+  background-color: #212121;
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 50%;
+  max-width: 500px;
+  text-align: center;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
 }
 
 .customizeOverlayData i {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    cursor: pointer;
-    color: #fff;
-    transition: 0.2s;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.2s;
 }
 
 .customizeOverlayData h3 {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .customizeOverlayData p {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .customizeOverlayData i:hover {
-    color: #c8c8c8;
+  color: #c8c8c8;
 }
 
 .displaysCont {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .display {
-    width: 150px;
-    height: 100px;
-    border-radius: 10px;
-    background-color: #000;
-    border: 3px solid #212121;
-    transition: 0.2s;
-    margin: 10px 5px;
-    cursor: pointer;
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+  background-color: #000;
+  border: 3px solid #212121;
+  transition: 0.2s;
+  margin: 10px 5px;
+  cursor: pointer;
 }
 
 .display.active {
-    border: 3px solid #ee6730;
+  border: 3px solid #ee6730;
 }
 
 #defaultDisplay {
-    background: url("./defaultBackg.jpg") center / contain no-repeat black;
+  background: url("./defaultBackg.jpg") center / contain no-repeat black;
 }
 
 #display2 {
-    background: url("./backg2.jpg") center / contain no-repeat black;
+  background: url("./backg2.jpg") center / contain no-repeat black;
 }
 
 #display3 {
-    background: url("./backg3.jpg") center / contain no-repeat black;
+  background: url("./backg3.jpg") center / contain no-repeat black;
 }
 
 #display4 {
-    background: url("./backg4.jpg") center / contain no-repeat black;
+  background: url("./backg4.jpg") center / contain no-repeat black;
 }
 
 #display5 {
-    background: url("./backg5.png") center / contain no-repeat black;
+  background: url("./backg5.png") center / contain no-repeat black;
 }
 
 #display6 {
-    background: url("./backg6disp.png") center / contain no-repeat white;
+  background: url("./backg6disp.png") center / contain no-repeat white;
 }
 
 #display7 {
-    background: url("./backg7.png") center / contain no-repeat #b5093c;
+  background: url("./backg7.png") center / contain no-repeat #b5093c;
 }
 
 .watch__cont.defaultBackg {
-    background: url("./defaultBackg.jpg") center / contain no-repeat black;
+  background: url("./defaultBackg.jpg") center / contain no-repeat black;
 }
 
 .watch__cont.backg2 {
-    background: url("./backg2.jpg") center / contain no-repeat black;
+  background: url("./backg2.jpg") center / contain no-repeat black;
 }
 
 .watch__cont.backg3 {
-    background: url("./backg3.jpg") center / contain no-repeat black;
+  background: url("./backg3.jpg") center / contain no-repeat black;
 }
 
 .watch__cont.backg4 {
-    background: url("./backg4.jpg") center / contain no-repeat black;
+  background: url("./backg4.jpg") center / contain no-repeat black;
 }
 
 /* DIGITAL NUMS */
 .watch__cont.backg5 {
-    background: #000 !important;
-    color: white;
+  background: #000 !important;
+  color: white;
 }
 
 .watch__cont.backg5 .team h3 {
-    display: none;
+  display: none;
 }
 
 .watch__cont.backg5 .points__cont {
-    height: auto;
-    overflow: visible;
+  height: auto;
+  overflow: visible;
 }
 
 .watch__cont.backg5 .points__cont h2.active {
-    animation: none;
+  animation: none;
 }
 
 .watch__cont.backg5 .points__cont div {
-    display: none;
+  display: none;
 }
 
 .watch__cont.backg5 .team h2 {
-    font-family: "Digital Numbers" !important;
-    font-size: 60px;
-    border: 1px solid #fff;
-    color: #ECE65E;
-    overflow: visible;
-    position: relative;
-    padding: 7px;
-    font-weight: 700;
+  font-family: "Digital Numbers" !important;
+  font-size: 60px;
+  border: 1px solid #fff;
+  color: #ece65e;
+  overflow: visible;
+  position: relative;
+  padding: 7px;
+  font-weight: 700;
 }
 
 .watch__cont.backg5 .team h2::before {
-    content: "Home";
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif !important;
-    font-style: italic;
-    color: #fff;
-    font-size: 30px;
-    font-weight: 700;
-    display: block;
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
+  content: "Home";
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif !important;
+  font-style: italic;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .watch__cont.backg5 .team.right h2::before {
-    content: "Guest";
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif !important;
-    font-style: italic;
-    color: #fff;
-    font-size: 30px;
-    font-weight: 700;
-    display: block;
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
+  content: "Guest";
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif !important;
+  font-style: italic;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .watch__cont.backg5 .timeCont h3 {
-    font-family: "Digital Numbers" !important;
-    font-size: 30px;
-    color: #FD3A3A;
-    border: 1px solid #fff;
-    margin: 10px 0;
+  font-family: "Digital Numbers" !important;
+  font-size: 30px;
+  color: #fd3a3a;
+  border: 1px solid #fff;
+  margin: 10px 0;
 }
 
 .watch__cont.backg5 .timeCont h5 {
-    font-family: "Digital Numbers" !important;
-    font-size: 60px;
-    color: #FD3A3A;
-    border: 1px solid #fff;
-    margin: 10px 0;
+  font-family: "Digital Numbers" !important;
+  font-size: 60px;
+  color: #fd3a3a;
+  border: 1px solid #fff;
+  margin: 10px 0;
 }
 
 .watch__cont.backg5 .periodNum {
-    font-family: "Digital Numbers" !important;
-    font-size: 60px;
-    color: #FD3A3A;
-    border: 1px solid #fff;
-    margin: 10px 0;
-    padding: 0 40px;
-    position: relative;
+  font-family: "Digital Numbers" !important;
+  font-size: 60px;
+  color: #fd3a3a;
+  border: 1px solid #fff;
+  margin: 10px 0;
+  padding: 0 40px;
+  position: relative;
 }
 
 .watch__cont.backg5 .periodNum::before {
-    content: "Period";
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif !important;
-    font-style: italic;
-    color: #fff;
-    font-size: 30px;
-    font-weight: 700;
-    display: block;
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
+  content: "Period";
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif !important;
+  font-style: italic;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.watch__cont.backg5 .foulNum, .watch__cont.backg5 .periodNum {
-    display: inline;
+.watch__cont.backg5 .foulNum,
+.watch__cont.backg5 .periodNum {
+  display: inline;
 }
 
-.watch__cont.backg5 .foul__container, .watch__cont.backg5 .timeCont p {
-    display: none;
+.watch__cont.backg5 .foul__container,
+.watch__cont.backg5 .timeCont p {
+  display: none;
 }
 
 .watch__cont.backg5 .foulNum {
-    font-family: "Digital Numbers" !important;
-    font-size: 60px;
-    color: #FD3A3A;
-    border: 1px solid #fff;
-    margin: 10px 0;
-    padding: 0 30px;
-    position: relative;
-    text-align: center;
+  font-family: "Digital Numbers" !important;
+  font-size: 60px;
+  color: #fd3a3a;
+  border: 1px solid #fff;
+  margin: 10px 0;
+  padding: 0 30px;
+  position: relative;
+  text-align: center;
 }
 
 .watch__cont.backg5 .foulNum::before {
-    content: "Fouls";
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif !important;
-    font-style: italic;
-    color: #fff;
-    font-size: 30px;
-    font-weight: 700;
-    display: block;
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
+  content: "Fouls";
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif !important;
+  font-style: italic;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .watch__cont.backg5 .largeInfoCont {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .watch__cont.backg5 .timeCont {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 80%;
-    margin-top: 15vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 80%;
+  margin-top: 15vh;
 }
 
 .watch__cont.backg5 .teamsCont {
-    padding-top: 30vh;
+  padding-top: 30vh;
 }
 
 .watch__cont.backg5 .team .score {
-    margin-bottom: 100px;
+  margin-bottom: 100px;
 }
 
 /* TRIANGLES */
 .watch__cont.backg6 {
-    background: url("./backg6.png") bottom / cover no-repeat white;
-    color: black;
+  background: url("./backg6.png") bottom / cover no-repeat white;
+  color: black;
 }
 
 .watch__cont.backg6 .team h3 {
-    background: linear-gradient(to right, #F12711, #F5AF19);
-    padding: 20px 30px;
-    border-radius: 50px;
-    max-width: 300px;
-    text-align: center;
+  background: linear-gradient(to right, #f12711, #f5af19);
+  padding: 20px 30px;
+  border-radius: 50px;
+  max-width: 300px;
+  text-align: center;
 }
 
 .watch__cont.backg6 .team {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
-
 .watch__cont.backg6 .foul {
-    border: 2px solid #000;
+  border: 2px solid #000;
 }
 
 .watch__cont.backg6 .timeCont {
-    background: linear-gradient(to right, #F12711, #F5AF19);
-    padding: 5px 60px;
-    border-radius: 50px;
-    text-align: center;
-    margin: 20px auto;
+  background: linear-gradient(to right, #f12711, #f5af19);
+  padding: 5px 60px;
+  border-radius: 50px;
+  text-align: center;
+  margin: 20px auto;
 }
 
 .watch__cont.backg6 .timeCont h3 {
-    font-size: 30px;
-    margin: 0;
+  font-size: 30px;
+  margin: 0;
 }
 
 .watch__cont.backg6 .timeCont p {
-    margin-top: -5px;
+  margin-top: -5px;
 }
 
 .watch__cont.backg6 .infoCont p {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .watch__cont.backg6 .largeInfoCont {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .watch__cont.backg6 .timeCont {
-    margin-top: 30vh;
+  margin-top: 30vh;
 }
 
 /* SUPPORT HOME */
 .watch__cont.backg7 {
-    background: #000 !important;
-    padding: 0;
-    overflow: hidden;
-    max-height: 100vh;
+  background: #000 !important;
+  padding: 0;
+  overflow: hidden;
+  max-height: 100vh;
 }
 
 .watch__cont.backg7 .colorBar {
-    display: block;
-    height: 150px;
-    background-color: #b5093c;
-    transform: rotate(-5deg);
-    width: 110vw;
-    margin-left: -50px;
+  display: block;
+  height: 150px;
+  background-color: #b5093c;
+  transform: rotate(-5deg);
+  width: 110vw;
+  margin-left: -50px;
 }
 
 #topBar {
-    margin-top: -85px;
+  margin-top: -85px;
 }
 
 #bottomBar {
-    position: fixed;
-    bottom: -85px;
-    left: -50px;
+  position: fixed;
+  bottom: -85px;
+  left: -50px;
 }
 
 .watch__cont.backg7 .topBarText {
-    display: block;
-    color: white;
-    font-size: 40px;
-    transform: rotate(-5deg);
-    margin-top: 5px;
-    text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif !important;
-    text-align: center;
+  display: block;
+  color: white;
+  font-size: 40px;
+  transform: rotate(-5deg);
+  margin-top: 5px;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif !important;
+  text-align: center;
 }
 
 .watch__cont.backg7 .topBarText span {
-    font-family: 'Tomorrow', sans-serif !important;
-    font-weight: 900;
+  font-family: "Tomorrow", sans-serif !important;
+  font-weight: 900;
 }
 
 .watch__cont.backg7 .teamsCont {
-    height: 50vh;
+  height: 50vh;
 }
 
 .watch__cont.backg7 .largeInfoCont {
-    bottom: 70px;
-    height: calc(100vh - 150px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  bottom: 70px;
+  height: calc(100vh - 150px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .watch__cont.backg7 .timeCont {
-    margin-top: 30vh;
+  margin-top: 30vh;
 }
 
 .watch__cont.backg7 .timeCont h3 {
-    font-size: 30px;
-    margin: 0;
-    font-weight: 800;
-    font-family: 'Tomorrow', sans-serif !important;
+  font-size: 30px;
+  margin: 0;
+  font-weight: 800;
+  font-family: "Tomorrow", sans-serif !important;
 }
 
 .watch__cont.backg7 .timeCont p {
-    font-family: 'Tomorrow', sans-serif !important;
-    font-size: 15px;
+  font-family: "Tomorrow", sans-serif !important;
+  font-size: 15px;
 }
 
 .watch__cont.backg7 h5 {
-    font-family: 'Tomorrow', sans-serif !important;
-    margin: 0;
+  font-family: "Tomorrow", sans-serif !important;
+  margin: 0;
 }
 
 .watch__cont.backg7 .points__cont * {
-    font-family: 'Tomorrow', sans-serif !important;
+  font-family: "Tomorrow", sans-serif !important;
 }
 
 .watch__cont.backg7 .infoCont {
-    transform: rotate(-5deg);
+  transform: rotate(-5deg);
 }
 
 .watch__cont.backg7 .infoCont b {
-    font-family: 'Tomorrow', sans-serif !important;
-    font-weight: 800;
+  font-family: "Tomorrow", sans-serif !important;
+  font-weight: 800;
 }
 
 .watch__cont.backg7 .editBtn {
-    color: #8c8c8c;
+  color: #8c8c8c;
 }
 
 .watch__cont.backg7 .editBtn:hover {
-    color: #717171;
+  color: #717171;
 }
