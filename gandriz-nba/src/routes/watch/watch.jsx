@@ -14,23 +14,29 @@ const Watch = () => {
             name: "Lādējās",
             score: 0,
             fouls: 0,
+            foulDetails: [],
         },
         team2: {
             name: "Lādējās",
             score: 0,
             fouls: 0,
+            foulDetails: [],
         },
         period: 1,
         group: 0,
         venue: "Turnīra galvenā arēna",
     });
-    const [time, setTime] = useState(3372);
-    const [paused, setPaused] = useState(false);
-    const [time24s, setTime24s] = useState(0);
+    const [time, setTime] = useState(6000);
+    const [paused, setPaused] = useState(true);
+    const [time24s, setTime24s] = useState(240);
+    const [timeoutTime, setTimeoutTime] = useState(0);
+    const [getUpdates, setGetUpdates] = useState(false);
+    const [updateData, setUpdateData] = useState(null);
 
     const timer = useRef();
     const timer24s = useRef();
 
+    // Get data from API
     const getData = async () => {
         const { id } = params;
 
@@ -51,24 +57,249 @@ const Watch = () => {
                 name: res[0].team1_name,
                 score: res[0].team1_points,
                 fouls: res[0].team1_fouls,
+                foulDetails: JSON.parse(res[0].team1_fouls_details),
+                timeouts: res[0].team1_timeouts,
             },
             team2: {
                 name: res[0].team2_name,
                 score: res[0].team2_points,
                 fouls: res[0].team2_fouls,
+                foulDetails: JSON.parse(res[0].team2_fouls_details),
+                timeouts: res[0].team2_timeouts,
             },
             period: res[0].quarter,
             group: res[0].game_group,
             venue: res[0].venue,
         });
-        setTime(res[0].game_time);
+
+        if (res[0].paused) {
+            console.log("paused");
+            setPaused(true);
+            setTime(res[0].game_time);
+            setTime24s(res[0].timer_24s);
+        } else {
+            setPaused(false);
+
+            const updateTime = new Date(res[0].timestamp).getTime();
+            const currentTime = new Date().getTime();
+            const gameTime =
+                res[0].game_time - Math.floor((currentTime - updateTime) / 100);
+            const time24s =
+                res[0].timer_24s - Math.floor((currentTime - updateTime) / 100);
+
+            setTime(gameTime);
+            setTime24s(time24s);
+
+            timer24s.current.postMessage({
+                message: "START 24S",
+                interval: 100,
+            });
+            timer.current.postMessage({ message: "START", interval: 100 });
+        }
+
+        setGetUpdates(true);
     };
 
+    // Set up event stream
+    React.useEffect(() => {
+        if (getUpdates === false) return;
+
+        const eventStream = new EventSource(
+            "http://localhost:8080/api/live/games/" + getUpdates
+        );
+
+        eventStream.onmessage = (e) => {
+            setUpdateData(e.data);
+        };
+
+        eventStream.onerror = (e) => {
+            console.log("[ERROR] Event stream error: " + e);
+            eventStream.close();
+        };
+
+        return () => {
+            eventStream.close();
+        };
+    }, [getUpdates]);
+
+    // Update data from event stream
+    React.useEffect(() => {
+        if (!updateData) return;
+        const data = JSON.parse(updateData);
+
+        // Pause handling
+        if (data.paused !== paused) {
+            setPaused(!paused);
+            if (data.paused) {
+                timer.current.postMessage({ message: "STOP" });
+                timer24s.current.postMessage({ message: "STOP" });
+                console.log(
+                    `[PAUSE] Game paused at ${time} seconds remaining.`
+                );
+            } else {
+                if (time24s <= 0) {
+                    setTime24s(240);
+                }
+
+                timer.current.postMessage({
+                    message: "START",
+                    interval: 100,
+                });
+
+                timer24s.current.postMessage({
+                    message: "START 24S",
+                    interval: 100,
+                });
+
+                console.log(
+                    `[RESUME] Game resumed at ${time} seconds remaining.`
+                );
+            }
+        }
+
+        // Quarters
+        if (data.quarter !== gameData.period)
+            setGameData((prev) => ({ ...prev, period: data.quarter }));
+
+        // Timeouts
+        if (data.team1_timeouts !== gameData.team1.timeouts) {
+            setTimeoutTime(60);
+            setGameData((prev) => ({
+                ...prev,
+                team1: {
+                    ...prev.team1,
+                    timeouts: data.team1_timeouts,
+                },
+            }));
+            timer.current.postMessage({
+                message: "START TIMEOUT",
+                interval: 1000,
+            });
+        }
+
+        if (data.team2_timeouts !== gameData.team2.timeouts) {
+            setTimeoutTime(60);
+            setGameData((prev) => ({
+                ...prev,
+                team2: {
+                    ...prev.team2,
+                    timeouts: data.team2_timeout,
+                },
+            }));
+            timer.current.postMessage({
+                message: "START TIMEOUT",
+                interval: 1000,
+            });
+        }
+
+        // Time
+        if (data.time_24s > time24s + 10 || data.time_24s < time24s - 10)
+            setTime24s(data.time_24s);
+
+        if (data.timeRemaining > time + 10 || data.timeRemaining < time - 10)
+            setTime(data.timeRemaining);
+
+        // Points
+        if (data.team1Points !== gameData.team1points) {
+            // Get animation ready
+            // document.getElementById("team1add").innerText = `+${
+            //     data.team1Points - gameData.team1points
+            // }`;
+            // document.getElementById("team1points").classList.add("active");
+
+            // setTimeout(() => {
+            //     document
+            //         .getElementById("team1points")
+            //         .classList.remove("active");
+            // }, 1500);
+
+            // Add points to the team after 0.5s delay, to avoid showing before animation
+            // setTimeout(() => {
+            //     setGameData((prev) => ({
+            //         ...prev,
+            //         team1points: data.team1Points,
+            //     }));
+            // }, 500);
+            setGameData((prev) => ({
+                ...prev,
+                team1: {
+                    ...prev.team1,
+                    score: data.team1Points,
+                },
+            }));
+        }
+
+        if (data.team2Points !== gameData.team2points) {
+            // Get animation ready
+            // document.getElementById("team2add").innerText = `+${
+            //     data.team2Points - gameData.team2points
+            // }`;
+            // document.getElementById("team2points").classList.add("active");
+
+            // setTimeout(() => {
+            //     document
+            //         .getElementById("team2points")
+            //         .classList.remove("active");
+            // }, 1500);
+
+            // Add points to the team after 0.5s delay, to avoid showing before animation
+            // setTimeout(() => {
+            //     setGameData((prev) => ({
+            //         ...prev,
+            //         team2points: data.team2Points,
+            //     }));
+            // }, 500);
+            setGameData((prev) => ({
+                ...prev,
+                team2: {
+                    ...prev.team2,
+                    score: data.team2Points,
+                },
+            }));
+        }
+
+        // Fouls
+        if (data.team1Fouls !== gameData.team1.fouls)
+            setGameData((prev) => ({
+                ...prev,
+                team1: {
+                    ...prev.team1,
+                    fouls: data.team1Fouls,
+                },
+            }));
+        if (data.team2Fouls !== gameData.team2.fouls)
+            setGameData((prev) => ({
+                ...prev,
+                team2: {
+                    ...prev.team2,
+                    fouls: data.team1Fouls,
+                },
+            }));
+
+        if (data.team1FoulDetails !== JSON.stringify(gameData.team1.foulDetails))
+            setGameData((prev) => ({
+                ...prev,
+                team1: {
+                    ...prev.team1,
+                    foulDetails: JSON.parse(data.team1FoulDetails),
+                },
+            }));
+
+        if (data.team2FoulDetails !== JSON.stringify(gameData.team2.foulDetails))
+            setGameData((prev) => ({
+                ...prev,
+                team2: {
+                    ...prev.team2,
+                    foulDetails: JSON.parse(data.team1FoulDetails),
+                },
+            }));
+    }, [updateData]);
+
+    // Get data on load
     React.useEffect(() => {
         getData();
     }, []);
 
-    
     // Set up web worker
     React.useEffect(() => {
         timer.current = new Worker(new URL("./timer.js", import.meta.url));
@@ -78,7 +309,7 @@ const Watch = () => {
             timer.current.terminate();
             timer24s.current.terminate();
         };
-    }, [])
+    }, []);
 
     // Set up web worker listener
     React.useEffect(() => {
@@ -101,6 +332,7 @@ const Watch = () => {
         };
     }, []);
 
+    // Change background & style
     const changeBackground = (newID) => {
         document.querySelector(".display.active").classList.remove("active");
 
