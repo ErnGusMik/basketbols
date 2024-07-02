@@ -30,6 +30,37 @@
     font-size: 75px;
     margin-bottom: 50px;
     font-weight: 900;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.watch__cont h2 div {
+    padding: 0;
+    margin: 0;
+}
+
+.watch__cont h2.active {
+    animation: movePtsWatch 1.5s ease-out;
+
+}
+
+.watch__cont .points__cont {
+    height: 75px;
+}
+
+@keyframes movePtsWatch {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-75px);
+    }
+    70% {
+        transform: translateY(-75px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .watch__cont h3 {
@@ -226,6 +257,19 @@
     display: none;
 }
 
+.watch__cont.backg5 .points__cont {
+    height: auto;
+    overflow: visible;
+}
+
+.watch__cont.backg5 .points__cont h2.active {
+    animation: none;
+}
+
+.watch__cont.backg5 .points__cont div {
+    display: none;
+}
+
 .watch__cont.backg5 .team h2 {
     font-family: "Digital Numbers" !important;
     font-size: 60px;
@@ -233,6 +277,8 @@
     color: #ECE65E;
     overflow: visible;
     position: relative;
+    padding: 7px;
+    font-weight: 700;
 }
 
 .watch__cont.backg5 .team h2::before {
@@ -266,6 +312,14 @@
 }
 
 .watch__cont.backg5 .timeCont h3 {
+    font-family: "Digital Numbers" !important;
+    font-size: 30px;
+    color: #FD3A3A;
+    border: 1px solid #fff;
+    margin: 10px 0;
+}
+
+.watch__cont.backg5 .timeCont h5 {
     font-family: "Digital Numbers" !important;
     font-size: 60px;
     color: #FD3A3A;
@@ -345,8 +399,8 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    height: 70%;
-    margin-top: 20%;
+    height: 80%;
+    margin-top: 15vh;
 }
 
 .watch__cont.backg5 .teamsCont {
@@ -384,7 +438,7 @@
 
 .watch__cont.backg6 .timeCont {
     background: linear-gradient(to right, #F12711, #F5AF19);
-    padding: 5px 50px;
+    padding: 5px 60px;
     border-radius: 50px;
     text-align: center;
     margin: 20px auto;
@@ -485,6 +539,15 @@
 .watch__cont.backg7 .timeCont p {
     font-family: 'Tomorrow', sans-serif !important;
     font-size: 15px;
+}
+
+.watch__cont.backg7 h5 {
+    font-family: 'Tomorrow', sans-serif !important;
+    margin: 0;
+}
+
+.watch__cont.backg7 .points__cont * {
+    font-family: 'Tomorrow', sans-serif !important;
 }
 
 .watch__cont.backg7 .infoCont {

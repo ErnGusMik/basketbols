@@ -1,4 +1,3 @@
-// TODO: Get data, add score adding animation
 // TODO: create countdown animation
 // TODO: responsive design
 // TODO: foul overlay
@@ -200,62 +199,55 @@ const Watch = () => {
             setTime(data.timeRemaining);
 
         // Points
-        if (data.team1Points !== gameData.team1points) {
+        if (data.team1Points !== gameData.team1.score) {
             // Get animation ready
-            // document.getElementById("team1add").innerText = `+${
-            //     data.team1Points - gameData.team1points
-            // }`;
-            // document.getElementById("team1points").classList.add("active");
+            document.getElementById("team1addPoints").innerText = `+${
+                data.team1Points - gameData.team1.score
+            }`;
+            document.getElementById("team1pointsNum").classList.add("active");
 
-            // setTimeout(() => {
-            //     document
-            //         .getElementById("team1points")
-            //         .classList.remove("active");
-            // }, 1500);
+            setTimeout(() => {
+                document
+                    .getElementById("team1pointsNum")
+                    .classList.remove("active");
+            }, 1500);
 
             // Add points to the team after 0.5s delay, to avoid showing before animation
-            // setTimeout(() => {
-            //     setGameData((prev) => ({
-            //         ...prev,
-            //         team1points: data.team1Points,
-            //     }));
-            // }, 500);
-            setGameData((prev) => ({
-                ...prev,
-                team1: {
-                    ...prev.team1,
-                    score: data.team1Points,
-                },
-            }));
+            setTimeout(() => {
+                setGameData((prev) => ({
+                    ...prev,
+                    team1: {
+                        ...prev.team1,
+                        score: data.team1Points,
+                    },
+                }));
+            }, 500);
         }
 
-        if (data.team2Points !== gameData.team2points) {
+        if (data.team2Points !== gameData.team2.score) {
             // Get animation ready
-            // document.getElementById("team2add").innerText = `+${
-            //     data.team2Points - gameData.team2points
-            // }`;
-            // document.getElementById("team2points").classList.add("active");
+            document.getElementById("team2addPoints").innerText = `+${
+                data.team2Points - gameData.team2.score
+            }`;
+            document.getElementById("team2pointsNum").classList.add("active");
 
-            // setTimeout(() => {
-            //     document
-            //         .getElementById("team2points")
-            //         .classList.remove("active");
-            // }, 1500);
+            setTimeout(() => {
+                document
+                    .getElementById("team2pointsNum")
+                    .classList.remove("active");
+            }, 1500);
 
             // Add points to the team after 0.5s delay, to avoid showing before animation
-            // setTimeout(() => {
-            //     setGameData((prev) => ({
-            //         ...prev,
-            //         team2points: data.team2Points,
-            //     }));
-            // }, 500);
-            setGameData((prev) => ({
-                ...prev,
-                team2: {
-                    ...prev.team2,
-                    score: data.team2Points,
-                },
-            }));
+            setTimeout(() => {
+                setGameData((prev) => ({
+                    ...prev,
+                    team2: {
+                        ...prev.team2,
+                        score: data.team2Points,
+                    },
+                }));
+            }, 500);
+           
         }
 
         // Fouls
@@ -276,7 +268,9 @@ const Watch = () => {
                 },
             }));
 
-        if (data.team1FoulDetails !== JSON.stringify(gameData.team1.foulDetails))
+        if (
+            data.team1FoulDetails !== JSON.stringify(gameData.team1.foulDetails)
+        )
             setGameData((prev) => ({
                 ...prev,
                 team1: {
@@ -285,7 +279,9 @@ const Watch = () => {
                 },
             }));
 
-        if (data.team2FoulDetails !== JSON.stringify(gameData.team2.foulDetails))
+        if (
+            data.team2FoulDetails !== JSON.stringify(gameData.team2.foulDetails)
+        )
             setGameData((prev) => ({
                 ...prev,
                 team2: {
@@ -375,7 +371,12 @@ const Watch = () => {
             <div className="teamsCont">
                 <div className="team">
                     <h3 className="name">{gameData.team1.name}</h3>
-                    <h2 className="score">{gameData.team1.score}</h2>
+                    <div className="points__cont">
+                        <h2 className="score" id="team1pointsNum">
+                            {gameData.team1.score}
+                            <div id="team1addPoints"></div>
+                        </h2>
+                    </div>
                     <span className="foulNum">{gameData.team1.fouls}</span>
                     <div
                         className={
@@ -423,7 +424,12 @@ const Watch = () => {
                 </div>
                 <div className="team right">
                     <h3 className="name">{gameData.team2.name}</h3>
-                    <h2 className="score">{gameData.team2.score}</h2>
+                    <div className="points__cont">
+                        <h2 className="score" id="team2pointsNum">
+                            {gameData.team2.score}
+                            <div id="team2addPoints"></div>
+                        </h2>
+                    </div>
                     <span className="foulNum">{gameData.team2.fouls}</span>
                     <div
                         className={
@@ -472,6 +478,19 @@ const Watch = () => {
             </div>
             <div className="largeInfoCont">
                 <div className="timeCont">
+                    <h5
+                        style={
+                            time24s > 50
+                                ? { margin: "0" }
+                                : { margin: "0", color: "red" }
+                        }
+                    >
+                        {time24s > 100
+                            ? Math.floor(time24s / 10)
+                            : !Number.isInteger((time24s % 240) / 10)
+                            ? time24s / 10
+                            : time24s / 10 + ".0"}
+                    </h5>
                     <h3>
                         {time % 600 > 99
                             ? // If deciseconds are more than 99 (more than 10s, no matter about minutes)
