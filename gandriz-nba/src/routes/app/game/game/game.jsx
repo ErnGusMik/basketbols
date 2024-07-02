@@ -49,7 +49,7 @@ export default function Game() {
 
     const [start, setStart] = React.useState(false);
     const [pause, setPause] = React.useState(true);
-    const [time, setTime] = React.useState(6000); // 10 minutes in deciseconds
+    const [time, setTime] = React.useState(6100); // 10 minutes & 10 seconds in deciseconds
     const [timeoutTime, setTimeoutTime] = React.useState(60); // 1 minute in seconds
     const [time24s, setTime24s] = React.useState(240); // 24 seconds in deciseconds
     const [quarter, setQuarter] = React.useState(1);
@@ -703,7 +703,7 @@ export default function Game() {
         if (disabled === true) return;
 
         // If game has not started, start it
-        if (start === false && time >= 6000) {
+        if (start === false && time >= 6100) {
             setStart(true);
             console.log(`[START] Game starting in 11 seconds.`);
 
@@ -717,11 +717,13 @@ export default function Game() {
                     pārtraukums.
                 </p>
             );
+            setPause(false);
+            sendToServer(null, { paused: false });
+            timer.current.postMessage({ message: "START", interval: 100 });
 
             setTimeout(() => {
                 setPause(false);
                 sendToServer(null, { paused: false });
-                timer.current.postMessage({ message: "START", interval: 100 });
 
                 console.log(
                     `[START] Game started at ${Date.now()} seconds since unix epoch.`

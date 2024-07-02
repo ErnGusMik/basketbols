@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import "./watch.css";
+import StartAnimation from './../../components/game/start-anim/start-anim';
 
 const Watch = () => {
     const params = useParams();
@@ -31,6 +32,7 @@ const Watch = () => {
     const [timeoutTime, setTimeoutTime] = useState(0);
     const [getUpdates, setGetUpdates] = useState(false);
     const [updateData, setUpdateData] = useState(null);
+    const [start, setStart] = useState(false);
 
     const timer = useRef();
     const timer24s = useRef();
@@ -247,7 +249,6 @@ const Watch = () => {
                     },
                 }));
             }, 500);
-           
         }
 
         // Fouls
@@ -294,6 +295,11 @@ const Watch = () => {
     // Get data on load
     React.useEffect(() => {
         getData();
+        if (localStorage.getItem("background")) {
+            changeBackground(localStorage.getItem("background"));
+        } else {
+            changeBackground("defaultBackg");
+        }
     }, []);
 
     // Set up web worker
@@ -337,24 +343,37 @@ const Watch = () => {
                 document
                     .getElementById("defaultDisplay")
                     .classList.add("active");
+                localStorage.setItem("background", "defaultBackg");
                 break;
             case "backg2":
                 document.getElementById("display2").classList.add("active");
+                localStorage.setItem("background", "backg2");
                 break;
             case "backg3":
                 document.getElementById("display3").classList.add("active");
+                localStorage.setItem("background", "backg3");
                 break;
             case "backg4":
                 document.getElementById("display4").classList.add("active");
+                localStorage.setItem("background", "backg4");
                 break;
             case "backg5":
                 document.getElementById("display5").classList.add("active");
+                localStorage.setItem("background", "backg5");
                 break;
             case "backg6":
                 document.getElementById("display6").classList.add("active");
+                localStorage.setItem("background", "backg6");
                 break;
             case "backg7":
                 document.getElementById("display7").classList.add("active");
+                localStorage.setItem("background", "backg7");
+                break;
+            default:
+                document
+                    .getElementById("defaultDisplay")
+                    .classList.add("active");
+                localStorage.setItem("background", "defaultBackg");
                 break;
         }
 
@@ -363,7 +382,8 @@ const Watch = () => {
     };
 
     return (
-        <div className="watch__cont defaultBackg">
+        <div className="watch__cont">
+            <StartAnimation start={start} />
             <div className="colorBar" id="topBar"></div>
             <p className="topBarText">
                 #Atbalsti<span className="bold">Savējos</span>
@@ -482,7 +502,7 @@ const Watch = () => {
                         style={
                             time24s > 50
                                 ? { margin: "0" }
-                                : { margin: "0", color: "red" }
+                                : { margin: "0", color: "#CE0000" }
                         }
                     >
                         {time24s > 100
