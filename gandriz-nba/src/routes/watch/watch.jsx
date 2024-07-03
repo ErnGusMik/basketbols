@@ -1,10 +1,11 @@
 // TODO: responsive design
+// TODO: backg5 move scores to top maybe?
 // TODO: foul overlay
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import "./watch.css";
-import StartAnimation from './../../components/game/start-anim/start-anim';
+import StartAnimation from "./../../components/game/start-anim/start-anim";
 
 const Watch = () => {
     const params = useParams();
@@ -76,7 +77,7 @@ const Watch = () => {
             setPaused(true);
             setTime(res[0].game_time);
             setTime24s(res[0].timer_24s);
-            if (res[0].start) setStart('true');
+            if (res[0].start) setStart("true");
             else setStart(false);
         } else {
             setPaused(false);
@@ -127,7 +128,7 @@ const Watch = () => {
     React.useEffect(() => {
         if (!updateData) return;
         const data = JSON.parse(updateData);
-       
+
         // Start handling
         if (data.start === true && start === false) {
             setStart(true);
@@ -388,249 +389,252 @@ const Watch = () => {
 
     return (
         <div className="watch__cont">
-            <StartAnimation start={start} />
-            <div className="colorBar" id="topBar"></div>
-            <p className="topBarText">
-                #Atbalsti<span className="bold">Savējos</span>
-            </p>
-            <div className="teamsCont">
-                <div className="team">
-                    <h3 className="name">{gameData.team1.name}</h3>
-                    <div className="points__cont">
-                        <h2 className="score" id="team1pointsNum">
-                            {gameData.team1.score}
-                            <div id="team1addPoints"></div>
-                        </h2>
-                    </div>
-                    <span className="foulNum">{gameData.team1.fouls}</span>
-                    <div
-                        className={
-                            gameData.team1.fouls >= 4
-                                ? "foul__container full"
-                                : "foul__container"
-                        }
-                    >
-                        <span
-                            className={
-                                gameData.team1.fouls >= 1
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
-                        <span
-                            className={
-                                gameData.team1.fouls >= 2
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
-                        <span
-                            className={
-                                gameData.team1.fouls >= 3
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
-                        <span
+            <div className="backgOverlay">
+                <StartAnimation start={start} />
+                <div className="colorBar" id="topBar"></div>
+                <p className="topBarText">
+                    #Atbalsti<span className="bold">Savējos</span>
+                </p>
+                <div className="teamsCont">
+                    <div className="team">
+                        <h3 className="name">{gameData.team1.name}</h3>
+                        <div className="points__cont">
+                            <h2 className="score" id="team1pointsNum">
+                                {gameData.team1.score}
+                                <div id="team1addPoints"></div>
+                            </h2>
+                        </div>
+                        <span className="foulNum">{gameData.team1.fouls}</span>
+                        <div
                             className={
                                 gameData.team1.fouls >= 4
-                                    ? "foul active"
-                                    : "foul"
+                                    ? "foul__container full"
+                                    : "foul__container"
                             }
-                        ></span>
-                        <span
-                            className={
-                                gameData.team1.fouls >= 5
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
+                        >
+                            <span
+                                className={
+                                    gameData.team1.fouls >= 1
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team1.fouls >= 2
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team1.fouls >= 3
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team1.fouls >= 4
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team1.fouls >= 5
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                        </div>
                     </div>
-                </div>
-                <div className="team right">
-                    <h3 className="name">{gameData.team2.name}</h3>
-                    <div className="points__cont">
-                        <h2 className="score" id="team2pointsNum">
-                            {gameData.team2.score}
-                            <div id="team2addPoints"></div>
-                        </h2>
-                    </div>
-                    <span className="foulNum">{gameData.team2.fouls}</span>
-                    <div
-                        className={
-                            gameData.team2.fouls >= 4
-                                ? "foul__container full"
-                                : "foul__container"
-                        }
-                    >
-                        <span
-                            className={
-                                gameData.team2.fouls >= 1
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
-                        <span
-                            className={
-                                gameData.team2.fouls >= 2
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
-                        <span
-                            className={
-                                gameData.team2.fouls >= 3
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
-                        <span
+                    <div className="team right">
+                        <h3 className="name">{gameData.team2.name}</h3>
+                        <div className="points__cont">
+                            <h2 className="score" id="team2pointsNum">
+                                {gameData.team2.score}
+                                <div id="team2addPoints"></div>
+                            </h2>
+                        </div>
+                        <span className="foulNum">{gameData.team2.fouls}</span>
+                        <div
                             className={
                                 gameData.team2.fouls >= 4
-                                    ? "foul active"
-                                    : "foul"
+                                    ? "foul__container full"
+                                    : "foul__container"
                             }
-                        ></span>
-                        <span
-                            className={
-                                gameData.team2.fouls >= 5
-                                    ? "foul active"
-                                    : "foul"
-                            }
-                        ></span>
+                        >
+                            <span
+                                className={
+                                    gameData.team2.fouls >= 1
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team2.fouls >= 2
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team2.fouls >= 3
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team2.fouls >= 4
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                            <span
+                                className={
+                                    gameData.team2.fouls >= 5
+                                        ? "foul active"
+                                        : "foul"
+                                }
+                            ></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="largeInfoCont">
-                <div className="timeCont">
-                    <h5
-                        style={
-                            time24s > 50
-                                ? { margin: "0" }
-                                : { margin: "0", color: "#CE0000" }
-                        }
-                    >
-                        {time24s > 100
-                            ? Math.floor(time24s / 10)
-                            : !Number.isInteger((time24s % 240) / 10)
-                            ? time24s / 10
-                            : time24s / 10 + ".0"}
-                    </h5>
-                    <h3>
-                        {time % 600 > 99
-                            ? // If deciseconds are more than 99 (more than 10s, no matter about minutes)
-                              time > 599
+                <div className="largeInfoCont">
+                    <div className="timeCont">
+                        <h5
+                            style={
+                                time24s > 50
+                                    ? { margin: "0" }
+                                    : { margin: "0", color: "#CE0000" }
+                            }
+                        >
+                            {time24s > 100
+                                ? Math.floor(time24s / 10)
+                                : !Number.isInteger((time24s % 240) / 10)
+                                ? time24s / 10
+                                : time24s / 10 + ".0"}
+                        </h5>
+                        <h3>
+                            {time % 600 > 99
+                                ? // If deciseconds are more than 99 (more than 10s, no matter about minutes)
+                                  time > 599
+                                    ? // If time is more than 1 min
+                                      (time - (time % 600)) / 600 +
+                                      ":" +
+                                      Math.floor((time % 600) / 10)
+                                    : // If time is less than 1 min
+                                    // If deciseconds / 10 is not an int (don't end in 0)
+                                    !Number.isInteger((time % 600) / 10)
+                                    ? "0:" + (time % 600) / 10
+                                    : "0:" + (time % 600) / 10 + ".0"
+                                : // If deciseconds are less than 100 (less than 10s)
+                                time > 599
                                 ? // If time is more than 1 min
                                   (time - (time % 600)) / 600 +
-                                  ":" +
+                                  ":0" +
                                   Math.floor((time % 600) / 10)
                                 : // If time is less than 1 min
                                 // If deciseconds / 10 is not an int (don't end in 0)
                                 !Number.isInteger((time % 600) / 10)
-                                ? "0:" + (time % 600) / 10
-                                : "0:" + (time % 600) / 10 + ".0"
-                            : // If deciseconds are less than 100 (less than 10s)
-                            time > 599
-                            ? // If time is more than 1 min
-                              (time - (time % 600)) / 600 +
-                              ":0" +
-                              Math.floor((time % 600) / 10)
-                            : // If time is less than 1 min
-                            // If deciseconds / 10 is not an int (don't end in 0)
-                            !Number.isInteger((time % 600) / 10)
-                            ? "0:0" + (time % 600) / 10
-                            : "0:0" + (time % 600) / 10 + ".0"}
-                    </h3>
-                    <p>
-                        <b>Periods {gameData.period}</b>
-                    </p>
-                    <span className="periodNum">4</span>
-                </div>
-                <div className="infoCont">
-                    <p>
-                        <b>
-                            {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                .split("")
-                                .slice(
-                                    gameData.group,
-                                    parseInt(gameData.group) + 1
-                                )}
-                        </b>{" "}
-                        grupa
-                    </p>
-                    <p>
-                        {gameData.venue
-                            ? gameData.venue
-                            : "Turnīra galvenā arēna"}
-                    </p>
-                </div>
-            </div>
-            <div className="colorBar" id="bottomBar"></div>
-            <i
-                class="fa-solid fa-pen editBtn"
-                onClick={() => {
-                    document.querySelector(".customizeOverlay").style.display =
-                        "flex";
-                }}
-            ></i>
-            <div className="customizeOverlay">
-                <div className="customizeOverlayData">
-                    <i
-                        className="fa-solid fa-close"
-                        onClick={() => {
-                            document.querySelector(
-                                ".customizeOverlay"
-                            ).style.display = "none";
-                        }}
-                    ></i>
-                    <h3>Pielāgot</h3>
-                    <p>Iestati fonu & stilu</p>
-                    <div className="displaysCont">
-                        <div
-                            className="display active"
-                            id="defaultDisplay"
-                            onClick={() => changeBackground("defaultBackg")}
-                        ></div>
-                        <div
-                            className="display"
-                            id="display2"
-                            onClick={() => changeBackground("backg2")}
-                        ></div>
-                        <div
-                            className="display"
-                            id="display3"
-                            onClick={() => changeBackground("backg3")}
-                        ></div>
-                        <div
-                            className="display"
-                            id="display4"
-                            onClick={() => changeBackground("backg4")}
-                        ></div>
-                        <div
-                            className="display"
-                            id="display5"
-                            onClick={() => changeBackground("backg5")}
-                        ></div>
-                        <div
-                            className="display"
-                            id="display6"
-                            onClick={() => changeBackground("backg6")}
-                        ></div>
-                        <div
-                            className="display"
-                            id="display7"
-                            onClick={() => changeBackground("backg7")}
-                        ></div>
+                                ? "0:0" + (time % 600) / 10
+                                : "0:0" + (time % 600) / 10 + ".0"}
+                        </h3>
+                        <p>
+                            <b>Periods {gameData.period}</b>
+                        </p>
+                        <span className="periodNum">4</span>
                     </div>
-                    <p
-                        style={{
-                            marginBottom: 0,
-                            fontSize: "10px",
-                            marginTop: "20px",
-                        }}
-                    >
-                        Dažas bildes ņemtas no Freepik
-                    </p>
+                    <div className="infoCont">
+                        <p>
+                            <b>
+                                {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    .split("")
+                                    .slice(
+                                        gameData.group,
+                                        parseInt(gameData.group) + 1
+                                    )}
+                            </b>{" "}
+                            grupa
+                        </p>
+                        <p>
+                            {gameData.venue
+                                ? gameData.venue
+                                : "Turnīra galvenā arēna"}
+                        </p>
+                    </div>
+                </div>
+                <div className="colorBar" id="bottomBar"></div>
+                <i
+                    class="fa-solid fa-pen editBtn"
+                    onClick={() => {
+                        document.querySelector(
+                            ".customizeOverlay"
+                        ).style.display = "flex";
+                    }}
+                ></i>
+                <div className="customizeOverlay">
+                    <div className="customizeOverlayData">
+                        <i
+                            className="fa-solid fa-close"
+                            onClick={() => {
+                                document.querySelector(
+                                    ".customizeOverlay"
+                                ).style.display = "none";
+                            }}
+                        ></i>
+                        <h3>Pielāgot</h3>
+                        <p>Iestati fonu & stilu</p>
+                        <div className="displaysCont">
+                            <div
+                                className="display active"
+                                id="defaultDisplay"
+                                onClick={() => changeBackground("defaultBackg")}
+                            ></div>
+                            <div
+                                className="display"
+                                id="display2"
+                                onClick={() => changeBackground("backg2")}
+                            ></div>
+                            <div
+                                className="display"
+                                id="display3"
+                                onClick={() => changeBackground("backg3")}
+                            ></div>
+                            <div
+                                className="display"
+                                id="display4"
+                                onClick={() => changeBackground("backg4")}
+                            ></div>
+                            <div
+                                className="display"
+                                id="display5"
+                                onClick={() => changeBackground("backg5")}
+                            ></div>
+                            <div
+                                className="display"
+                                id="display6"
+                                onClick={() => changeBackground("backg6")}
+                            ></div>
+                            <div
+                                className="display"
+                                id="display7"
+                                onClick={() => changeBackground("backg7")}
+                            ></div>
+                        </div>
+                        <p
+                            style={{
+                                marginBottom: 0,
+                                fontSize: "10px",
+                                marginTop: "20px",
+                            }}
+                        >
+                            Dažas bildes ņemtas no Freepik
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

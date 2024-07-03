@@ -9,6 +9,9 @@
 
 .watch__cont {
     color: white;
+}
+
+.watch__cont .backgOverlay {
     min-height: 100vh;
     margin: 0;
     padding: 30px;
@@ -580,6 +583,79 @@
     .watch__cont.backg4 {
         background: url("./backg4.jpg") bottom / cover no-repeat black;
     }
+}
+
+@media screen and (max-width: 900px) {
+    .watch__cont.defaultBackg {
+        background: url("./defaultBackg.jpg") bottom / cover no-repeat black;
+    }
+    #topBar {
+        margin-top: -120px;
+    }
+    #bottomBar {
+        bottom: -90px;
+    }
+    .watch__cont.backg7 .topBarText {
+        margin-top: 20px;        
+    }
+}
 
 
+@media screen and (max-width: 750px) {
+    .watch__cont .backgOverlay {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .watch__cont.backg6 .backgOverlay {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .watch__cont .team h2 {
+        font-size: 50px;
+        margin-bottom: 25px;
+    }
+
+    .watch__cont .points__cont {
+        height: 50px;
+    }
+
+    .watch__cont .team h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .watch__cont .points__cont h2.active {
+        animation: movePtsWatch50px 1.5s ease-out;
+    }
+
+    .watch__cont.backg6 .timeCont h3 {
+        font-size: 20px;
+    }
+
+    .watch__cont.backg6 .timeCont p {
+        font-size: 12px;
+    }
+
+    .watch__cont.backg6 .timeCont {
+        padding: 5px 30px;
+    }
+
+    .watch__cont .teamsCont {
+        max-width: 100%;
+    }
+}
+
+@keyframes movePtsWatch50px {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-50px);
+    }
+    70% {
+        transform: translateY(-50px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
