@@ -491,7 +491,8 @@
 }
 
 #topBar {
-    margin-top: -100px;
+    height: 200px;
+    margin-top: -150px;
 }
 
 #bottomBar {
@@ -598,6 +599,7 @@
 
 .foulOverlay .foul {
     margin: 5px;
+    cursor: default;
 }
 
 .foulOverlay .foul.active {

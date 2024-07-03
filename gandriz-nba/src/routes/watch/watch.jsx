@@ -1,4 +1,4 @@
-// TODO: finish foul overlay
+// TODO LATER: Add timeouts
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -107,6 +107,9 @@ const Watch = () => {
         }
 
         setGetUpdates(true);
+
+        // Set page title
+        document.title = `${res[0].team1_points} - ${res[0].team2_points} | ${res[0].team1_name} - ${res[0].team2_name} | Gandrīz NBA`;
     };
 
     // Set up event stream
@@ -278,7 +281,7 @@ const Watch = () => {
                 ...prev,
                 team2: {
                     ...prev.team2,
-                    fouls: data.team1Fouls,
+                    fouls: data.team2Fouls,
                 },
             }));
 
@@ -300,9 +303,11 @@ const Watch = () => {
                 ...prev,
                 team2: {
                     ...prev.team2,
-                    foulDetails: JSON.parse(data.team1FoulDetails),
+                    foulDetails: JSON.parse(data.team2FoulDetails),
                 },
             }));
+        // Set page title
+        document.title = `${data.team1_points} - ${data.team2_points} | ${data.team1_name} - ${data.team2_name} | Gandrīz NBA`;
     }, [updateData]);
 
     // Get data on load
@@ -733,26 +738,64 @@ const Watch = () => {
                             return (
                                 <div className="playerFouls">
                                     <p className="playerName">{player.name}</p>
-                                    <div className={player.fouls >= 5 ? 'playerFoulCont full' : 'playerFoulCont'}>
-                                        <span className={player.fouls >= 1 ? 'foul active' : 'foul'}></span>
-                                        <span className={player.fouls >= 2 ? 'foul active' : 'foul'}></span>
-                                        <span className={player.fouls >= 3 ? 'foul active' : 'foul'}></span>
-                                        <span className={player.fouls >= 4 ? 'foul active' : 'foul'}></span>
-                                        <span className={player.fouls >= 5 ? 'foul active' : 'foul'}></span>
+                                    <div
+                                        className={
+                                            player.fouls >= 5
+                                                ? "playerFoulCont full"
+                                                : "playerFoulCont"
+                                        }
+                                    >
+                                        <span
+                                            className={
+                                                player.fouls >= 1
+                                                    ? "foul active"
+                                                    : "foul"
+                                            }
+                                        ></span>
+                                        <span
+                                            className={
+                                                player.fouls >= 2
+                                                    ? "foul active"
+                                                    : "foul"
+                                            }
+                                        ></span>
+                                        <span
+                                            className={
+                                                player.fouls >= 3
+                                                    ? "foul active"
+                                                    : "foul"
+                                            }
+                                        ></span>
+                                        <span
+                                            className={
+                                                player.fouls >= 4
+                                                    ? "foul active"
+                                                    : "foul"
+                                            }
+                                        ></span>
+                                        <span
+                                            className={
+                                                player.fouls >= 5
+                                                    ? "foul active"
+                                                    : "foul"
+                                            }
+                                        ></span>
                                     </div>
                                 </div>
                             );
                         })}
 
-                        {foulOverlayData.players.length === 0 && (<p
-                            style={{
-                                marginBottom: 0,
-                                fontSize: "15px",
-                                marginTop: "20px",
-                            }}
-                        >
-                            Šai komandai nav piezīmju!
-                        </p>)}
+                        {foulOverlayData.players.length === 0 && (
+                            <p
+                                style={{
+                                    marginBottom: 0,
+                                    fontSize: "15px",
+                                    marginTop: "20px",
+                                }}
+                            >
+                                Šai komandai nav piezīmju!
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

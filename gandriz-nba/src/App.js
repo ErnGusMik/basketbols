@@ -32,6 +32,7 @@ import PublicPage from "./routes/public/public";
 
 import NotFound from "./routes/404/404";
 import Watch from "./routes/watch/watch";
+import Dashboard from "./routes/app/dashboard/dashboard";
 
 function App() {
     const router = createBrowserRouter([
@@ -46,6 +47,10 @@ function App() {
             element: <Root />,
             errorElement: <div>App error</div>,
             children: [
+                {
+                    path: "/app/",
+                    element: <Dashboard />,
+                },
                 {
                     path: "/app/tournaments/new",
                     element: <NewTournament />,
