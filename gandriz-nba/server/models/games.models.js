@@ -212,10 +212,11 @@ const updatePublicGame = async (
     team1FoulDetails,
     team2FoulDetails,
     time_24s,
+    start,
     userID
 ) => {
     const text =
-        "UPDATE game_public SET team1_points = $2, team2_points = $3, game_time = $4, quarter = $5, team1_fouls = $6, team2_fouls = $7, timestamp = $8, paused = $9, team1_timeouts = $10, team2_timeouts = $11, team1_fouls_details = $12, team2_fouls_details = $13, timer_24s = $14 WHERE id = $1  AND user_id = $15";
+        "UPDATE game_public SET team1_points = $2, team2_points = $3, game_time = $4, quarter = $5, team1_fouls = $6, team2_fouls = $7, timestamp = $8, paused = $9, team1_timeouts = $10, team2_timeouts = $11, team1_fouls_details = $12, team2_fouls_details = $13, timer_24s = $14, start = $15 WHERE id = $1  AND user_id = $16";
     const values = [
         parseInt(gameID),
         team1points,
@@ -231,6 +232,7 @@ const updatePublicGame = async (
         team1FoulDetails,
         team2FoulDetails,
         parseInt(time_24s),
+        start,
         userID,
     ];
     return await db.query(text, values);

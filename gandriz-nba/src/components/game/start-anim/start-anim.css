@@ -43,6 +43,10 @@ h1.main {
     font-weight: 900;
 }
 
+#outline-top, #outline-bottom {
+    font-family: "Montserrat-self", sans-serif !important;
+}
+
 /* BACKGROUND */
 .faded__backg {
     position: absolute;

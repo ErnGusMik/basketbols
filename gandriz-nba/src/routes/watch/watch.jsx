@@ -1,4 +1,3 @@
-// TODO: create countdown animation
 // TODO: responsive design
 // TODO: foul overlay
 import React, { useRef, useState } from "react";
@@ -74,10 +73,11 @@ const Watch = () => {
         });
 
         if (res[0].paused) {
-            console.log("paused");
             setPaused(true);
             setTime(res[0].game_time);
             setTime24s(res[0].timer_24s);
+            if (res[0].start) setStart('true');
+            else setStart(false);
         } else {
             setPaused(false);
 
@@ -127,6 +127,11 @@ const Watch = () => {
     React.useEffect(() => {
         if (!updateData) return;
         const data = JSON.parse(updateData);
+       
+        // Start handling
+        if (data.start === true && start === false) {
+            setStart(true);
+        }
 
         // Pause handling
         if (data.paused !== paused) {

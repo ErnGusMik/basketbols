@@ -232,7 +232,7 @@
 }
 
 .watch__cont.defaultBackg {
-    background: url("./defaultBackg.jpg") center / contain no-repeat black;
+    background: url("./defaultBackg.jpg") bottom / contain no-repeat black;
 }
 
 .watch__cont.backg2 {
@@ -483,6 +483,7 @@
     background-color: #b5093c;
     transform: rotate(-5deg);
     width: 110vw;
+    min-width: 1100px;
     margin-left: -50px;
 }
 
@@ -565,4 +566,20 @@
 
 .watch__cont.backg7 .editBtn:hover {
     color: #717171;
+}
+
+@media screen and (max-width: 1000px) {
+    .watch__cont.backg2 {
+        background: url("./backg2.jpg") center / cover no-repeat black;
+    }
+
+    .watch__cont.backg3 {
+        background: url("./backg3.jpg") center / cover no-repeat black;
+    }
+
+    .watch__cont.backg4 {
+        background: url("./backg4.jpg") bottom / cover no-repeat black;
+    }
+
+
 }

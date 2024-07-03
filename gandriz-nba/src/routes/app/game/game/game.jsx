@@ -49,7 +49,7 @@ export default function Game() {
 
     const [start, setStart] = React.useState(false);
     const [pause, setPause] = React.useState(true);
-    const [time, setTime] = React.useState(6100); // 10 minutes & 10 seconds in deciseconds
+    const [time, setTime] = React.useState(6000); // 10 minutes in deciseconds
     const [timeoutTime, setTimeoutTime] = React.useState(60); // 1 minute in seconds
     const [time24s, setTime24s] = React.useState(240); // 24 seconds in deciseconds
     const [quarter, setQuarter] = React.useState(1);
@@ -189,22 +189,28 @@ export default function Game() {
             }));
 
             if (response.paused) {
-                if (response.game_time === 6000 && response.quarter === 1) {
+                if (response.game_time >= 6000 && response.quarter === 1) {
                     setStart(false);
+                    setInstructions(
+                        <p>
+                            Lai sāktu 10s laika atskaiti līdz spēles sākumam,
+                            spied <i className="fa-solid fa-play" /> vai
+                            atsarpes taustiņu.
+                        </p>
+                    );
                 } else {
                     setStart("true");
+                    setInstructions(
+                        <p>
+                            Spēle apturēta! Lai turpinātu spēli, spied{" "}
+                            <i className="fa-solid fa-play" /> vai atsarpes
+                            taustiņu.
+                        </p>
+                    );
                 }
                 setPause(true);
                 setTime(response.game_time);
                 setTime24s(response.timer_24s);
-
-                setInstructions(
-                    <p>
-                        Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                        <i className="fa-solid fa-play" /> vai atsarpes
-                        taustiņu.
-                    </p>
-                );
             } else if (!response.paused) {
                 setStart("true");
                 setPause(false);
@@ -684,6 +690,7 @@ export default function Game() {
                         time_24s: liveData.time_24s
                             ? liveData.time_24s
                             : time24s,
+                        start: liveData.start ? liveData.start : start,
                     }),
                 }
             );
@@ -703,7 +710,7 @@ export default function Game() {
         if (disabled === true) return;
 
         // If game has not started, start it
-        if (start === false && time >= 6100) {
+        if (start === false && time >= 6000) {
             setStart(true);
             console.log(`[START] Game starting in 11 seconds.`);
 
@@ -717,13 +724,13 @@ export default function Game() {
                     pārtraukums.
                 </p>
             );
-            setPause(false);
-            sendToServer(null, { paused: false });
-            timer.current.postMessage({ message: "START", interval: 100 });
+
+            sendToServer(null, { start: true });
 
             setTimeout(() => {
                 setPause(false);
                 sendToServer(null, { paused: false });
+                timer.current.postMessage({ message: "START", interval: 100 });
 
                 console.log(
                     `[START] Game started at ${Date.now()} seconds since unix epoch.`

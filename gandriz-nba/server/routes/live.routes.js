@@ -49,6 +49,7 @@ const updateLiveGame = async (req, res, next) => {
         req.body.team1FoulDetails,
         req.body.team2FoulDetails,
         req.body.time_24s,
+        req.body.start,
         userID,
     ];
     console.log(values);
