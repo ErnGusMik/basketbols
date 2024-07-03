@@ -1,5 +1,3 @@
-// TODO: responsive design
-// TODO: backg5 move scores to top maybe?
 // TODO: foul overlay
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -386,7 +384,6 @@ const Watch = () => {
         document.querySelector(".watch__cont").classList =
             "watch__cont " + newID;
     };
-
     return (
         <div className="watch__cont">
             <div className="backgOverlay">
@@ -576,8 +573,12 @@ const Watch = () => {
                         ).style.display = "flex";
                     }}
                 ></i>
-                <div className="customizeOverlay">
-                    <div className="customizeOverlayData">
+                <div className="customizeOverlay" onClick={(e) => {
+                    document.querySelector(".customizeOverlay").style.display = "none";
+                }}>
+                    <div className="customizeOverlayData" onClick={(e) => {
+                        e.stopPropagation();
+                    }}>
                         <i
                             className="fa-solid fa-close"
                             onClick={() => {

@@ -491,7 +491,7 @@
 }
 
 #topBar {
-    margin-top: -85px;
+    margin-top: -100px;
 }
 
 #bottomBar {
@@ -643,6 +643,10 @@
     .watch__cont .teamsCont {
         max-width: 100%;
     }
+
+    .watch__cont.backg6 .teamsCont {
+        align-items: flex-start;
+    }
 }
 
 @keyframes movePtsWatch50px {
@@ -657,5 +661,118 @@
     }
     100% {
         transform: translateY(0);
+    }
+}
+
+@media screen and (max-width: 600px){
+    .watch__cont.backg7 .topBarText {
+        font-size: 25px;
+        margin-top: 30px;
+    }
+    
+    .watch__cont.backg7 .largeInfoCont {
+        bottom: 50px;
+        height: calc(100vh - 125px);
+    }
+
+    #topBar {
+        margin-top: -170px;
+    }
+
+    .customizeOverlayData {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .watch__cont .teamsCont {
+        flex-direction: column;
+        justify-content: center;
+        min-height: 70vh;
+        width: 100%;
+    }
+
+    .watch__cont .team {
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+        margin: 10vh 0;
+    }
+
+    .watch__cont .foul__container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .watch__cont .team h3 {
+        margin: 0;
+    }
+
+    .watch__cont.backg5 .foul__container {
+        position: relative;
+    }
+
+    .watch__cont.backg5 .timeCont {
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .watch__cont.backg5 .largeInfoCont {
+        height: auto;
+    }
+
+    .watch__cont.backg5 .team, .watch__cont.backg6 .team {
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .watch__cont.backg5 .team .score {
+        margin-bottom: 0;
+    }
+
+    .watch__cont.backg5 .teamsCont, .watch__cont.backg6 .teamsCont {
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 0;
+    }
+
+    .watch__cont.backg5 .periodNum {
+        position: absolute;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .watch__cont.backg5 .timeCont h5 {
+        font-size: 30px;
+    }
+
+    .watch__cont.backg5 .timeCont h3 {
+        margin-left: 20px;
+    }
+
+    .watch__cont.backg6 .team {
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 30px;
+    }
+
+    .watch__cont.backg6 .foul__container {
+        left: 30px;
+    }
+
+    .watch__cont.backg6 .largeInfoCont {
+        height: auto;
+    }
+
+    .watch__cont.backg6 .timeCont {
+        margin: 0;
+
     }
 }
