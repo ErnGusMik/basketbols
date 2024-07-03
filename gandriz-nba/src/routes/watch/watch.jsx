@@ -1,4 +1,4 @@
-// TODO: foul overlay
+// TODO: finish foul overlay
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -31,6 +31,15 @@ const Watch = () => {
     const [getUpdates, setGetUpdates] = useState(false);
     const [updateData, setUpdateData] = useState(null);
     const [start, setStart] = useState(false);
+    const [foulOverlayData, setFoulOverlayData] = useState({
+        teamName: "Lādējās",
+        players: [
+            {
+                name: "Lādējās",
+                fouls: 1,
+            },
+        ],
+    });
 
     const timer = useRef();
     const timer24s = useRef();
@@ -384,6 +393,56 @@ const Watch = () => {
         document.querySelector(".watch__cont").classList =
             "watch__cont " + newID;
     };
+
+    // Show foul overlay
+    const showFoulOverlay = (team) => {
+        if (team === 1) {
+            const fouls = [];
+            for (let i = 0; i < gameData.team1.fouls; i++) {
+                let found = false;
+                for (let j = 0; j < fouls.length; j++) {
+                    if (fouls[j].name === gameData.team1.foulDetails[i]) {
+                        fouls[j].fouls++;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    fouls.push({
+                        name: gameData.team1.foulDetails[i],
+                        fouls: 1,
+                    });
+            }
+            setFoulOverlayData({
+                teamName: gameData.team1.name,
+                players: fouls,
+            });
+        } else {
+            const fouls = [];
+            for (let i = 0; i < gameData.team2.fouls; i++) {
+                let found = false;
+                for (let j = 0; j < fouls.length; j++) {
+                    if (fouls[j].name === gameData.team2.foulDetails[i]) {
+                        fouls[j].fouls++;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    fouls.push({
+                        name: gameData.team2.foulDetails[i],
+                        fouls: 1,
+                    });
+            }
+            setFoulOverlayData({
+                teamName: gameData.team2.name,
+                players: fouls,
+            });
+        }
+
+        document.querySelector(".foulOverlay").style.display = "flex";
+    };
+
     return (
         <div className="watch__cont">
             <div className="backgOverlay">
@@ -408,6 +467,7 @@ const Watch = () => {
                                     ? "foul__container full"
                                     : "foul__container"
                             }
+                            onClick={() => showFoulOverlay(1)}
                         >
                             <span
                                 className={
@@ -461,6 +521,7 @@ const Watch = () => {
                                     ? "foul__container full"
                                     : "foul__container"
                             }
+                            onClick={() => showFoulOverlay(2)}
                         >
                             <span
                                 className={
@@ -566,19 +627,27 @@ const Watch = () => {
                 </div>
                 <div className="colorBar" id="bottomBar"></div>
                 <i
-                    class="fa-solid fa-pen editBtn"
+                    className="fa-solid fa-pen editBtn"
                     onClick={() => {
                         document.querySelector(
                             ".customizeOverlay"
                         ).style.display = "flex";
                     }}
                 ></i>
-                <div className="customizeOverlay" onClick={(e) => {
-                    document.querySelector(".customizeOverlay").style.display = "none";
-                }}>
-                    <div className="customizeOverlayData" onClick={(e) => {
-                        e.stopPropagation();
-                    }}>
+                <div
+                    className="customizeOverlay"
+                    onClick={(e) => {
+                        document.querySelector(
+                            ".customizeOverlay"
+                        ).style.display = "none";
+                    }}
+                >
+                    <div
+                        className="customizeOverlayData"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
                         <i
                             className="fa-solid fa-close"
                             onClick={() => {
@@ -635,6 +704,55 @@ const Watch = () => {
                         >
                             Dažas bildes ņemtas no Freepik
                         </p>
+                    </div>
+                </div>
+                <div
+                    className="customizeOverlay foulOverlay"
+                    onClick={(e) => {
+                        document.querySelector(".foulOverlay").style.display =
+                            "none";
+                    }}
+                >
+                    <div
+                        className="customizeOverlayData foulOverlayData"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        <i
+                            className="fa-solid fa-close"
+                            onClick={() => {
+                                document.querySelector(
+                                    ".foulOverlay"
+                                ).style.display = "none";
+                            }}
+                        ></i>
+                        <h3>{foulOverlayData.teamName}</h3>
+                        <p>Piezīmes</p>
+                        {foulOverlayData.players.map((player) => {
+                            return (
+                                <div className="playerFouls">
+                                    <p className="playerName">{player.name}</p>
+                                    <div className={player.fouls >= 5 ? 'playerFoulCont full' : 'playerFoulCont'}>
+                                        <span className={player.fouls >= 1 ? 'foul active' : 'foul'}></span>
+                                        <span className={player.fouls >= 2 ? 'foul active' : 'foul'}></span>
+                                        <span className={player.fouls >= 3 ? 'foul active' : 'foul'}></span>
+                                        <span className={player.fouls >= 4 ? 'foul active' : 'foul'}></span>
+                                        <span className={player.fouls >= 5 ? 'foul active' : 'foul'}></span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+
+                        {foulOverlayData.players.length === 0 && (<p
+                            style={{
+                                marginBottom: 0,
+                                fontSize: "15px",
+                                marginTop: "20px",
+                            }}
+                        >
+                            Šai komandai nav piezīmju!
+                        </p>)}
                     </div>
                 </div>
             </div>

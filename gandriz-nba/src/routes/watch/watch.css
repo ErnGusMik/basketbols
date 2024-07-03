@@ -83,7 +83,7 @@
 }
 
 .watch__cont .foul {
-    cursor: default;
+    cursor: pointer;
 }
 
 .team {
@@ -570,6 +570,44 @@
 .watch__cont.backg7 .editBtn:hover {
     color: #717171;
 }
+
+/* FOUL OVERLAY */
+.foulOverlay .foul {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    border: none;
+}
+
+.foulOverlay .playerFouls p {
+    margin: 0 15px;
+}
+
+.foulOverlay .playerFouls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foulOverlay .playerFoulCont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.foulOverlay .foul {
+    margin: 5px;
+}
+
+.foulOverlay .foul.active {
+    background-color: #EE6730;
+}
+
+.foulOverlay .playerFoulCont.full .foul.active {
+    background-color: #fe2001;
+}
+
 
 @media screen and (max-width: 1000px) {
     .watch__cont.backg2 {
