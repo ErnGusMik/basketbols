@@ -1,51 +1,52 @@
 .dashboard {
-    padding: 20px;
+  padding: 20px;
 }
 
 .dashboard .component {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #000;
-    border-radius: 50px;
-    padding: 20px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 50px;
+  padding: 20px 10px;
 }
 
 .dashboard .component img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 }
 
 .dashboard .component div {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 .dashboard .component .infoRow {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
 }
 
 .dashboard .component .infoRow p {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 .dashboard .component .infoRow i {
-    margin: 0;
+  margin: 0;
 }
 
-.dashboard .component p, .dashboard .component h3{
-    margin: 7px auto;
+.dashboard .component p,
+.dashboard .component h3 {
+  margin: 7px auto;
 }
 
 .dashboard .component .game {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #000;
-    border-radius: 50px;
-    max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 50px;
+  max-width: 250px;
 }
