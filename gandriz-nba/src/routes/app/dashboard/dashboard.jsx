@@ -1,7 +1,3 @@
-// TODO: Put data in the dashboard components
-// TODO: Customize greeting
-// TODO: Move on to settings (at least add a coming soon page and logout option)
-
 import React, { useEffect } from "react";
 
 import "./dashboard.css";
@@ -12,6 +8,8 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
     const [tournaments, setTournaments] = React.useState([]);
+    const [name, setName] = React.useState("lietotāj");
+
     // Function to decode JWTs
     const parseJwt = (token) => {
         const base64Url = token.split(".")[1];
@@ -34,29 +32,38 @@ const Dashboard = () => {
     const getData = async () => {
         const idTokenEncoded = localStorage.getItem("id_token");
         const idToken = parseJwt(idTokenEncoded);
-        console.log(idToken.sub);
+
+        setName(idToken.name);
+
+        // Get all tournaments for this user
         const tournamentRequest = await fetch(
             "http://localhost:8080/api/" + idToken.sub + "/tournaments",
             {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "access_token"
+                    )}`,
                 },
             }
         );
         const tournamentData = await tournamentRequest.json();
-        console.log(tournamentData);
 
+        // Get all games for each tournament
         const tournamentsArray = [];
         for (let i = 0; i < tournamentData.length; i++) {
             const gamesReq = await fetch(
-                "http://localhost:8080/api/tournaments/" + tournamentData[i].id + "/games",
+                "http://localhost:8080/api/tournaments/" +
+                    tournamentData[i].id +
+                    "/games",
                 {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
                     },
                 }
             );
@@ -93,6 +100,79 @@ const Dashboard = () => {
             const nextGame = nextGameArr[0];
             const lastGame = lastGameArr[0];
 
+            // If nextGame exists, get team names
+            if (nextGame) {
+                const nextTeam1req = await fetch(
+                    "http://localhost:8080/api/teams/" + nextGame.team1id,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                );
+
+                const nextTeam1Data = await nextTeam1req.json();
+
+                const nextTeam2req = await fetch(
+                    "http://localhost:8080/api/teams/" + nextGame.team2id,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                );
+
+                const nextTeam2Data = await nextTeam2req.json();
+
+                nextGame.team1name = nextTeam1Data.name;
+                nextGame.team2name = nextTeam2Data.name;
+            }
+
+            // If lastGame exists, get team names
+            if (lastGame) {
+                const prevTeam1req = await fetch(
+                    "http://localhost:8080/api/teams/" + lastGame.team1id,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                );
+
+                const prevTeam1Data = await prevTeam1req.json();
+
+                const prevTeam2req = await fetch(
+                    "http://localhost:8080/api/teams/" + lastGame.team2id,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                );
+
+                const prevTeam2Data = await prevTeam2req.json();
+
+                lastGame.team1name = prevTeam1Data.name;
+                lastGame.team2name = prevTeam2Data.name;
+            }
+
+            // Push all data to the array
             tournamentsArray.push({
                 name: tournamentData[i].name,
                 location: tournamentData[i].location,
@@ -104,7 +184,8 @@ const Dashboard = () => {
                 lastGame: lastGame,
             });
         }
-        
+
+        // Set the state
         setTournaments(tournamentsArray);
     };
 
@@ -114,58 +195,108 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <h1>Sveiks, Ernests! Uzspēlējam?</h1>
-            {tournaments.map((tournament) => {  
+            <h1>Sveiks, {name}! Uzspēlējam?</h1>
+            {tournaments.map((tournament) => {
                 return (
-            <div className="component">
-                <div className="divider">
-                    <Link to="/app/tournaments/170">
-                        <img
-                            src={tournament.logo ? tournament.logo : mainImg}
-                            alt="Tournament logo"
-                            className="logo"
-                        />
-                    </Link>
-                    <div className="tournamentData">
-                        <Link to="/app/tournaments/170">
-                            <h2>{tournament.name}</h2>
-                        </Link>
-                        <div className="infoRow">
-                            <i
-                                className="fa-solid fa-location-dot"
-                                style={{ fontWeight: 600 }}
-                            ></i>
-                            <p>{tournament.location}</p>
+                    <div className="component">
+                        <div className="divider">
+                            <Link to="/app/tournaments/170">
+                                <img
+                                    src={
+                                        tournament.logo
+                                            ? tournament.logo
+                                            : mainImg
+                                    }
+                                    alt="Tournament logo"
+                                    className="logo"
+                                />
+                            </Link>
+                            <div className="tournamentData">
+                                <Link to="/app/tournaments/170">
+                                    <h2>{tournament.name}</h2>
+                                </Link>
+                                <div className="infoRow">
+                                    <i
+                                        className="fa-solid fa-location-dot"
+                                        style={{ fontWeight: 600 }}
+                                    ></i>
+                                    <p>{tournament.location}</p>
+                                </div>
+                                <div className="infoRow">
+                                    <i
+                                        className="fa-solid fa-calendar"
+                                        style={{ fontWeight: 300 }}
+                                    ></i>
+                                    <p>
+                                        {tournament.startDate.toLocaleDateString(
+                                            "en-GB",
+                                            {
+                                                day: "2-digit",
+                                                month: "2-digit",
+                                                year: "numeric",
+                                            }
+                                        )}{" "}
+                                        -{" "}
+                                        {tournament.endDate.toLocaleDateString(
+                                            "en-GB",
+                                            {
+                                                day: "2-digit",
+                                                month: "2-digit",
+                                                year: "numeric",
+                                            }
+                                        )}
+                                    </p>
+                                </div>
+                                <p>Organizē {tournament.organizer}</p>
+                            </div>
                         </div>
-                        <div className="infoRow">
-                            <i
-                                className="fa-solid fa-calendar"
-                                style={{ fontWeight: 300 }}
-                            ></i>
-                            <p>{tournament.startDate.toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'})} - {tournament.endDate.toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'})}</p>
+                        <div className="game">
+                            <h3>Nākamā spēle</h3>
+                            <p>
+                                {tournament.nextGame
+                                    ? tournament.nextGame.team1name
+                                    : ""}
+                            </p>
+                            <h4 style={{ textAlign: "center" }}>
+                                {tournament.nextGame
+                                    ? "VS"
+                                    : "Visas spēles ir izspēlētas"}
+                            </h4>
+                            <p>
+                                {tournament.nextGame
+                                    ? tournament.nextGame.team2name
+                                    : ""}
+                            </p>
+                            {tournament.nextGame && (
+                                <Link to={'/app/game/' + tournament.nextGame.id + '/instructions'}>
+                                    <Button text="Sagatavot spēli" />
+                                </Link>
+                            )}
                         </div>
-                        <p>Organizē {tournament.organizer}</p>
+                        <div className="game">
+                            <h3>Pēdējā spēle</h3>
+                            <p>
+                                {tournament.lastGame
+                                    ? tournament.lastGame.team1name
+                                    : ""}
+                            </p>
+                            <h4 style={{ textAlign: "center" }}>
+                                {tournament.lastGame
+                                    ? "VS"
+                                    : "Neviena spēle vēl nav izspēlēta"}
+                            </h4>
+                            <p>
+                                {tournament.lastGame
+                                    ? tournament.lastGame.team2name
+                                    : ""}
+                            </p>
+                            {tournament.lastGame && (
+                                <Link to={'/app/game/' + tournament.lastGame.id + '/analysis'}>
+                                    <Button text="Spēles analīze" />
+                                </Link>
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div className="game">
-                    <h3>Nākamā spēle</h3>
-                    <p>{tournament.nextGame ? tournament.nextGame.team1id : ''}</p>
-                    <h4 style={{textAlign: "center"}}>{tournament.nextGame ? 'VS' : 'Visas spēles ir izspēlētas'}</h4>
-                    <p>{tournament.nextGame ? tournament.nextGame.team1id : ''}</p>
-                    {tournament.nextGame && <Link to="/app">
-                        <Button text="Sagatavot spēli" />
-                    </Link>}
-                </div>
-                <div className="game">
-                    <h3>Pēdējā spēle</h3>
-                    <p>{tournament.lastGame ? tournament.lastGame.team1id : ''}</p>
-                    <h4 style={{textAlign: "center"}}>{tournament.lastGame ? 'VS' : 'Neviena spēle vēl nav izspēlēta'}</h4>
-                    <p>{tournament.lastGame ? tournament.lastGame.team1id : ''}</p>
-                    {tournament.lastGame && <Link to="/app">
-                        <Button text="Sagatavot spēli" />
-                    </Link>}
-                </div>
-            </div>
                 );
             })}
             <div className="newTournamentBtn">

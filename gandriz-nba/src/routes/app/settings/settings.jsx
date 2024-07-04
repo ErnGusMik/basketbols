@@ -1,0 +1,33 @@
+import React from "react";
+
+import "./settings.css";
+import Button from "../../../components/button/button";
+import  { useNavigate } from "react-router-dom";
+
+const Settings = () => {
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('id_token');
+        localStorage.clear();
+        navigate('/login');
+    }
+    return (
+        <div className="settingsCont">
+            <div className="setting">
+                <div className="disabledOverlay">Būs pieejams drīzumā!</div>
+                <h2>Tumšais režīms</h2>
+                <label class="switch">
+                    <input type="checkbox" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div className="logoutCont">
+                <Button text="Atslēgties" onClick={logout} />
+            </div>
+        </div>
+    );
+};
+
+export default Settings;
