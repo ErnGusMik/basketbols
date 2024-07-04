@@ -97,42 +97,40 @@ a {
 }
 
 .copy {
-    position: absolute;
-    bottom: 0;
-    font-size: 8px;
-    width: 100%;
-    text-align: center;
-    color: #303030;
-  }
+  position: absolute;
+  bottom: 0;
+  font-size: 8px;
+  width: 100%;
+  text-align: center;
+  color: #303030;
+}
 
 @media screen and (max-width: 1300px) {
-    .buttonImage {
-        margin: 0 5%;
-    }
+  .buttonImage {
+    margin: 0 5%;
+  }
 }
 
 @media screen and (max-width: 1150px) {
-    .loginImage {
-        max-width: 60%;
-    }
-
+  .loginImage {
+    max-width: 60%;
+  }
 }
 
 @media screen and (max-width: 850px) {
-    .loginImage {
-        max-width: 50%;
-    }
+  .loginImage {
+    max-width: 50%;
+  }
 }
 
 @media screen and (max-width: 750px) {
-    .loginImage {
-        max-width: 0;
-    }
+  .loginImage {
+    max-width: 0;
+  }
 }
 
-
 @media screen and (max-width: 350px) {
-    .buttonImage {
-        margin: 0 2%;
-    }
+  .buttonImage {
+    margin: 0 2%;
+  }
 }
