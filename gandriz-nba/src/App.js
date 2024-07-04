@@ -34,12 +34,13 @@ import NotFound from "./routes/404/404";
 import Watch from "./routes/watch/watch";
 import Dashboard from "./routes/app/dashboard/dashboard";
 import Settings from "./routes/app/settings/settings";
+import Index from "./routes/index";
 
 function App() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <div>Home</div>,
+            element: <Index />,
             errorElement: <div>Home error</div>,
             children: [],
         },

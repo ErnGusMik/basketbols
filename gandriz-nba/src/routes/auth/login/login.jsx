@@ -38,18 +38,21 @@ export default function Login() {
           {/* ------------------- */}
           <Link to="/">
             <button className="loginButton">
+              <div className="disabled">Pašlaik nav pieejams</div>
               <img src={google} alt="Google logo" className="buttonImage" />
               <p>Ienākt ar Google</p>
             </button>
           </Link>
           <Link to="/">
             <button className="loginButton">
+            <div className="disabled">Pašlaik nav pieejams</div>
               <img src={facebook} alt="Facebook logo" className="buttonImage" />
               <p>Ienākt ar Facebook</p>
             </button>
           </Link>
           <Link to="/">
             <button className="loginButton">
+            <div className="disabled">Pašlaik nav pieejams</div>
               <img src={apple} alt="Apple logo" className="buttonImage" />
               <p>Ienākt ar Apple</p>
             </button>
