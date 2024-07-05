@@ -1,6 +1,6 @@
 import React from "react";
 import "./email.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import login from "./../main.jpg";
 
 const crypto = require("crypto-js/sha256");
@@ -8,6 +8,7 @@ const crypto = require("crypto-js/sha256");
 // Access-Control-Allow-Origin header not present!!
 
 export default function Email() {
+  const navigate = useNavigate();
   function makeRandom(length) {
     let result = "";
     const characters =
@@ -95,7 +96,7 @@ export default function Email() {
     localStorage.setItem("refresh_token", tokenResponse.refresh_token);
     localStorage.setItem("access_token", tokenResponse.access_token);
     localStorage.setItem("id_token", tokenResponse.id_token);
-    window.location.href = "/app";
+    navigate("/app");
   };
 
   return (
