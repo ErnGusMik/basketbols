@@ -55,7 +55,7 @@ export default function AboutTournament() {
     }
 
     // Make request to API
-    const request = await fetch("http://localhost:8080/api/tournaments/" + id, {
+    const request = await fetch("https://basketbols.onrender.com/api/tournaments/" + id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +94,7 @@ export default function AboutTournament() {
 
     // Make request to API
     const request = await fetch(
-      "http://localhost:8080/api/tournaments/" + id + "/referees",
+      "https://basketbols.onrender.com/api/tournaments/" + id + "/referees",
       {
         method: "GET",
         headers: {
@@ -118,7 +118,7 @@ export default function AboutTournament() {
 
     // Make request to API
     const request = await fetch(
-      "http://localhost:8080/api/tournaments/" + id + "/games",
+      "https://basketbols.onrender.com/api/tournaments/" + id + "/games",
       {
         method: "GET",
         headers: {
@@ -178,7 +178,7 @@ export default function AboutTournament() {
 
     // Make request to API
     const request = await fetch(
-      "http://localhost:8080/api/teams/batch/" + teamIDs.join("+"),
+      "https://basketbols.onrender.com/api/teams/batch/" + teamIDs.join("+"),
       {
         method: "GET",
         headers: {

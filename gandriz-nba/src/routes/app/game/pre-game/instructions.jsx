@@ -20,7 +20,7 @@ export default function Instructions() {
 
     // Check if game exists
     const getGame = async () => {
-        const request = await fetch("http://localhost:8080/api/games/" + id, {
+        const request = await fetch("https://basketbols.onrender.com/api/games/" + id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

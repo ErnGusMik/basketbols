@@ -20,7 +20,7 @@ export default function Analysis() {
     const getData = async () => {
         // Get data from API
         const request = await fetch(
-            "http://localhost:8080/api/games/" + params.id,
+            "https://basketbols.onrender.com/api/games/" + params.id,
             {
                 method: "GET",
                 headers: {
@@ -50,7 +50,7 @@ export default function Analysis() {
     // Get game live data for team names
     const getTeams = async (publicID) => {
         const request = await fetch(
-            "http://localhost:8080/api/live/games/once/" + publicID,
+            "https://basketbols.onrender.com/api/live/games/once/" + publicID,
             {
                 method: "GET",
                 headers: {
@@ -135,13 +135,13 @@ export default function Analysis() {
         for (let i = 0; i < 2; i++) {
             const playerRequest = await fetch(
                 i
-                    ? "http://localhost:8080/api/players/batch/" +
+                    ? "https://basketbols.onrender.com/api/players/batch/" +
                           teamData.team2id +
                           "/" +
                           team2best[0][0] +
                           "+" +
                           team2best[1][0]
-                    : "http://localhost:8080/api/players/batch/" +
+                    : "https://basketbols.onrender.com/api/players/batch/" +
                           teamData.team1id +
                           "/" +
                           team1best[0][0] +

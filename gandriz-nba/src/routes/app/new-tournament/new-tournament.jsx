@@ -102,7 +102,7 @@ export default function NewTournament() {
       return;
     }
     document.getElementById("submit-page1").disabled = true;
-    const request = await fetch("http://localhost:8080/" + obj.pageName, {
+    const request = await fetch("https://basketbols.onrender.com/" + obj.pageName, {
       method: "GET",
     });
     const response = await request.json();

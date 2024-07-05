@@ -73,7 +73,7 @@ export default function Root() {
     const userID = idToken.sub;
     // Make request to get tournaments with specific userID
     const request = await fetch(
-      "http://localhost:8080/api/" + userID + "/tournaments",
+      "https://basketbols.onrender.com/api/" + userID + "/tournaments",
       {
         method: "GET",
         headers: {

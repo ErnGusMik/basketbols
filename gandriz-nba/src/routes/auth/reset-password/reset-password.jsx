@@ -32,7 +32,7 @@ export default function ResetPassword() {
       password,
       code: searchParams.get("code"),
     };
-    const request = await fetch("http://localhost:8080/auth/reset-password", {
+    const request = await fetch("https://basketbols.onrender.com/auth/reset-password", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

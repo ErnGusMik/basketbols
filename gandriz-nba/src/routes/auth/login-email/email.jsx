@@ -39,7 +39,7 @@ export default function Email() {
       code_challenge: loginParams.codeChallenge,
       code_challenge_method: loginParams.codeChallengeMethod,
     };
-    const request = await fetch("http://localhost:8080/auth/login", {
+    const request = await fetch("https://basketbols.onrender.com/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export default function Email() {
       }, 3000);
       return;
     }
-    const tokenRequest = await fetch("http://localhost:8080/auth/token", {
+    const tokenRequest = await fetch("https://basketbols.onrender.com/auth/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -49,7 +49,7 @@ const Watch = () => {
         const { id } = params;
 
         const gameRequest = await fetch(
-            "http://localhost:8080/api/live/games/once/" + id,
+            "https://basketbols.onrender.com/api/live/games/once/" + id,
             {
                 method: "GET",
                 headers: {
@@ -117,7 +117,7 @@ const Watch = () => {
         if (getUpdates === false) return;
 
         const eventStream = new EventSource(
-            "http://localhost:8080/api/live/games/" + getUpdates
+            "https://basketbols.onrender.com/api/live/games/" + getUpdates
         );
 
         eventStream.onmessage = (e) => {

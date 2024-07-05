@@ -97,7 +97,7 @@ export default function NewTournamentSend() {
     };
 
     // Send data to server
-    const request = await fetch("http://localhost:8080/api/tournaments/new", {
+    const request = await fetch("https://basketbols.onrender.com/api/tournaments/new", {
       method: "POST",
       body: JSON.stringify(bodyData),
       headers: {
@@ -170,7 +170,7 @@ export default function NewTournamentSend() {
       teams: teamsArray,
     };
     // Make request to server
-    const request = await fetch("http://localhost:8080/api/teams/new/batch", {
+    const request = await fetch("https://basketbols.onrender.com/api/teams/new/batch", {
       method: "POST",
       body: JSON.stringify(bodyData),
       headers: {
@@ -221,7 +221,7 @@ export default function NewTournamentSend() {
     };
 
     // Make request to server
-    const request = await fetch("http://localhost:8080/api/players/new/batch", {
+    const request = await fetch("https://basketbols.onrender.com/api/players/new/batch", {
       method: "POST",
       body: JSON.stringify(bodyData),
       headers: {
@@ -274,7 +274,7 @@ export default function NewTournamentSend() {
 
     // Make request to server
     const request = await fetch(
-      "http://localhost:8080/api/referees/new/batch",
+      "https://basketbols.onrender.com/api/referees/new/batch",
       {
         method: "POST",
         body: JSON.stringify(bodyData),
@@ -319,7 +319,7 @@ export default function NewTournamentSend() {
     });
 
     // Make request to server
-    const request = await fetch("http://localhost:8080/api/games/new/batch", {
+    const request = await fetch("https://basketbols.onrender.com/api/games/new/batch", {
       method: "POST",
       body: JSON.stringify(bodyData),
       headers: {

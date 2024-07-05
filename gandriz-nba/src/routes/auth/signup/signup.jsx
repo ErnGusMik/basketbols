@@ -38,7 +38,7 @@ export default function Signup() {
       email,
       password,
     };
-    const request = await fetch("http://localhost:8080/auth/signup", {
+    const request = await fetch("https://basketbols.onrender.com/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default function Signup() {
       }, 3000);
       return;
     }
-    const loginRequest = await fetch("http://localhost:8080/auth/login", {
+    const loginRequest = await fetch("https://basketbols.onrender.com/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default function Signup() {
       }, 3000);
       return;
     }
-    const tokenRequest = await fetch("http://localhost:8080/auth/token", {
+    const tokenRequest = await fetch("https://basketbols.onrender.com/auth/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -37,7 +37,7 @@ const Dashboard = () => {
 
         // Get all tournaments for this user
         const tournamentRequest = await fetch(
-            "http://localhost:8080/api/" + idToken.sub + "/tournaments",
+            "https://basketbols.onrender.com/api/" + idToken.sub + "/tournaments",
             {
                 method: "GET",
                 headers: {
@@ -54,7 +54,7 @@ const Dashboard = () => {
         const tournamentsArray = [];
         for (let i = 0; i < tournamentData.length; i++) {
             const gamesReq = await fetch(
-                "http://localhost:8080/api/tournaments/" +
+                "https://basketbols.onrender.com/api/tournaments/" +
                     tournamentData[i].id +
                     "/games",
                 {
@@ -103,7 +103,7 @@ const Dashboard = () => {
             // If nextGame exists, get team names
             if (nextGame) {
                 const nextTeam1req = await fetch(
-                    "http://localhost:8080/api/teams/" + nextGame.team1id,
+                    "https://basketbols.onrender.com/api/teams/" + nextGame.team1id,
                     {
                         method: "GET",
                         headers: {
@@ -118,7 +118,7 @@ const Dashboard = () => {
                 const nextTeam1Data = await nextTeam1req.json();
 
                 const nextTeam2req = await fetch(
-                    "http://localhost:8080/api/teams/" + nextGame.team2id,
+                    "https://basketbols.onrender.com/api/teams/" + nextGame.team2id,
                     {
                         method: "GET",
                         headers: {
@@ -139,7 +139,7 @@ const Dashboard = () => {
             // If lastGame exists, get team names
             if (lastGame) {
                 const prevTeam1req = await fetch(
-                    "http://localhost:8080/api/teams/" + lastGame.team1id,
+                    "https://basketbols.onrender.com/api/teams/" + lastGame.team1id,
                     {
                         method: "GET",
                         headers: {
@@ -154,7 +154,7 @@ const Dashboard = () => {
                 const prevTeam1Data = await prevTeam1req.json();
 
                 const prevTeam2req = await fetch(
-                    "http://localhost:8080/api/teams/" + lastGame.team2id,
+                    "https://basketbols.onrender.com/api/teams/" + lastGame.team2id,
                     {
                         method: "GET",
                         headers: {

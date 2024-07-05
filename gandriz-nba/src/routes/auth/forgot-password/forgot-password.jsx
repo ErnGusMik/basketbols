@@ -8,7 +8,7 @@ export default function Email() {
     e.preventDefault();
     const email = e.target.email.value;
     console.log(email);
-    const request = await fetch("http://localhost:8080/auth/forgot-password", {
+    const request = await fetch("https://basketbols.onrender.com/auth/forgot-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

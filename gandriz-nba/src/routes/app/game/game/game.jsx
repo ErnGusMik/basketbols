@@ -85,7 +85,7 @@ export default function Game() {
         const { id } = params;
         let request;
         try {
-            request = await fetch(`http://localhost:8080/api/games/${id}`, {
+            request = await fetch(`https://basketbols.onrender.com/api/games/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export default function Game() {
     // Get teams data from the server
     const getTeams = async (teamID, num) => {
         const request = await fetch(
-            "http://localhost:8080/api/teams/" + teamID,
+            "https://basketbols.onrender.com/api/teams/" + teamID,
             {
                 method: "GET",
                 headers: {
@@ -155,7 +155,7 @@ export default function Game() {
     const createPublicGame = async () => {
         if (gameData.public_id) {
             const request = await fetch(
-                "http://localhost:8080/api/live/games/once/" +
+                "https://basketbols.onrender.com/api/live/games/once/" +
                     gameData.public_id,
                 {
                     method: "GET",
@@ -250,7 +250,7 @@ export default function Game() {
             return;
         }
         const request = await fetch(
-            "http://localhost:8080/api/games/new/public",
+            "https://basketbols.onrender.com/api/games/new/public",
             {
                 method: "POST",
                 headers: {
@@ -286,7 +286,7 @@ export default function Game() {
         if (getUpdates === false) return;
 
         const eventStream = new EventSource(
-            "http://localhost:8080/api/live/games/" + getUpdates
+            "https://basketbols.onrender.com/api/live/games/" + getUpdates
         );
 
         eventStream.onmessage = (e) => {
@@ -611,7 +611,7 @@ export default function Game() {
 
         if (statData) {
             const request = await fetch(
-                `http://localhost:8080/api/games/update/${statID}`,
+                `https://basketbols.onrender.com/api/games/update/${statID}`,
                 {
                     method: "PUT",
                     headers: {
@@ -633,7 +633,7 @@ export default function Game() {
 
         if (liveData) {
             const request = await fetch(
-                `http://localhost:8080/api/live/games/update/${id}`,
+                `https://basketbols.onrender.com/api/live/games/update/${id}`,
                 {
                     method: "PUT",
                     headers: {

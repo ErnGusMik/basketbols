@@ -70,7 +70,7 @@ export default function PublicPage() {
     const getData = async () => {
         // Get tournament ID
         const tournamentIDreq = await fetch(
-            "http://localhost:8080/api/tournaments/getIDfromName?name=" +
+            "https://basketbols.onrender.com/api/tournaments/getIDfromName?name=" +
                 params["*"]
         );
         const tournamentID = await tournamentIDreq.json();
@@ -86,7 +86,7 @@ export default function PublicPage() {
 
         // Get teams
         const gamereq = await fetch(
-            "http://localhost:8080/api/tournaments/" +
+            "https://basketbols.onrender.com/api/tournaments/" +
                 tournamentID.id +
                 "/games"
         );
@@ -129,7 +129,7 @@ export default function PublicPage() {
 
         // Get referees
         const refreq = await fetch(
-            "http://localhost:8080/api/tournaments/" +
+            "https://basketbols.onrender.com/api/tournaments/" +
                 tournamentID.id +
                 "/referees",
             {
@@ -146,7 +146,7 @@ export default function PublicPage() {
 
         // Get teams
         const teamreq = await fetch(
-            "http://localhost:8080/api/tournaments/" +
+            "https://basketbols.onrender.com/api/tournaments/" +
                 tournamentID.id +
                 "/teams"
         );
@@ -183,7 +183,7 @@ export default function PublicPage() {
 
         // Make best scorers request to API
         const bestScorersRequest = await fetch(
-            "http://localhost:8080/api/tournaments/" +
+            "https://basketbols.onrender.com/api/tournaments/" +
                 tournamentID.id +
                 "/stats/best-players",
             {
@@ -201,7 +201,7 @@ export default function PublicPage() {
 
         // Make best blockers request to API
         const bestBlockersRequest = await fetch(
-            "http://localhost:8080/api/tournaments/" +
+            "https://basketbols.onrender.com/api/tournaments/" +
                 tournamentID.id +
                 "/stats/best-blockers",
             {
@@ -284,7 +284,7 @@ export default function PublicPage() {
 
         // Fetch ongoing game public IDs
         const ongoingGames = await fetch(
-            "http://localhost:8080/api/games/live",
+            "https://basketbols.onrender.com/api/games/live",
             {
                 method: "GET",
                 headers: {
@@ -405,7 +405,7 @@ export default function PublicPage() {
     const showPlayers = async (teamID) => {
         // Fetch players from API
         const teamRequest = await fetch(
-            "http://localhost:8080/api/teams/" + teamID + "/players",
+            "https://basketbols.onrender.com/api/teams/" + teamID + "/players",
             {
                 method: "GET",
                 headers: {
