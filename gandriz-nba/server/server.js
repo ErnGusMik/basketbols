@@ -1,4 +1,5 @@
 require('dotenv').config()
+const os = require('os')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -35,5 +36,6 @@ app.use('/auth', authRouter)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
     console.log(`Server is running on port ${process.env.SERVER_PORT || 3000}`)
+    console.log(os.networkInterfaces())
     dbClient.openConnection()
 });
