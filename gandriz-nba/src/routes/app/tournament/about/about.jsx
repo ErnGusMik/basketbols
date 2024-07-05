@@ -55,13 +55,16 @@ export default function AboutTournament() {
     }
 
     // Make request to API
-    const request = await fetch("https://basketbols.onrender.com/api/tournaments/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/tournaments/" + id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
       },
-    });
+    );
 
     // Get response
     const response = await request.json();

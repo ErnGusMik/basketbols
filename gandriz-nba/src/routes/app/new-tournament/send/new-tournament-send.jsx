@@ -97,14 +97,17 @@ export default function NewTournamentSend() {
     };
 
     // Send data to server
-    const request = await fetch("https://basketbols.onrender.com/api/tournaments/new", {
-      method: "POST",
-      body: JSON.stringify(bodyData),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/tournaments/new",
+      {
+        method: "POST",
+        body: JSON.stringify(bodyData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     const response = await request.json();
 
@@ -170,14 +173,17 @@ export default function NewTournamentSend() {
       teams: teamsArray,
     };
     // Make request to server
-    const request = await fetch("https://basketbols.onrender.com/api/teams/new/batch", {
-      method: "POST",
-      body: JSON.stringify(bodyData),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/teams/new/batch",
+      {
+        method: "POST",
+        body: JSON.stringify(bodyData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     // Get response
     const response = await request.json();
@@ -221,14 +227,17 @@ export default function NewTournamentSend() {
     };
 
     // Make request to server
-    const request = await fetch("https://basketbols.onrender.com/api/players/new/batch", {
-      method: "POST",
-      body: JSON.stringify(bodyData),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/players/new/batch",
+      {
+        method: "POST",
+        body: JSON.stringify(bodyData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     // Get response
     const response = await request.json();
@@ -319,14 +328,17 @@ export default function NewTournamentSend() {
     });
 
     // Make request to server
-    const request = await fetch("https://basketbols.onrender.com/api/games/new/batch", {
-      method: "POST",
-      body: JSON.stringify(bodyData),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/games/new/batch",
+      {
+        method: "POST",
+        body: JSON.stringify(bodyData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     // Get response
     const response = await request.json();

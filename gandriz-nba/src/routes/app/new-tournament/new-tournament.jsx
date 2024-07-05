@@ -22,7 +22,7 @@ export default function NewTournament() {
   };
 
   // create ref
-  const topRef = React.useRef()
+  const topRef = React.useRef();
 
   // set most states
   const [teamNum, setTeamNum] = React.useState(0);
@@ -38,7 +38,7 @@ export default function NewTournament() {
   const teamNumChnage = (e) => {
     setTeamNum(e.target.value);
     setFinalsNumValue(0);
-    setSelectedGroup(0)
+    setSelectedGroup(0);
   };
   // handle change of group number (on change)
   const groupNumChange = (e) => {
@@ -102,9 +102,12 @@ export default function NewTournament() {
       return;
     }
     document.getElementById("submit-page1").disabled = true;
-    const request = await fetch("https://basketbols.onrender.com/" + obj.pageName, {
-      method: "GET",
-    });
+    const request = await fetch(
+      "https://basketbols.onrender.com/" + obj.pageName,
+      {
+        method: "GET",
+      },
+    );
     const response = await request.json();
     if (response.result) {
       setPageError("eksistē!");
@@ -125,7 +128,7 @@ export default function NewTournament() {
     reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
-      localStorage.removeItem('teams')
+      localStorage.removeItem("teams");
       setNavigate(true);
     };
     return;
@@ -206,7 +209,9 @@ export default function NewTournament() {
               label="Izslēgšanas spēles"
               labelSub="Cik komandas tiek izslēgšanas spēlēs?"
               inputID="finalsNum"
-              error={"Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"}
+              error={
+                "Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"
+              }
               value={finalsNum}
               valueSub={finalsSub}
               onChange={handleFinalsNum}

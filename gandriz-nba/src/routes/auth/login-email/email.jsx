@@ -69,17 +69,20 @@ export default function Email() {
       }, 3000);
       return;
     }
-    const tokenRequest = await fetch("https://basketbols.onrender.com/auth/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const tokenRequest = await fetch(
+      "https://basketbols.onrender.com/auth/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: response.code,
+          code_verifier: loginParams.codeVerifier,
+          grant_type: "authorization_code",
+        }),
       },
-      body: JSON.stringify({
-        code: response.code,
-        code_verifier: loginParams.codeVerifier,
-        grant_type: "authorization_code",
-      }),
-    });
+    );
     const tokenResponse = await tokenRequest.json();
     if (tokenResponse.error) {
       document.getElementById("error-desc").innerHTML =

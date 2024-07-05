@@ -32,13 +32,16 @@ export default function TournamentStats() {
     }
 
     // Make request to API
-    const request = await fetch("https://basketbols.onrender.com/api/tournaments/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/tournaments/" + id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
       },
-    });
+    );
 
     // Get response
     const response = await request.json();
@@ -113,7 +116,9 @@ export default function TournamentStats() {
 
     // Make best scorers request to API
     const bestScorersRequest = await fetch(
-      "https://basketbols.onrender.com/api/tournaments/" + id + "/stats/best-players",
+      "https://basketbols.onrender.com/api/tournaments/" +
+        id +
+        "/stats/best-players",
       {
         method: "GET",
         headers: {
@@ -127,7 +132,9 @@ export default function TournamentStats() {
 
     // Make best blockers request to API
     const bestBlockersRequest = await fetch(
-      "https://basketbols.onrender.com/api/tournaments/" + id + "/stats/best-blockers",
+      "https://basketbols.onrender.com/api/tournaments/" +
+        id +
+        "/stats/best-blockers",
       {
         method: "GET",
         headers: {

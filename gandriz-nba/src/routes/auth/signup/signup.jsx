@@ -57,19 +57,22 @@ export default function Signup() {
       }, 3000);
       return;
     }
-    const loginRequest = await fetch("https://basketbols.onrender.com/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const loginRequest = await fetch(
+      "https://basketbols.onrender.com/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          state: loginParams.state,
+          code_challenge: loginParams.codeChallenge,
+          code_challenge_method: loginParams.codeChallengeMethod,
+        }),
       },
-      body: JSON.stringify({
-        email,
-        password,
-        state: loginParams.state,
-        code_challenge: loginParams.codeChallenge,
-        code_challenge_method: loginParams.codeChallengeMethod,
-      }),
-    });
+    );
     const loginResponse = await loginRequest.json();
     if (loginResponse.error) {
       document.getElementById("error-desc").innerHTML =
@@ -93,17 +96,20 @@ export default function Signup() {
       }, 3000);
       return;
     }
-    const tokenRequest = await fetch("https://basketbols.onrender.com/auth/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const tokenRequest = await fetch(
+      "https://basketbols.onrender.com/auth/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: loginResponse.code,
+          grant_type: "authorization_code",
+          code_verifier: loginParams.codeVerifier,
+        }),
       },
-      body: JSON.stringify({
-        code: loginResponse.code,
-        grant_type: "authorization_code",
-        code_verifier: loginParams.codeVerifier,
-      }),
-    });
+    );
     const tokenResponse = await tokenRequest.json();
     if (tokenResponse.error) {
       document.getElementById("error-desc").innerHTML =
