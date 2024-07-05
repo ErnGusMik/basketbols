@@ -1,0 +1,2 @@
+!function(){var a;onmessage=function(e){clearInterval(a),"START"===e.data.message?a=setInterval((function(){postMessage("TICK")}),e.data.interval):"START TIMEOUT"===e.data.message?(console.log("START TIMEOUT"),a=setInterval((function(){postMessage("TICK TIMEOUT")}),e.data.interval)):"START 24S"===e.data.message&&(a=setInterval((function(){postMessage("TICK 24S")}),e.data.interval))}}();
+//# sourceMappingURL=40.224d260e.chunk.js.map
