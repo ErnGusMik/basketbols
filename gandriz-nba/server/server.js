@@ -32,16 +32,6 @@ app.use('/api', apiRouter)
 const authRouter = require('./controllers/auth.controllers')
 app.use('/auth', authRouter)
 
-// app.get('/:pageName', routes.getTournamentPage)
-
-
-
-
-
-
-
-
-
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
     console.log(`Server is running on port ${process.env.SERVER_PORT || 3000}`)
