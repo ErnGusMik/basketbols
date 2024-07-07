@@ -2,6 +2,8 @@
 
 A platform for creating and managing basketball tournaments.
 
+!ATTENTION! The server may be very slow to send responses (~30sec), because I am using hosting it on a free server (which means it shuts off after a while of inactivity).
+
 ### Progress
 
 | Job                         | Status                 |

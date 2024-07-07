@@ -4,6 +4,8 @@ English version of this README can be found [here](README_EN.md).
 
 Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitītājs.
 
+!UZMANĪBU! Vietne kur ir serveris var būt ļoti lēna (~30sek līdz atbildēm), jo izmantoju bezmaksas versiju.
+
 ### Darba plānojums
 
 | Darbs                     | Statuss                |
