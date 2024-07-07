@@ -6,14 +6,14 @@ Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitīt
 
 ### Darba plānojums
 
-| Darbs                     | Statuss                |
-| ------------------------- | ---------------------- |
-| Serveris, Datubāze        | ✔️ Pabeigts            |
-| Jauna turnīra lapa, login | ✔️ Pabeigts            |
-| Spēles, turnīra lapa      | ✔️ Pabeigts            |
-| Pēcspēles analīze         | ✔️ Pabeigts            |
-| Publiskās funkcijas       | ✔️ Pabeigts            |
-| Testēšana, pabeigšana     | ✔️ Pabeigts            |
+| Darbs                     | Statuss     |
+| ------------------------- | ----------- |
+| Serveris, Datubāze        | ✔️ Pabeigts |
+| Jauna turnīra lapa, login | ✔️ Pabeigts |
+| Spēles, turnīra lapa      | ✔️ Pabeigts |
+| Pēcspēles analīze         | ✔️ Pabeigts |
+| Publiskās funkcijas       | ✔️ Pabeigts |
+| Testēšana, pabeigšana     | ✔️ Pabeigts |
 
 Iespējamie statusi:
 
