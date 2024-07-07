@@ -111,13 +111,13 @@ export default function NewTournamentSend() {
     // If response contains error, set UI to error state and redirect to new tournament page
     if (response.error && !sentOnce) {
       setSentOnce(true);
-      mainText.current.innerHTML = "Kļūda!";
+      mainText.current.innerText = "Kļūda!";
 
-      sendingNotes.current.innerHTML = response.detail;
+      sendingNotes.current.innerText = response.detail;
       sendingNotes.current.style.color = "red";
 
       let seconds = 10;
-      sendingNotesSub.current.innerHTML =
+      sendingNotesSub.current.innerText =
         "Ievadiet nepieciešamo informāciju un mēģiniet vēlreiz (pārējā informācija tiks saglabāta). (Pāradresēsim pēc " +
         seconds +
         " sekundēm.)";
@@ -125,7 +125,7 @@ export default function NewTournamentSend() {
       // Set interval to count down from 10 to 0
       const interval = setInterval(() => {
         seconds--;
-        sendingNotesSub.current.innerHTML =
+        sendingNotesSub.current.innerText =
           "Ievadiet nepieciešamo informāciju un mēģiniet vēlreiz (pārējā informācija tiks saglabāta). (Pāradresēsim pēc " +
           seconds +
           " sekundēm.)";
@@ -346,14 +346,14 @@ export default function NewTournamentSend() {
 
     await sendPlayers(teamIDs, tournamentID);
 
-    sendingNotes.current.innerHTML = "Gandrīz gatavs!";
+    sendingNotes.current.innerText = "Gandrīz gatavs!";
 
     await sendReferees(tournamentID);
 
     setTimeout(() => {
-      sendingNotes.current.innerHTML =
+      sendingNotes.current.innerText =
         "Šis aizņem mazliet vairāk laika nekā parasti...";
-      sendingNotesSub.current.innerHTML = "Lūdzu, neatsvaidziniet lapu!";
+      sendingNotesSub.current.innerText = "Lūdzu, neatsvaidziniet lapu!";
     }, 5000);
 
     await sendGames(tournamentID);

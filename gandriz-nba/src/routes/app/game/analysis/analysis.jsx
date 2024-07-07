@@ -29,7 +29,6 @@ export default function Analysis() {
             }
         );
         const response = await request.json();
-        console.log(response);
         setGameData(response[0]);
 
         if (
@@ -85,7 +84,6 @@ export default function Analysis() {
             const current = team1["points" + (i + 1)].split(";");
 
             if (!current[-1]) current.pop();
-            console.log(current);
 
             for (let j = 0; j < current.length; j++) {
                 if (current[j] in team1players) {

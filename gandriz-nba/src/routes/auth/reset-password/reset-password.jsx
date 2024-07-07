@@ -7,7 +7,7 @@ export default function ResetPassword() {
   const manageReset = async (e) => {
     e.preventDefault();
     if (e.target.newPassword.value !== e.target.passwordConfirm.value) {
-      document.getElementById("error-desc").innerHTML = "Paroles nav vienādas!";
+      document.getElementById("error-desc").innerText = "Paroles nav vienādas!";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
       setTimeout(() => {
@@ -17,7 +17,7 @@ export default function ResetPassword() {
       return;
     }
     if (e.target.newPassword.value.length < 8) {
-      document.getElementById("error-desc").innerHTML = "Parole pārāk īsa!";
+      document.getElementById("error-desc").innerText = "Parole pārāk īsa!";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
       setTimeout(() => {

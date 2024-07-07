@@ -8,12 +8,12 @@ Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitīt
 
 | Darbs                     | Statuss                |
 | ------------------------- | ---------------------- |
-| Serveris, Datubāze        | 🧪 Testēšana           |
+| Serveris, Datubāze        | ✔️ Pabeigts            |
 | Jauna turnīra lapa, login | ✔️ Pabeigts            |
 | Spēles, turnīra lapa      | ✔️ Pabeigts            |
 | Pēcspēles analīze         | ✔️ Pabeigts            |
-| Publiskās funkcijas       | 🟢 Procesā             |
-| Testēšana, pabeigšana     | 🟡 Nav uzsākts         |
+| Publiskās funkcijas       | ✔️ Pabeigts            |
+| Testēšana, pabeigšana     | ✔️ Pabeigts            |
 
 Iespējamie statusi:
 

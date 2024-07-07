@@ -49,7 +49,7 @@ export default function Email() {
     });
     const response = await request.json();
     if (response.error) {
-      document.getElementById("error-desc").innerHTML =
+      document.getElementById("error-desc").innerText =
         response.error_description;
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
@@ -60,7 +60,7 @@ export default function Email() {
       return;
     }
     if (response.state !== loginParams.state) {
-      document.getElementById("error-desc").innerHTML =
+      document.getElementById("error-desc").innerText =
         "Nevarējām Jūs autorizēt (E13)";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
@@ -83,7 +83,7 @@ export default function Email() {
     });
     const tokenResponse = await tokenRequest.json();
     if (tokenResponse.error) {
-      document.getElementById("error-desc").innerHTML =
+      document.getElementById("error-desc").innerText =
         tokenResponse.error_description;
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";

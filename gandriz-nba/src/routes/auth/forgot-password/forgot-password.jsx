@@ -17,7 +17,7 @@ export default function Email() {
     });
     const response = await request.json();
     if (!response.error) {
-      document.getElementById("error-desc").innerHTML = "E-pasts nosūtīts";
+      document.getElementById("error-desc").innerText = "E-pasts nosūtīts";
       document.getElementById("error-cont").style.backgroundColor = "#39a845";
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";
@@ -28,7 +28,7 @@ export default function Email() {
       }, 3000);
       return;
     } else {
-      document.getElementById("error-desc").innerHTML =
+      document.getElementById("error-desc").innerText =
         response.error_description;
       document.getElementById("error-cont").style.visibility = "visible";
       document.getElementById("error-cont").style.opacity = "1";

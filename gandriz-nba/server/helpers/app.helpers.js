@@ -6,10 +6,7 @@ const verifyUserID = async (userID) => {
             userID,
         ])
         .then((result) => {
-            if (!result) {
-                return false;
-            }
-            return true;
+            return Boolean(result)
         })
         .catch((err) => {
             console.log("Error " + err);
@@ -22,10 +19,7 @@ const verifyTournamentID = async (tournamentID) => {
     const result = await db
         .query("SELECT * FROM tournaments WHERE id=$1", [tournamentID])
         .then((result) => {
-            if (result.length === 0) {
-                return false;
-            }
-            return true;
+            return Boolean(result.length)
         })
         .catch((err) => {
             console.log(err);
@@ -41,10 +35,7 @@ const verifyTournamentOwner = async (tournamentID, userID) => {
             userID,
         ])
         .then((result) => {
-            if (result.length === 0) {
-                return false;
-            }
-            return true;
+            return Boolean(result.length)
         })
         .catch((err) => {
             console.log(err);
@@ -57,10 +48,7 @@ const verifyTeamID = async (teamID) => {
     const result = await db
         .query("SELECT * FROM teams WHERE id = $1", [teamID])
         .then((result) => {
-            if (result.length === 0) {
-                return false;
-            }
-            return true;
+            return Boolean(result.length)
         })
         .catch((err) => {
             console.log(err);
@@ -76,10 +64,7 @@ const verifyTeamByName = async (teamName, tournamentID) => {
             tournamentID,
         ])
         .then((result) => {
-            if (result.length === 0) {
-                return false;
-            }
-            return result;
+            return Boolean(result.length)
         })
         .catch((err) => {
             console.log(err);
@@ -92,10 +77,7 @@ const verifyRefereeID = async (refereeID) => {
     const result = await db
         .query("SELECT * FROM referees WHERE id = $1", [refereeID])
         .then((result) => {
-            if (result.length === 0) {
-                return false;
-            }
-            return true;
+            return Boolean(result.length)
         })
         .catch((err) => {
             console.log(err);
@@ -108,10 +90,7 @@ const verifyRefereeByName = async (refereeName, tournamentID) => {
     const result = await db
         .query("SELECT id FROM referees WHERE name = $1 AND tournamentid = $2", [refereeName, tournamentID])
         .then((result) => {
-            if (result.length === 0) {
-                return false;
-            }
-            return result;
+            return Boolean(result.length)
         })
         .catch((err) => {
             console.log(err);

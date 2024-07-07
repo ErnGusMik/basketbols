@@ -58,7 +58,6 @@ const Watch = () => {
             }
         );
         const res = await gameRequest.json();
-        console.log(res);
 
         setGameData({
             team1: {

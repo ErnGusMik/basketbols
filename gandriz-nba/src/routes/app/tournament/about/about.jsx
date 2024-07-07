@@ -171,7 +171,7 @@ export default function AboutTournament() {
       const data = JSON.parse(
         localStorage.getItem("tournament_" + params.id + "_teams"),
       );
-      console.log(data);
+
       setTeams(data);
       return;
     }
@@ -194,7 +194,6 @@ export default function AboutTournament() {
     // Set teams
     setTeams(response);
 
-    console.log(response);
 
     // Save to local storage
     const responseData = response.map((team) => {
@@ -303,7 +302,6 @@ export default function AboutTournament() {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     const group = alphabet[teamData[0].teamgroup];
 
-    console.log(games);
 
     // Return game card
     return (

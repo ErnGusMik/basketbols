@@ -44,11 +44,7 @@ const checkUser = async (userID) => {
   const text = "SELECT * FROM auth_codes WHERE user_id = $1";
   const values = [userID];
   const result = await db.query(text, values);
-  if (result.length === 0) {
-    return false;
-  } else {
-    return true;
-  }
+  return Boolean(result.length)
 };
 
 const validateCode = async (code, timestamp) => {
