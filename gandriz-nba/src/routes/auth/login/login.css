@@ -1,143 +1,143 @@
 .login {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
 }
 
 .login i {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    cursor: pointer;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
 }
 
 .loginImage {
-    max-width: 70%;
-    max-height: 100%;
-    object-fit: cover;
+  max-width: 70%;
+  max-height: 100%;
+  object-fit: cover;
 }
 
 .login h1 {
-    font-weight: 800;
-    font-size: 48px;
-    text-align: center;
-    margin-top: 60px;
+  font-weight: 800;
+  font-size: 48px;
+  text-align: center;
+  margin-top: 60px;
 }
 
 .sideContainer {
-    width: 100%;
-    height: 100vh;
-    position: relative;
+  width: 100%;
+  height: 100vh;
+  position: relative;
 }
 
 .loginButton {
-    cursor: pointer;
-    background: #fff;
-    border: 4px solid black;
-    border-radius: 50px;
-    padding: 10px 0;
-    font-size: 16px;
-    font-weight: 800;
-    min-width: 80%;
-    margin: 20px auto;
-    display: flex;
-    align-items: center;
-    position: relative;
+  cursor: pointer;
+  background: #fff;
+  border: 4px solid black;
+  border-radius: 50px;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 800;
+  min-width: 80%;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .loginButton .disabled {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.75);
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 400;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
 }
 
 .loginButton p {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 a {
-    text-decoration: none;
-    color: black;
-    font-family: Montserrat;
+  text-decoration: none;
+  color: black;
+  font-family: Montserrat;
 }
 
 .buttonImage {
-    height: 30px;
-    margin: 0 10%;
+  height: 30px;
+  margin: 0 10%;
 }
 
 .divider {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .divider hr {
-    height: 1px;
-    border: 0;
-    background-color: #000;
-    clear: both;
-    display: block;
-    width: 30%;
+  height: 1px;
+  border: 0;
+  background-color: #000;
+  clear: both;
+  display: block;
+  width: 30%;
 }
 
 .noAccount {
-    position: absolute;
-    bottom: 3%;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
+  position: absolute;
+  bottom: 3%;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
 }
 
 .noAccount a {
-    text-decoration: underline;
-    color: black;
+  text-decoration: underline;
+  color: black;
 }
 
 .copy {
-    position: absolute;
-    bottom: 0;
-    font-size: 8px;
-    width: 100%;
-    text-align: center;
-    color: #303030;
+  position: absolute;
+  bottom: 0;
+  font-size: 8px;
+  width: 100%;
+  text-align: center;
+  color: #303030;
 }
 
 @media screen and (max-width: 1300px) {
-    .buttonImage {
-        margin: 0 5%;
-    }
+  .buttonImage {
+    margin: 0 5%;
+  }
 }
 
 @media screen and (max-width: 1150px) {
-    .loginImage {
-        max-width: 60%;
-    }
+  .loginImage {
+    max-width: 60%;
+  }
 }
 
 @media screen and (max-width: 850px) {
-    .loginImage {
-        max-width: 50%;
-    }
+  .loginImage {
+    max-width: 50%;
+  }
 }
 
 @media screen and (max-width: 750px) {
-    .loginImage {
-        max-width: 0;
-    }
+  .loginImage {
+    max-width: 0;
+  }
 }
 
 @media screen and (max-width: 350px) {
-    .buttonImage {
-        margin: 0 2%;
-    }
+  .buttonImage {
+    margin: 0 2%;
+  }
 }
