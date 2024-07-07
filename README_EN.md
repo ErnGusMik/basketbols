@@ -6,14 +6,14 @@ A platform for creating and managing basketball tournaments.
 
 ### Progress
 
-| Job                         | Status                 |
-| --------------------------- | ---------------------- |
-| Server, database            | 🧪 Testing             |
-| 'New tournament' page, auth | ✔️ Finished            |
-| Games, tournament pages     | ✔️ Finished            |
-| After-game analysis         | ✔️ Finished            |
-| 'Public' functions          | 🟢 In process          |
-| Testing, finalizing         | 🟡 Not begun           |
+| Job                         | Status        |
+| --------------------------- | ------------- |
+| Server, database            | 🧪 Testing    |
+| 'New tournament' page, auth | ✔️ Finished   |
+| Games, tournament pages     | ✔️ Finished   |
+| After-game analysis         | ✔️ Finished   |
+| 'Public' functions          | 🟢 In process |
+| Testing, finalizing         | 🟡 Not begun  |
 
 Possible statuses:
 
