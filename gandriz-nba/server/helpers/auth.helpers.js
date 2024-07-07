@@ -32,7 +32,7 @@ const verifyUser = async (email, password) => {
     } else {
       const comparePass = await bcrypt.compare(
         password,
-        result[0].password.toString()
+        result[0].password.toString(),
       );
       return comparePass;
     }
@@ -44,7 +44,7 @@ const checkUser = async (userID) => {
   const text = "SELECT * FROM auth_codes WHERE user_id = $1";
   const values = [userID];
   const result = await db.query(text, values);
-  return Boolean(result.length)
+  return Boolean(result.length);
 };
 
 const validateCode = async (code, timestamp) => {
@@ -66,12 +66,16 @@ const validateCode = async (code, timestamp) => {
           }
         }
       }
-    }
+    },
   );
   return codeVerification;
 };
 
-const validateCodeVerifier = async (code_challenge, code_verifier, code_challenge_method) => {
+const validateCodeVerifier = async (
+  code_challenge,
+  code_verifier,
+  code_challenge_method,
+) => {
   const crypto = require("crypto-js/sha256");
   // Checks if code_challenge_method is S256
   if (code_challenge_method.toUpperCase() !== "S256") return false;
@@ -111,9 +115,7 @@ const getUserByEmail = async (email) => {
 };
 
 const getUserByID = async (id) => {
-  const result = await db.query("SELECT * FROM users WHERE id = $1", [
-    id,
-  ]);
+  const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);
   if (result.err) {
     console.log(result.err.stack);
   } else {

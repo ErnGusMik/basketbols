@@ -32,13 +32,16 @@ export default function ResetPassword() {
       password,
       code: searchParams.get("code"),
     };
-    const request = await fetch("https://basketbols.onrender.com/auth/reset-password", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+    const request = await fetch(
+      "https://basketbols.onrender.com/auth/reset-password",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
       },
-      body: JSON.stringify(body),
-    });
+    );
     const response = await request.json();
     if (response.error) {
       document.getElementById("error-desc").innerHTML =

@@ -8,13 +8,16 @@ export default function Email() {
     e.preventDefault();
     const email = e.target.email.value;
     console.log(email);
-    const request = await fetch("https://basketbols.onrender.com/auth/forgot-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const request = await fetch(
+      "https://basketbols.onrender.com/auth/forgot-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
       },
-      body: JSON.stringify({ email }),
-    });
+    );
     const response = await request.json();
     if (!response.error) {
       document.getElementById("error-desc").innerText = "E-pasts nosūtīts";
