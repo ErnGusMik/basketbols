@@ -23,13 +23,13 @@ export default function Login() {
 
     return (
         <div className="login">
-            <i className="fa-solid fa-globe" onClick={changeLanguage} />
             <img
                 src={login}
                 alt="Image of a basketball"
                 className="loginImage"
             />
             <div className="sideContainer">
+                <i className="fa-solid fa-globe" onClick={changeLanguage} />
                 <div className="loginContainer">
                     <h1>{lang ? "Log in" : "Ienākt"}</h1>
                     {/* Google Sign In button */}

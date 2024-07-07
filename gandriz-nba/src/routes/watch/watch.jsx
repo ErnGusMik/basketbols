@@ -41,8 +41,21 @@ const Watch = () => {
         ],
     });
 
+    const [lang, setLang] = useState(Boolean(localStorage.getItem("lang")));
+
     const timer = useRef();
     const timer24s = useRef();
+
+    // Change language
+    const changeLanguage = () => {
+        if (localStorage.getItem("lang") === "en") {
+            localStorage.removeItem("lang");
+            setLang(false);
+            return;
+        }
+        localStorage.setItem("lang", "en");
+        setLang(true);
+    };  
 
     // Get data from API
     const getData = async () => {
@@ -449,11 +462,12 @@ const Watch = () => {
 
     return (
         <div className="watch__cont">
+            <i className="fa-solid fa-globe changeLang" onClick={changeLanguage} />
             <div className="backgOverlay">
                 <StartAnimation start={start} />
                 <div className="colorBar" id="topBar"></div>
                 <p className="topBarText">
-                    #Atbalsti<span className="bold">Savējos</span>
+                    #{lang ? 'Support' : 'Atbalsti'}<span className="bold">{lang ? 'your' : 'Savējos'}</span>{lang ? 'team' : ''}
                 </p>
                 <div className="teamsCont">
                     <div className="team">
@@ -606,7 +620,7 @@ const Watch = () => {
                                 : "0:0" + (time % 600) / 10 + ".0"}
                         </h3>
                         <p>
-                            <b>Periods {gameData.period}</b>
+                            <b>{lang ? 'Period' : 'Periods'} {gameData.period}</b>
                         </p>
                         <span className="periodNum">4</span>
                     </div>
@@ -620,12 +634,12 @@ const Watch = () => {
                                         parseInt(gameData.group) + 1
                                     )}
                             </b>{" "}
-                            grupa
+                            {lang ? 'group' : 'grupa'}
                         </p>
                         <p>
                             {gameData.venue
                                 ? gameData.venue
-                                : "Turnīra galvenā arēna"}
+                                : lang ? 'Main arena of the tournament' : "Turnīra galvenā arēna"}
                         </p>
                     </div>
                 </div>
@@ -732,7 +746,7 @@ const Watch = () => {
                             }}
                         ></i>
                         <h3>{foulOverlayData.teamName}</h3>
-                        <p>Piezīmes</p>
+                        <p>{lang ? 'Fouls' : 'Piezīmes'}</p>
                         {foulOverlayData.players.map((player) => {
                             return (
                                 <div className="playerFouls">
@@ -792,7 +806,7 @@ const Watch = () => {
                                     marginTop: "20px",
                                 }}
                             >
-                                Šai komandai nav piezīmju!
+                                {lang ? 'This team has no fouls!' : 'Šai komandai nav piezīmju!'}
                             </p>
                         )}
                     </div>

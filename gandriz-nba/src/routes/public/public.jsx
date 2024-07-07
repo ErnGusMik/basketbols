@@ -32,6 +32,10 @@ export default function PublicPage() {
         ],
     });
 
+    const [lang, setLang] = React.useState(
+        Boolean(localStorage.getItem("lang"))
+    );
+
     const [now, setNow] = React.useState({
         previous: {
             team1: "Komanda 1",
@@ -65,6 +69,17 @@ export default function PublicPage() {
 
     const params = useParams();
     const navigate = useNavigate();
+
+    // Change language
+    const changeLanguage = () => {
+        if (localStorage.getItem("lang") === "en") {
+            localStorage.removeItem("lang");
+            setLang(false);
+            return;
+        }
+        localStorage.setItem("lang", "en");
+        setLang(true);
+    };
 
     // Get data from API
     const getData = async () => {
@@ -380,7 +395,8 @@ export default function PublicPage() {
                 document
                     .querySelector(".loadingOverlay img")
                     .removeEventListener("animationiteration", iterationFunc);
-                document.querySelector(".loadingOverlay").style.display = 'none';
+                document.querySelector(".loadingOverlay").style.display =
+                    "none";
             }, 3000);
         };
 
@@ -439,6 +455,10 @@ export default function PublicPage() {
 
     return (
         <div className="publicPage__cont">
+            <i
+                className="fa-solid fa-globe changeLang"
+                onClick={changeLanguage}
+            ></i>
             <div className="loadingOverlay">
                 <img src={basketballImg} alt="Basketball image" />
                 <svg width={300} height={3}>
@@ -450,18 +470,40 @@ export default function PublicPage() {
                 </svg>
             </div>
             <div className="banner">
-                <h1>{tournament ? tournament.name : "Lādējās..."}</h1>
+                <h1>
+                    {tournament
+                        ? tournament.name
+                        : lang
+                        ? "Loading..."
+                        : "Lādējās..."}
+                </h1>
             </div>
             <div className="row">
                 <div className="desc__cont element">
-                    <p>{tournament ? tournament.description : "Lādējās..."}</p>
+                    <p>
+                        {tournament
+                            ? tournament.description
+                            : lang
+                            ? "Loading..."
+                            : "Lādējās..."}
+                    </p>
                     <div>
                         <i class="fa-solid fa-location-dot"></i>
-                        <p>{tournament ? tournament.location : "Lādējās..."}</p>
+                        <p>
+                            {tournament
+                                ? tournament.location
+                                : lang
+                                ? "Loading..."
+                                : "Lādējās..."}
+                        </p>
                     </div>
                     <p>
-                        Organizē{" "}
-                        {tournament ? tournament.organizer : "Lādējās..."}
+                        {lang ? "Organized by" : "Organizē"}{" "}
+                        {tournament
+                            ? tournament.organizer
+                            : lang
+                            ? "Loading..."
+                            : "Lādējās..."}
                     </p>
                 </div>
                 <div
@@ -477,19 +519,21 @@ export default function PublicPage() {
                     }
                 ></div>
                 <div className="jump__cont element">
-                    <p>Lekt uz:</p>
+                    <p>{lang ? "Jump to" : "Lekt uz"}:</p>
                     <ul>
                         <li>
-                            <a href="#now">Tagad</a>
+                            <a href="#now">{lang ? "Now" : "Tagad"}</a>
                         </li>
                         <li>
-                            <a href="#games">Spēles</a>
+                            <a href="#games">{lang ? "Games" : "Spēles"}</a>
                         </li>
                         <li>
-                            <a href="#groups">Grupas</a>
+                            <a href="#groups">{lang ? "Groups" : "Grupas"}</a>
                         </li>
                         <li>
-                            <a href="#stats">Statistika</a>
+                            <a href="#stats">
+                                {lang ? "Statistics" : "Statistika"}
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -524,7 +568,11 @@ export default function PublicPage() {
                         <div className="gameData__cont">
                             <h2>{now.previous.team1points}</h2>
                             <div className="gameData">
-                                <p>{now.previous.group} grupa</p>
+                                <p>
+                                    {lang ? "Group " : ""}
+                                    {now.previous.group}
+                                    {lang ? "" : " grupa"}
+                                </p>
                                 <p>
                                     {new Date(
                                         now.previous.time
@@ -580,7 +628,11 @@ export default function PublicPage() {
                         <div className="gameData__cont">
                             <h2>{now.current.team1points}</h2>
                             <div className="gameData">
-                                <p>{now.current.group} grupa</p>
+                                <p>
+                                    {lang ? "Group " : ""}
+                                    {now.current.group}
+                                    {lang ? "" : " grupa"}
+                                </p>
                                 <p>
                                     {new Date(
                                         now.current.time
@@ -636,7 +688,11 @@ export default function PublicPage() {
                         <div className="gameData__cont">
                             <h2>{now.next.team1points}</h2>
                             <div className="gameData">
-                                <p>{now.next.group} grupa</p>
+                                <p>
+                                    {lang ? "Group " : ""}
+                                    {now.next.group}
+                                    {lang ? "" : " grupa"}
+                                </p>
                                 <p>
                                     {new Date(now.next.time).toLocaleDateString(
                                         "en-GB",
@@ -678,19 +734,20 @@ export default function PublicPage() {
                                     fontWeight: 400,
                                 }}
                             >
-                                <b>{alphabet[index]}</b> grupa
+                                <b>{alphabet[index]}</b>{" "}
+                                {lang ? "group" : "grupa"}
                             </p>
                             <Table
                                 pubTable
                                 cols={[
-                                    "Komanda",
-                                    "Komanda",
-                                    "Datums",
-                                    "Laiks",
-                                    "Vieta",
-                                    "Rezultāts",
-                                    "Tiesneši",
-                                    "Skatīt",
+                                    lang ? "Team" : "Komanda",
+                                    lang ? "Team" : "Komanda",
+                                    lang ? "Date" : "Datums",
+                                    lang ? "Time" : "Laiks",
+                                    lang ? "Venue" : "Vieta",
+                                    lang ? "Score" : "Rezultāts",
+                                    lang ? "Referees" : "Tiesneši",
+                                    lang ? "Watch" : "Skatīt",
                                 ]}
                                 content={group.map((game) => {
                                     const refArr = JSON.parse(game.refereeids);
@@ -752,7 +809,7 @@ export default function PublicPage() {
                                                     "/watch"
                                                 }
                                             >
-                                                skatīt
+                                                {lang ? "watch" : "skatīt"}
                                             </Link>
                                         ) : (
                                             ""
@@ -777,17 +834,18 @@ export default function PublicPage() {
                                     fontWeight: 400,
                                 }}
                             >
-                                <b>{group[0].teamgroup}</b> grupa
+                                <b>{group[0].teamgroup}</b>{" "}
+                                {lang ? "group" : "grupa"}
                             </p>
                             <Table
                                 pubTable
                                 cols={[
-                                    "Nosaukums",
-                                    "Spēlētāji",
-                                    "Uzv.",
-                                    "Zaud.",
-                                    "Neizšķ.",
-                                    "Punkti",
+                                    lang ? "Team" : "Komanda",
+                                    lang ? "Players" : "Spēlētāji",
+                                    lang ? "Won" : "Uzv.",
+                                    lang ? "Lost" : "Zaud.",
+                                    lang ? "Drawn" : "Neizšķ.",
+                                    lang ? "Points" : "Punkti",
                                 ]}
                                 content={group.map((team) => {
                                     return [
@@ -804,7 +862,7 @@ export default function PublicPage() {
                                             }
                                             style={{ cursor: "pointer" }}
                                         >
-                                            skatīt
+                                            {lang ? "view" : "skatīt"}
                                         </a>,
                                         team.wins,
                                         team.losses,
@@ -819,7 +877,7 @@ export default function PublicPage() {
             </div>
             <div className="stats" id="stats">
                 <div className="statCard">
-                    <h2>Veiksmīgi bloki</h2>
+                    <h2>{lang ? "Successful blocks" : "Veiksmīgi bloki"}</h2>
                     <div className="listContainer">
                         <ol>
                             {teamBlocks.map((team, index) => {
@@ -834,7 +892,9 @@ export default function PublicPage() {
                     </div>
                 </div>
                 <div className="statCard">
-                    <h2>Veiksmīgi 3p metieni</h2>
+                    <h2>
+                        {lang ? "Successful 3pt shots" : "Veiksmīgi 3p metieni"}
+                    </h2>
                     <div className="listContainer">
                         <ol>
                             {team3p.map((team, index) => {
@@ -849,7 +909,9 @@ export default function PublicPage() {
                     </div>
                 </div>
                 <div className="statCard">
-                    <h2>Rezultatīvākie spēlētāji</h2>
+                    <h2>
+                        {lang ? "Best scorers" : "Rezultatīvākie spēlētāji"}
+                    </h2>
                     <div className="listContainer">
                         <ol>
                             {bestScorers.map((player, index) => {
@@ -868,7 +930,7 @@ export default function PublicPage() {
                     </div>
                 </div>
                 <div className="statCard">
-                    <h2>Labākie bloķētāji</h2>
+                    <h2>{lang ? "Best blockers" : "Labākie bloķētāji"}</h2>
                     <div className="listContainer">
                         <ol>
                             {bestBlockers.map((player, index) => {
@@ -887,7 +949,7 @@ export default function PublicPage() {
                     </div>
                 </div>
                 <div className="statCard">
-                    <h2>Punkti spēlē</h2>
+                    <h2>{lang ? "Points per game" : "Punkti spēlē"}</h2>
                     <div className="listContainer">
                         <ol>
                             {teamPoints.map((team, index) => {
@@ -902,7 +964,9 @@ export default function PublicPage() {
                     </div>
                 </div>
                 <div className="statCard">
-                    <h2>Ielaistie punkti</h2>
+                    <h2>
+                        {lang ? "Points scored against" : "Ielaistie punkti"}
+                    </h2>
                     <div className="listContainer">
                         <ol>
                             {teamPointsAgainst.map((team, index) => {
@@ -922,14 +986,20 @@ export default function PublicPage() {
             <footer>
                 <div>
                     <p>
-                        &copy; Copyright {new Date().getFullYear()} Ogres 1.
-                        vidusskola
+                        &copy; Copyright {new Date().getFullYear()} Gandrīz NBA
+                        &{" "}
+                        {tournament
+                            ? tournament.organizer
+                            : lang
+                            ? "Loading..."
+                            : "Lādējās..."}
                     </p>
                     <p>All rights reserved.</p>
                     <p>Visas tiesības aizsargātas.</p>
                 </div>
                 <p>
-                    Izveidots izmantojot <Link to="/">Gandrīz NBA</Link>
+                    {lang ? "Created using" : "Izveidots izmantojot"}{" "}
+                    <Link to="/">Gandrīz NBA</Link>
                 </p>
             </footer>
             <div className="playersOverlay" id="playersOverlay">
@@ -945,7 +1015,7 @@ export default function PublicPage() {
                     ></i>
                     <h2>{tempPlayers.teamName}</h2>
                     <p>
-                        <b>Spēlētāji</b>
+                        <b>{lang ? "Players" : "Spēlētāji"}</b>
                     </p>
                     <div className="cardCont">
                         {tempPlayers.players.map((player, index) => {
@@ -953,10 +1023,12 @@ export default function PublicPage() {
                                 <div className="playerCard" key={index}>
                                     <h2>{player.number}</h2>
                                     <p>
-                                        Punkti: <b>{player.points}</b>
+                                        {lang ? "Points" : "Punkti"}:{" "}
+                                        <b>{player.points}</b>
                                     </p>
                                     <p>
-                                        Bloki: <b>{player.blocks}</b>
+                                        {lang ? "Blocks" : "Bloki"}:{" "}
+                                        <b>{player.blocks}</b>
                                     </p>
                                     <h3>
                                         {player.firstname}{" "}

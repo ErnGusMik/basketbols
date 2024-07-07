@@ -8,7 +8,14 @@
 
 html {
     scroll-behavior: smooth;
+}
 
+.changeLang {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-family: 'Font Awesome 5 Free';
+    cursor: pointer;
 }
 
 .publicPage__cont i {

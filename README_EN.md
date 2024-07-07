@@ -8,12 +8,12 @@ A platform for creating and managing basketball tournaments.
 
 | Job                         | Status                 |
 | --------------------------- | ---------------------- |
-| Server, database            | 🧪 Testing             |
+| Server, database            | ✔️ Finished            |
 | 'New tournament' page, auth | ✔️ Finished            |
 | Games, tournament pages     | ✔️ Finished            |
 | After-game analysis         | ✔️ Finished            |
-| 'Public' functions          | 🟢 In process          |
-| Testing, finalizing         | 🟡 Not begun           |
+| 'Public' functions          | ✔️ Finished            |
+| Testing, finalizing         | ✔️ Finished            |
 
 Possible statuses:
 

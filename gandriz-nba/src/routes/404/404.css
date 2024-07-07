@@ -19,10 +19,12 @@
     align-items: center;
     margin: 20px;
     font-weight: 900;
+    user-select: none;
 }
 
 .notFound img {
     height: 200px;
+    user-select: none;
 }
 
 .notFound h2 {
