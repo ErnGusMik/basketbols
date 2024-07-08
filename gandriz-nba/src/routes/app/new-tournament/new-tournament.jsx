@@ -22,7 +22,7 @@ export default function NewTournament() {
   };
 
   // create ref
-  const topRef = React.useRef()
+  const topRef = React.useRef();
 
   // set most states
   const [teamNum, setTeamNum] = React.useState(0);
@@ -34,17 +34,24 @@ export default function NewTournament() {
   const [lang, setLang] = React.useState(Boolean(localStorage.getItem("lang")));
 
   // set page title
-  document.title = lang ? 'New tournament | Gandrīz NBA' : "Jauns turnīrs | Gandrīz NBA";
+  document.title = lang
+    ? "New tournament | Gandrīz NBA"
+    : "Jauns turnīrs | Gandrīz NBA";
   // handle change of team number (on change)
   const teamNumChnage = (e) => {
     setTeamNum(e.target.value);
     setFinalsNumValue(0);
-    setSelectedGroup(0)
+    setSelectedGroup(0);
   };
   // handle change of group number (on change)
   const groupNumChange = (e) => {
     const allowedFinals = [16, 8, 4, 2];
-    const allowedSub = [lang ? 'Rnd of 16' : "Astotdaļ.", lang ? 'Quarterf.' : "Ceturtdaļ.", lang ? 'Semi-finals' : "Pusfināli", lang ? 'Final' : "Fināls"];
+    const allowedSub = [
+      lang ? "Rnd of 16" : "Astotdaļ.",
+      lang ? "Quarterf." : "Ceturtdaļ.",
+      lang ? "Semi-finals" : "Pusfināli",
+      lang ? "Final" : "Fināls",
+    ];
     const selectedGroup = e.target.value;
     if (selectedGroup === "NaN" || selectedGroup === "Infinity") {
       setSelectedGroup(0);
@@ -103,17 +110,20 @@ export default function NewTournament() {
       return;
     }
     document.getElementById("submit-page1").disabled = true;
-    const request = await fetch("https://basketbols.onrender.com/" + obj.pageName, {
-      method: "GET",
-    });
+    const request = await fetch(
+      "https://basketbols.onrender.com/" + obj.pageName,
+      {
+        method: "GET",
+      },
+    );
     const response = await request.json();
     if (response.result) {
-      setPageError(lang ? 'exists!' : "eksistē!");
+      setPageError(lang ? "exists!" : "eksistē!");
       document.getElementById("submit-page1").disabled = false;
       topRef.current.scrollTo(0, 0);
       return;
     } else if (obj.pageName.includes(" ") || obj.pageName.includes(".")) {
-      setPageError(lang ? 'is not valid!' : "ir nederīgs!");
+      setPageError(lang ? "is not valid!" : "ir nederīgs!");
       document.getElementById("submit-page1").disabled = false;
       topRef.current.scrollTo(0, 0);
       return;
@@ -126,7 +136,7 @@ export default function NewTournament() {
     reader.onloadend = async function (e) {
       localStorage.setItem("tournament", JSON.stringify(obj));
       localStorage.setItem("tournamentLogo", reader.result);
-      localStorage.removeItem('teams')
+      localStorage.removeItem("teams");
       setNavigate(true);
     };
     return;
@@ -145,14 +155,22 @@ export default function NewTournament() {
         <div className="horizontalCont">
           <div className="flexCol">
             <TextInput
-              label={lang ? 'Tournament name' : "Turnīra nosaukums"}
-              placeholder={lang ? 'School tournament ' + new Date().getFullYear() : "Skolas čempis " + new Date().getFullYear()}
+              label={lang ? "Tournament name" : "Turnīra nosaukums"}
+              placeholder={
+                lang
+                  ? "School tournament " + new Date().getFullYear()
+                  : "Skolas čempis " + new Date().getFullYear()
+              }
               inputID="name"
               required={true}
             />
             <TextInput
-              label={lang ? 'Tournament website' : "Turnīra lapas nosaukums"}
-              placeholder={lang ? 'schooltournament' + new Date().getFullYear() : "skolascempis" + new Date().getFullYear()}
+              label={lang ? "Tournament website" : "Turnīra lapas nosaukums"}
+              placeholder={
+                lang
+                  ? "schooltournament" + new Date().getFullYear()
+                  : "skolascempis" + new Date().getFullYear()
+              }
               inputID="pageName"
               notes="www.erngusmik.github.io/"
               notesValue={true}
@@ -160,54 +178,86 @@ export default function NewTournament() {
               error={pageError}
             />
             <Textarea
-              label={lang ? 'Tournament description' : "Turnīra apraksts"}
-              placeholder={lang ? 'Riga state gymnasium No3\'s ' + new Date().getFullYear() + ' basketball tournament for grades 7-12.' : "Ogres 1. Vidusskolas " + new Date().getFullYear() + ". gada basketbola čempionāts, kurā piedalās 7-12 klases."}
+              label={lang ? "Tournament description" : "Turnīra apraksts"}
+              placeholder={
+                lang
+                  ? "Riga state gymnasium No3's " +
+                    new Date().getFullYear() +
+                    " basketball tournament for grades 7-12."
+                  : "Ogres 1. Vidusskolas " +
+                    new Date().getFullYear() +
+                    ". gada basketbola čempionāts, kurā piedalās 7-12 klases."
+              }
               inputID="description"
               required={true}
             />
             <TextInput
-              label={lang ? 'Tournament organizer(s)' : "Turnīra organizators(i)"}
-              placeholder={lang ? 'Riga state gymnasium No3' : "Ogres 1. vidusskola"}
+              label={
+                lang ? "Tournament organizer(s)" : "Turnīra organizators(i)"
+              }
+              placeholder={
+                lang ? "Riga state gymnasium No3" : "Ogres 1. vidusskola"
+              }
               inputID="organizer"
               required={true}
             />
             <TextInput
-              label={lang ? 'Tournament location' : "Norises vieta"}
-              placeholder={lang ? 'Riga' : "Ogre"}
+              label={lang ? "Tournament location" : "Norises vieta"}
+              placeholder={lang ? "Riga" : "Ogre"}
               inputID="location"
               required={true}
             />
           </div>
           <div className="flexCol">
             <FileInput
-              label={lang ? 'Tournament logo' : "Turnīra logo"}
+              label={lang ? "Tournament logo" : "Turnīra logo"}
               inputID="logo"
               notes="300 px x 300 px"
               notes2="Max. 2 MB"
             />
             <TextInput
-              label={lang ? 'Team count' : "Komandu skaits"}
+              label={lang ? "Team count" : "Komandu skaits"}
               inputID="teamNum"
               placeholder="32"
-              notes={lang ? 'The team count must be an even number!' : "Komandu skaitam ir jābūt pāra skaitlim!"}
+              notes={
+                lang
+                  ? "The team count must be an even number!"
+                  : "Komandu skaitam ir jābūt pāra skaitlim!"
+              }
               onChange={teamNumChnage}
               required={true}
             />
             <RadioInput
-              label={lang ? 'Group count' : "Grupu skaits"}
-              labelSub={lang ? 'Every team will play with every other team in their group' : "Katra komanda spēlēs ar visām pārējām savā grupā."}
+              label={lang ? "Group count" : "Grupu skaits"}
+              labelSub={
+                lang
+                  ? "Every team will play with every other team in their group"
+                  : "Katra komanda spēlēs ar visām pārējām savā grupā."
+              }
               inputID="groupNum"
               value={groupNum.slice(0, 5)}
               valueSub={groupNumSub.slice(0, 5)}
-              error={lang ? 'The team count must be divisable by 2, 4, 16, 32, 64, or 128!' : "Komandu skaitam ir jādalās ar 2, 4, 16, 32, 64 vai 128!"}
+              error={
+                lang
+                  ? "The team count must be divisable by 2, 4, 16, 32, 64, or 128!"
+                  : "Komandu skaitam ir jādalās ar 2, 4, 16, 32, 64 vai 128!"
+              }
               onChange={groupNumChange}
               required={true}
             />
             <RadioInput
-              label={lang ? 'Playoffs' : "Izslēgšanas spēles"}
-              labelSub={lang ? 'How many teams get to play in the playoffs?' : "Cik komandas tiek izslēgšanas spēlēs?"}
+              label={lang ? "Playoffs" : "Izslēgšanas spēles"}
+              labelSub={
+                lang
+                  ? "How many teams get to play in the playoffs?"
+                  : "Cik komandas tiek izslēgšanas spēlēs?"
+              }
               inputID="finalsNum"
-              error={lang ? 'Choose a group count so that every group contains at least 2 teams!' : "Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"}
+              error={
+                lang
+                  ? "Choose a group count so that every group contains at least 2 teams!"
+                  : "Izvēlietes grupu skaitu lai katrā grupā būtu 2+ komandas!"
+              }
               value={finalsNum}
               valueSub={finalsSub}
               onChange={handleFinalsNum}
@@ -216,14 +266,19 @@ export default function NewTournament() {
             <div className="submitContainer">
               <div>
                 <p>
-                  {lang ? 'Every team will contain' : 'Katrā grupā spēlēs'}{" "}
+                  {lang ? "Every team will contain" : "Katrā grupā spēlēs"}{" "}
                   <b>
                     {teamNum && selectedGroup ? teamNum / selectedGroup : 0}
                   </b>{" "}
-                  {lang ? 'teams' : 'komandas'}.
+                  {lang ? "teams" : "komandas"}.
                 </p>
                 <p>
-                  {lang ? 'Every group\'s' : 'Katras grupas'} <b>{finalsNumValue}</b> {lang ? 'best teams will get to play in the playoffs' : 'labākās komandas spēlēs izslēgšanas spēlēs'}.
+                  {lang ? "Every group's" : "Katras grupas"}{" "}
+                  <b>{finalsNumValue}</b>{" "}
+                  {lang
+                    ? "best teams will get to play in the playoffs"
+                    : "labākās komandas spēlēs izslēgšanas spēlēs"}
+                  .
                 </p>
               </div>
               <SubmitInput inputID="submit-page1" />
