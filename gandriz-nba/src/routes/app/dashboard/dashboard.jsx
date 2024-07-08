@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
     const [tournaments, setTournaments] = React.useState([]);
     const [name, setName] = React.useState("lietotāj");
+    const [lang, setLang] = React.useState(Boolean(localStorage.getItem("lang")));
 
     // Function to decode JWTs
     const parseJwt = (token) => {
@@ -195,7 +196,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <h1>Sveiks, {name}! Uzspēlējam?</h1>
+            <h1>{lang ? 'Hi' : 'Sveiks'}, {name}! {lang ? 'Let\'s play!' : 'Uzspēlējam?'}</h1>
             {tournaments.map((tournament) => {
                 return (
                     <div className="component">
@@ -247,11 +248,11 @@ const Dashboard = () => {
                                         )}
                                     </p>
                                 </div>
-                                <p>Organizē {tournament.organizer}</p>
+                                <p>{lang ? 'Organized by' : 'Organizē'} {tournament.organizer}</p>
                             </div>
                         </div>
                         <div className="game">
-                            <h3>Nākamā spēle</h3>
+                            <h3>{lang ? 'Next match' : 'Nākamā spēle'}</h3>
                             <p>
                                 {tournament.nextGame
                                     ? tournament.nextGame.team1name
@@ -260,7 +261,7 @@ const Dashboard = () => {
                             <h4 style={{ textAlign: "center" }}>
                                 {tournament.nextGame
                                     ? "VS"
-                                    : "Visas spēles ir izspēlētas"}
+                                    : lang ? 'All matches have ended' : "Visas spēles ir izspēlētas"}
                             </h4>
                             <p>
                                 {tournament.nextGame
@@ -269,12 +270,12 @@ const Dashboard = () => {
                             </p>
                             {tournament.nextGame && (
                                 <Link to={'/app/game/' + tournament.nextGame.id + '/instructions'}>
-                                    <Button text="Sagatavot spēli" />
+                                    <Button text={lang ? 'Prepare match' : "Sagatavot spēli"} />
                                 </Link>
                             )}
                         </div>
                         <div className="game">
-                            <h3>Pēdējā spēle</h3>
+                            <h3>{lang ? 'Previous match' : 'Pēdējā spēle'}</h3>
                             <p>
                                 {tournament.lastGame
                                     ? tournament.lastGame.team1name
@@ -283,7 +284,7 @@ const Dashboard = () => {
                             <h4 style={{ textAlign: "center" }}>
                                 {tournament.lastGame
                                     ? "VS"
-                                    : "Neviena spēle vēl nav izspēlēta"}
+                                    : lang ? 'No match has been finished yet' : "Neviena spēle vēl nav izspēlēta"}
                             </h4>
                             <p>
                                 {tournament.lastGame
@@ -292,7 +293,7 @@ const Dashboard = () => {
                             </p>
                             {tournament.lastGame && (
                                 <Link to={'/app/game/' + tournament.lastGame.id + '/analysis'}>
-                                    <Button text="Spēles analīze" />
+                                    <Button text={lang ? 'Match analysis' : "Spēles analīze"} />
                                 </Link>
                             )}
                         </div>
@@ -302,7 +303,7 @@ const Dashboard = () => {
             <div className="newTournamentBtn">
                 <Link to="/app/tournaments/new">
                     <Button
-                        text="Jauns turnīrs"
+                        text={lang ? 'New tournament' : "Jauns turnīrs"}
                         icon={
                             <i
                                 className="fa-solid fa-plus"
