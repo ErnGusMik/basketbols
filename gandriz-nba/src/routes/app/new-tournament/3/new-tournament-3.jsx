@@ -180,7 +180,7 @@ export default function NewTournament3() {
               content={tableContent}
             />
             <p>
-              {lang ? 'Choose, which referees will be able to judge playoff games' : 'Izvēlies kuri tiesneši drīkstēs tiesāt izslēgšanas spēles'}.
+              {lang ? 'Choose, which referees will be able to try playoff games' : 'Izvēlies kuri tiesneši drīkstēs tiesāt izslēgšanas spēles'}.
               <br />
               <br />
               {lang ? 'If you don\'t choose any, they will be automatically assigned' : 'Ja neizvēlēsies nevienu, tie tiks automātiski salikti'}.
@@ -195,14 +195,14 @@ export default function NewTournament3() {
             <div>
               <h2>{data.name ? data.name : ""}</h2>
               <p>
-                {data.groupNum ? data.groupNum : "0"} grupas,{" "}
-                {data.teamNum ? data.teamNum : "0"} komandas
+                {data.groupNum ? data.groupNum : "0"} {lang ? 'groups' : 'grupas'},{" "}
+                {data.teamNum ? data.teamNum : "0"} {lang ? 'teams' : 'komandas'}
               </p>
               <p>{data.finalsNum ? data.finalsNum : ""}</p>
             </div>
             <div className="refereeNum__container">
               <RadioInput
-                label="Tiesnešu # kas tiesās vienu spēli"
+                label={lang ? '# of referres that will try a game' : "Tiesnešu # kas tiesās vienu spēli"}
                 inputID="refereeNum"
                 value={["2", "3", "4"]}
                 centered={true}
@@ -213,8 +213,8 @@ export default function NewTournament3() {
           </div>
           <div className="submitCont">
             <SubmitInput
-              value="Turpināt"
-              backValue="Atpakaļ"
+              value={lang ? 'Continue' : "Turpināt"}
+              backValue={lang ? 'Back' : "Atpakaļ"}
               inputID="continueFrom3"
               backInputID="backFrom3"
               includeBack={true}
@@ -236,10 +236,10 @@ export default function NewTournament3() {
                     navigate("/app/tournaments/new/4");
                     return;
                   }
-                  setRefereeNumError("Pievieno pitiekamo tiesnešu skaitu!");
+                  setRefereeNumError(lang ? 'Add enough referees!' : "Pievieno pietiekamo tiesnešu skaitu!");
                   return;
                 }
-                setRefereeNumError("Izvēlies tiesnešu skaitu!");
+                setRefereeNumError(lang ? 'Choose a referee count!' : "Izvēlies tiesnešu skaitu!");
               }}
             />
           </div>
@@ -252,26 +252,26 @@ export default function NewTournament3() {
           id="addRefereeForm"
           onSubmit={submitReferee}
         >
-          <h1>Pievienot tiesnesi</h1>
+          <h1>{lang ? 'Add referee' : 'Pievienot tiesnesi'}</h1>
           <TextInput
-            label="Tiesneša pilnais vārds"
-            placeholder="Gatis Saliņš"
+            label={lang ? 'Referee\'s full name' : "Tiesneša pilnais vārds"}
+            placeholder={lang ? 'John  Doe' : "Gatis Saliņš"}
             required={true}
             inputID="refereeName"
             error={refereeNameError}
           />
           <RadioInput
             inputID="refereePlayoffs"
-            label="Vai tiesnesim atļauts tiesāt izslēgšanas spēles?"
-            labelSub="Tiesnešiem tiks automātiski iedalītas spēles, ko tiesāt"
-            value={["Jā", "Nē"]}
+            label={lang ? 'Is the referee permitted to try playoff games?' : "Vai tiesnesim atļauts tiesāt izslēgšanas spēles?"}
+            labelSub={lang ? 'Referees will be assigned to games automatically' : "Tiesnešiem tiks automātiski iedalītas spēles, ko tiesāt"}
+            value={[lang ? 'Yes' : "Jā", lang ? 'No' : "Nē"]}
             required={true}
             error={refereePlayoffsError}
           />
           <div className="teamSubmitCont">
             <SubmitInput
-              value="Pievienot"
-              backValue="Atcelt"
+              value={lang ? 'Add' : "Pievienot"}
+              backValue={lang ? 'Cancel' : "Atcelt"}
               inputID="addRefereeSubmit"
               backInputID="addRefereeCancel"
               includeBack={true}

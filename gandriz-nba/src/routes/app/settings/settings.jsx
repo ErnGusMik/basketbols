@@ -13,18 +13,21 @@ const Settings = () => {
         localStorage.clear();
         navigate('/login');
     }
+
+    const [lang, setLang] = React.useState(Boolean(localStorage.getItem('lang')));
+
     return (
         <div className="settingsCont">
             <div className="setting">
-                <div className="disabledOverlay">Būs pieejams drīzumā!</div>
-                <h2>Tumšais režīms</h2>
+                <div className="disabledOverlay">{lang ? 'Coming soon!' : 'Būs pieejams drīzumā!'}</div>
+                <h2>{lang ? 'Dark mode' : 'Tumšais režīms'}</h2>
                 <label class="switch">
                     <input type="checkbox" />
                     <span class="slider"></span>
                 </label>
             </div>
             <div className="logoutCont">
-                <Button text="Atslēgties" onClick={logout} />
+                <Button text={lang ? 'Log out' : "Atslēgties"} onClick={logout} />
             </div>
         </div>
     );

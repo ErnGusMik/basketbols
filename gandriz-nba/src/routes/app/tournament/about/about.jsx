@@ -1,8 +1,7 @@
 // ! KEEP IN MIND: Server sends UTC date & time values. Convert to local time before displaying to user (new Date(*server data*))
-
 import React from "react";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 import MainImage from "../../../../components/tournament-pages/main-image/main-image";
 import Button from "../../../../components/button/button";
@@ -19,11 +18,13 @@ export default function AboutTournament() {
   const [games, setGames] = React.useState({});
   const [teams, setTeams] = React.useState([]);
 
+  const [lang, setLang] = React.useState(Boolean(localStorage.getItem("lang")));
+
   // Set vars
   const params = useParams();
   document.title = tournament.name
     ? tournament.name + " | Gandrīz NBA"
-    : "Lādējās" + " | Gandrīz NBA";
+    : (lang ? 'Loading' : "Lādējās") + " | Gandrīz NBA";
   const navigate = useNavigate();
 
   // Get tournament data
@@ -265,11 +266,11 @@ export default function AboutTournament() {
     if ((game && !games.nextGame) || (!game && !games.lastGame))
       return (
         <div className="gameCard">
-          <h3 className="title">{game ? "Nākamā" : "Pēdējā"} spēle</h3>
+          <h3 className="title">{game ? (lang ? 'Next' : "Nākamā") : (lang ? 'Previous' : "Pēdējā")} {lang ? 'match' : 'spēle'}</h3>
           <h2 className="noGame">
             {game
-              ? "Visas spēles jau ir izspēlētas"
-              : "Neviena spēle vēl nav izspēlēta"}
+              ? (lang ? 'All matches have been played' : "Visas spēles jau ir izspēlētas")
+              : (lang ? 'No match has begun yet' : "Neviena spēle vēl nav izspēlēta")}
           </h2>
         </div>
       );
@@ -292,7 +293,7 @@ export default function AboutTournament() {
     } else {
       return (
         <div className="gameCard">
-          <h3 className="title">{game ? "Nākamā" : "Pēdējā"} spēle</h3>
+          <h3 className="title">{game ? (lang ? 'Next' : "Nākamā") : (lang ? 'Previous' : "Pēdējā")} {lang ? 'match' : 'spēle'}</h3>
           <h2 className="noGame">{"Lādējās..."}</h2>
         </div>
       );
@@ -306,7 +307,7 @@ export default function AboutTournament() {
     // Return game card
     return (
       <div className={game ? "gameCard" : "gameCard lastGame"}>
-        <h3 className="title">{game ? "Nākamā" : "Pēdējā"} spēle</h3>
+        <h3 className="title">{game ? (lang ? 'Next' : "Nākamā") : (lang ? 'Previous' : "Pēdējā")} {lang ? 'match' : 'spēle'}</h3>
         <div className="teamInfo">
           <div className="team">
             <img src={logoImg} alt="Team 1 logo" className="teamLogo" />
@@ -322,7 +323,7 @@ export default function AboutTournament() {
         </div>
         <div className="gameData">
           <p>
-            <b>{group}</b> grupa
+            <b>{group}</b> {lang ? 'group' : 'grupa'}
           </p>
           <p>
             {/* Set date to correct format */}
@@ -353,7 +354,7 @@ export default function AboutTournament() {
         </div>
         <div className="buttonDiv">
           <Button
-            text={game ? "Sagatavot spēli" : "Spēles analīze"}
+            text={game ? (lang ? 'Prepare game' : "Sagatavot spēli") : (lang ? 'Game analysis' : "Spēles analīze")}
             onClick={() => {
               game
                 ? navigate("/app/game/" + games.nextGame.id + "/instructions")
@@ -376,7 +377,7 @@ export default function AboutTournament() {
             <p className="locationText">{tournament.location}</p>
           </div>
           <p className="organizer">
-            Organizē <b className="organizerName">{tournament.organizer}</b>
+            {lang ? 'Organised by' : 'Organizē'} <b className="organizerName">{tournament.organizer}</b>
           </p>
         </div>
       </div>
@@ -386,7 +387,7 @@ export default function AboutTournament() {
 
         <div className="refTable">
           <Table
-            cols={["Vārds", "Izslēgšanas spēles"]}
+            cols={[lang ? 'Name' : "Vārds", lang ? 'Playoffs' : "Izslēgšanas spēles"]}
             content={[...setRefereeTable()]}
             id="refTable"
           />
@@ -398,17 +399,17 @@ export default function AboutTournament() {
 
         <div className="rulesCont">
           <p>
-            Turnīrs notiek pēc oficiāliem FIBA apstiprinātiem noteikumiem, kurus
-            var apskatīt{" "}
-            <a
-              href="https://www.fiba.basketball/documents/official-basketball-rules/current.pdf"
+            {lang ? 'Thou tournament is taking place according to official basketball rules approved by FIBA, which can be viewed ' : 'Turnīrs notiek pēc oficiāliem FIBA apstiprinātiem noteikumiem, kurus var apskatīt '}
+            <Link
+              to="https://www.fiba.basketball/documents/official-basketball-rules/current.pdf"
               target="_blank"
               rel="noreferrer"
             >
-              šeit
-            </a>
+              {lang ? 'here' : 'šeit'}
+            </Link>
             .
           </p>
+          <p>{lang ? 'Public page: ' : 'Publiskā lapa: '} <Link to={'/' + tournament.pagename}>erngusmik.github.io/{tournament.pagename}</Link></p>
           <div className="dates">
             <i className="fa-regular fa-calendar fa-lg" />
             <p>{tournament.dates}</p>
