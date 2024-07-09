@@ -11,8 +11,9 @@ import { useNavigate } from "react-router-dom";
 import logoImg from "../../../../main.jpg";
 
 export default function NewTournament3() {
+  const [lang, setLang] = React.useState(Boolean(localStorage.getItem("lang")));
   // Set title & required vars
-  document.title = "Solis 3 | Jauns turnīrs | Gandrīz NBA";
+  document.title = lang ? 'Step 3 | New tournament | Gandriz NBA' : "Solis 3 | Jauns turnīrs | Gandrīz NBA";
   const navigate = useNavigate();
 
   // Set states
@@ -43,16 +44,16 @@ export default function NewTournament3() {
 
     switch (parsedData.finalsNum) {
       case "16":
-        parsedData.finalsNum = "Astotdaļfināli";
+        parsedData.finalsNum = lang ? 'Round of 16' : "Astotdaļfināli";
         break;
       case "8":
-        parsedData.finalsNum = "Ceturtdaļfināli";
+        parsedData.finalsNum = lang ? 'Quarterfinals' : "Ceturtdaļfināli";
         break;
       case "4":
-        parsedData.finalsNum = "Pusfināli";
+        parsedData.finalsNum = lang ? 'Semi-finals' : "Pusfināli";
         break;
       case "2":
-        parsedData.finalsNum = "Fināls";
+        parsedData.finalsNum = lang ? 'Final' : "Fināls";
         break;
       default:
         parsedData.finalsNum = 0;
@@ -117,7 +118,7 @@ export default function NewTournament3() {
         }
       });
       if (nameIncluded) {
-        setRefereeNameError(" ir jau pievienots!");
+        setRefereeNameError(lang ? 'is already added!' : " ir jau pievienots!");
         return;
       }
       savedData.push([refereeName, refereePlayoffs]);
@@ -168,21 +169,21 @@ export default function NewTournament3() {
         <div className="flexCont">
           <Progress progress={3} />
           <Button
-            text="Pievienot tiesnesi"
+            text={lang ? 'Add a referee' : "Pievienot tiesnesi"}
             icon={<i className="fa-solid fa-plus" />}
             onClick={addReferee}
           />
           <div className="table__container">
             <Table
-              cols={["Vārds", "Izslēgšanas spēles"]}
+              cols={[lang ? 'Name' : "Vārds", lang ? 'Playoffs' : "Izslēgšanas spēles"]}
               setColWidth="300px"
               content={tableContent}
             />
             <p>
-              Izvēlies kuri tiesneši drīkstēs tiesāt izslēgšanas spēles.
+              {lang ? 'Choose, which referees will be able to judge playoff games' : 'Izvēlies kuri tiesneši drīkstēs tiesāt izslēgšanas spēles'}.
               <br />
               <br />
-              Ja neizvēlēsies nevienu, tie tiks automātiski salikti.
+              {lang ? 'If you don\'t choose any, they will be automatically assigned' : 'Ja neizvēlēsies nevienu, tie tiks automātiski salikti'}.
             </p>
           </div>
         </div>

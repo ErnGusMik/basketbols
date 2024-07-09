@@ -12,8 +12,10 @@ import TextInput from "../../../../components/text-input/input";
 import logoImg from "./../../../../main.jpg";
 
 export default function NewTournament2() {
-  const cols = ["Nosaukums", "Spēlētāji"];
-  document.title = "Solis 2 | Jauns turnīrs | Gandriz NBA";
+  const [lang, setLang] = React.useState(Boolean(localStorage.getItem("lang")));
+
+  const cols = [lang ? 'Name' : "Nosaukums", lang ? 'Players' : "Spēlētāji"];
+  document.title = lang ? 'Step 2 | New tournament | Gandriz NBA' : "Solis 2 | Jauns turnīrs | Gandriz NBA";
   const navigate = useNavigate();
 
   const [teamNum, setTeamNum] = React.useState(0);
@@ -59,7 +61,7 @@ export default function NewTournament2() {
     const logo = localStorage.getItem("tournamentLogo");
 
     if (!unparsedData) {
-      alert("Kaut kas nogāja greizi! (404 nav datu)");
+      alert(lang ? 'Something went wrong! (404 no data)' : "Kaut kas nogāja greizi! (404 nav datu)");
       navigate("/app/tournaments/new");
       return [null, null];
     }
@@ -80,16 +82,16 @@ export default function NewTournament2() {
     setName(data.name);
     switch (data.finalsNum) {
       case "16":
-        setFinals("Astotdaļfināli");
+        setFinals(lang ? 'Round of 16' : "Astotdaļfināli");
         break;
       case "8":
-        setFinals("Ceturtdaļfināli");
+        setFinals(lang ? 'Quarterfinals' : "Ceturtdaļfināli");
         break;
       case "4":
-        setFinals("Pusfināli");
+        setFinals(lang ? 'Semi-finals' : "Pusfināli");
         break;
       case "2":
-        setFinals("Fināls");
+        setFinals(lang ? 'Final' : "Fināls");
         break;
       default:
         setFinals(0);
@@ -103,14 +105,14 @@ export default function NewTournament2() {
   }, []);
 
   const inputName = (
-    <input placeholder="Vārds" type="text" defaultValue="" name="firstName" />
+    <input placeholder={lang ? 'Name' : "Vārds"} type="text" defaultValue="" name="firstName" />
   );
   const inputSurname = (
-    <input placeholder="Uzvārds" type="text" name="surname" defaultValue="" />
+    <input placeholder={lang ? 'Surname' : "Uzvārds"} type="text" name="surname" defaultValue="" />
   );
   const inputNumber = (
     <input
-      placeholder="Nr."
+      placeholder={lang ? 'No.' : "Nr."}
       type="number"
       min="0"
       name="number"
@@ -187,13 +189,13 @@ export default function NewTournament2() {
 
     // Check if all inputs are filled
     if (!teamName) {
-      setTeamNameError("nedrīkst būt tukšs!");
+      setTeamNameError(lang ? 'can\'t be empty!' : "nedrīkst būt tukšs!");
       return;
     } else {
       setTeamNameError(false);
     }
     if (!headCoach) {
-      setHeadCoachError("nedrīkst būt tukšs!");
+      setHeadCoachError(lang ? 'can\'t be empty!' : "nedrīkst būt tukšs!");
       return;
     } else {
       setHeadCoachError(false);
@@ -206,7 +208,7 @@ export default function NewTournament2() {
         !players[i][1] ||
         (!players[i][2] && players[i][2])
       ) {
-        setTableError("Katrai komandai vajag vismaz 5 spēlētājus!");
+        setTableError(lang ? 'Every team needs at least 5 players!' : "Katrai komandai vajag vismaz 5 spēlētājus!");
         error = true;
         break;
       }
@@ -214,12 +216,12 @@ export default function NewTournament2() {
 
     for (let i = 0; i < players.length; i++) {
       if (!Number.isInteger(players[i][2]) && players[i][2]) {
-        setTableError("Spēlētāja numuriem jābūt veseliem skaitļiem!");
+        setTableError(lang ? 'Player numbers must be integers!' : "Spēlētāja numuriem jābūt veseliem skaitļiem!");
         error = true;
         break;
       }
       if (numbers.includes(players[i][2]) && players[i][2]) {
-        setTableError("Spēlētāju numuri nedrīkst būt vienādi!");
+        setTableError(lang ? 'Player numbers must be unique!' : "Spēlētāju numuri nedrīkst būt vienādi!");
         error = true;
         break;
       } else {
@@ -328,19 +330,19 @@ export default function NewTournament2() {
                 team[2].map((player) => {
                   return [
                     <input
-                      placeholder="Vārds"
+                      placeholder={lang ? 'Name' : "Vārds"}
                       type="text"
                       defaultValue={player[0]}
                       name="firstName"
                     />,
                     <input
-                      placeholder="Uzvārds"
+                      placeholder={lang ? 'Surname' : "Uzvārds"}
                       type="text"
                       defaultValue={player[1]}
                       name="surname"
                     />,
                     <input
-                      placeholder="Nr."
+                      placeholder={lang ? 'No.' : "Nr."}
                       type="number"
                       min="0"
                       defaultValue={player[2]}
@@ -366,13 +368,13 @@ export default function NewTournament2() {
         <div className="flexCont">
           <Progress progress={2} />
           <Button
-            text="Pievienot komandu"
+            text={lang ? 'Add team' : "Pievienot komandu"}
             icon={<i className="fa-solid fa-plus" />}
             onClick={addTeam}
             disabled={addedTeamNum >= teamNum}
           />
           <p className="teamNum">
-            Komandas{" "}
+            {lang ? 'Teams:' : 'Komandas'}{" "}
             <b>
               {addedTeamNum}/{teamNum}
             </b>
@@ -381,7 +383,7 @@ export default function NewTournament2() {
             {groupNum.map((group, index) => {
               return (
                 <a href={`#${group}`} className="groupLink">
-                  <b>{group}</b> grupa
+                  <b>{group}</b> {lang ? 'group' : 'grupa'}
                 </a>
               );
             })}
@@ -390,7 +392,7 @@ export default function NewTournament2() {
             return (
               <div className="tableGroup" id={group}>
                 <p className="tableLabel">
-                  <b>{group}</b> grupa
+                  <b>{group}</b> {lang ? 'group' : 'grupa'}
                 </p>
                 <Table
                   cols={cols}
@@ -413,15 +415,15 @@ export default function NewTournament2() {
             <div>
               <h2>{name}</h2>
               <p>
-                {groupNum.length} grupas, {teamNum} komandas
+                {groupNum.length} {lang ? 'groups' : 'grupas'}, {teamNum} {lang ? 'teams' : 'komandas'}
               </p>
               <p>{finals ? finals : ""}</p>
             </div>
           </div>
           <div className="submitCont">
             <SubmitInput
-              value="Turpināt"
-              backValue="Atpakaļ"
+              value={lang ? 'Continue' : "Turpināt"}
+              backValue={lang ? 'Back' : "Atpakaļ"}
               inputID="continueFrom2"
               backInputID="backFrom2"
               includeBack={true}
@@ -439,30 +441,30 @@ export default function NewTournament2() {
       <div className="overlay" id="overlay" />
       <div className="addTeam" id="addTeam">
         <form className="addTeamForm" onSubmit={submitTeam} id="addTeamForm">
-          <h1>Pievienot komandu</h1>
+          <h1>{lang ? 'Add team' : 'Pievienot komandu'}</h1>
           <TextInput
-            label="Komandas nosaukums"
-            placeholder="Čempionu komanda!"
+            label={lang ? 'Team name' : "Komandas nosaukums"}
+            placeholder={lang ? 'The Tigers' : "Čempionu komanda!"}
             required={true}
             inputID="teamName"
             error={teamNameError}
           />
           <Table
-            cols={["Vārds", "Uzvārds", "Nr."]}
+            cols={[lang ? 'Name' : "Vārds", lang ? 'Surname' : "Uzvārds", lang ? 'No.' : "Nr."]}
             content={playerNum}
             setColWidth="150px"
             id="addTeamTable"
           />
           <div className="buttonCont">
             <Button
-              text="Pievienot rindu"
+              text={lang ? 'Add row' : "Pievienot rindu"}
               icon={<i className="fa-solid fa-plus" />}
               onClick={addPlayer}
             />
             <p className="tableError">{tableError}</p>
           </div>
           <TextInput
-            placeholder="Luka Banki"
+            placeholder={lang ? 'Steve Kerr' : "Luka Banki"}
             label="Galvenais treneris"
             required={true}
             inputID="headCoach"
@@ -470,8 +472,8 @@ export default function NewTournament2() {
           />
           <div className="teamSubmitCont">
             <SubmitInput
-              value="Pievienot"
-              backValue="Atcelt"
+              value={lang ? 'Add' : "Pievienot"}
+              backValue={lang ? 'Cancel' : "Atcelt"}
               inputID="addTeamSubmit"
               backInputID="addTeamCancel"
               includeBack={true}
