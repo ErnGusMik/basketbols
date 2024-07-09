@@ -6,7 +6,23 @@ import "./instructions.css";
 export default function Instructions() {
     const { id } = useParams();
     const navigate = useNavigate();
-    document.title = "Kā skaitīt spēles statistiku? | Gandrīz NBA";
+    const [lang, setLang] = React.useState(
+        Boolean(localStorage.getItem("lang"))
+    );
+
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    }, []);
+
+    document.title = lang ? 'How to count game stats? | GandrizNBA' : "Kā skaitīt spēles statistiku? | Gandrīz NBA";
 
     // Redirect to the correct instructions page based on the device
     React.useEffect(() => {
@@ -20,13 +36,17 @@ export default function Instructions() {
 
     // Check if game exists
     const getGame = async () => {
-        const request = await fetch("https://basketbols.onrender.com/api/games/" + id, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
-            },
-        });
+        const request = await fetch(
+            "https://basketbols.onrender.com/api/games/" + id,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer " + localStorage.getItem("access_token"),
+                },
+            }
+        );
 
         const response = await request.json();
         if (response.error || !response[0]) {
@@ -37,7 +57,7 @@ export default function Instructions() {
     // Show navigation tabs
     return (
         <div className="instructions">
-            <h1>Kā skaitīt spēles statistiku?</h1>
+            <h1>{lang ? 'How to count game stats?' : 'Kā skaitīt spēles statistiku?'}</h1>
             <div className="tabSelector">
                 <div>
                     <NavLink
@@ -45,7 +65,7 @@ export default function Instructions() {
                         relative="path"
                         className="tabSelector_1"
                     >
-                        Klavietūra
+                        {lang ? 'Keyboard' : 'Klavietūra'}
                     </NavLink>
                 </div>
                 <div>
@@ -54,7 +74,7 @@ export default function Instructions() {
                         relative="path"
                         className="tabSelector_2"
                     >
-                        Pele
+                        {lang ? 'Mouse' : 'Pele'}
                     </NavLink>
                 </div>
             </div>

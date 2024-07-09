@@ -14,6 +14,10 @@ export default function Game() {
     const timer24s = useRef();
 
     // Set states
+    const [lang, setLang] = React.useState(
+        Boolean(localStorage.getItem("lang"))
+    );
+
     const [gameData, setGameData] = React.useState({
         team1points: 0,
         team2points: 0,
@@ -40,11 +44,11 @@ export default function Game() {
     const [disabled, setDisabled] = React.useState(true);
 
     const [team1, setTeam1] = React.useState({
-        name: "Lādējas...",
+        name: lang ? 'Loading...' : "Lādējas...",
     });
 
     const [team2, setTeam2] = React.useState({
-        name: "Lādējas...",
+        name: lang ? 'Loading...' : "Lādējas...",
     });
 
     const [start, setStart] = React.useState(false);
@@ -74,33 +78,48 @@ export default function Game() {
     // Set title
     document.title =
         team1.id && team2.id
-            ? `Spēle | ${team1.name} vs ${team2.name} | Gandrīz NBA`
-            : "Lādējam spēli | Gandrīz NBA";
+            ? `${lang ? 'Match' : 'Spēle'} | ${team1.name} vs ${team2.name} | Gandrīz NBA`
+            : (lang ? 'Match loading' : "Lādējam spēli") + " | Gandrīz NBA";
 
     // Set refs
     const playButton = useRef();
+
+    // Update lang on localStorage change
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    }, []);
 
     // Get game data from the server
     const getGame = async () => {
         const { id } = params;
         let request;
         try {
-            request = await fetch(`https://basketbols.onrender.com/api/games/${id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "access_token"
-                    )}`,
-                },
-            });
+            request = await fetch(
+                `https://basketbols.onrender.com/api/games/${id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                }
+            );
         } catch (error) {
             console.error("[CRITICAL] Failed to fetch game data from server.");
             console.log(error);
             setInstructions(
                 <p>
-                    Ir notikusi kļūda. Atsvaidzini lapu vai sazinies ar
-                    atbalstu.
+                    {lang ? 'An error has occured. Refresh the page or contact support.' : 'Ir notikusi kļūda. Atsvaidzini lapu vai sazinies ar atbalstu.'}
                 </p>
             );
             throw new Error("Failed to fetch game data from server.");
@@ -114,8 +133,8 @@ export default function Game() {
 
         setInstructions(
             <p>
-                Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied{" "}
-                <i className="fa-solid fa-play" /> vai atsarpes taustiņu.
+                {lang ? 'To start a 10s countdown until match start, click' : 'Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied'}{" "}
+                <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
             </p>
         );
 
@@ -193,9 +212,8 @@ export default function Game() {
                     setStart(false);
                     setInstructions(
                         <p>
-                            Lai sāktu 10s laika atskaiti līdz spēles sākumam,
-                            spied <i className="fa-solid fa-play" /> vai
-                            atsarpes taustiņu.
+                            {lang ? 'To start a 10s countdown until match start, click' : 'Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied'}{" "}
+                            <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
                         </p>
                     );
                 } else {
@@ -205,6 +223,12 @@ export default function Game() {
                             Spēle apturēta! Lai turpinātu spēli, spied{" "}
                             <i className="fa-solid fa-play" /> vai atsarpes
                             taustiņu.
+                        </p>
+                    );
+                    setInstructions(
+                        <p>
+                            {lang ? 'Match paused! To continue the match, click' : 'Spēle apturēta! Lai turpinātu spēli, spied'}{" "}
+                            <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
                         </p>
                     );
                 }
@@ -235,12 +259,11 @@ export default function Game() {
 
                 setInstructions(
                     <p>
-                        Spēle turpinās! Lai apturētu spēli, spied{" "}
-                        <i className="fa-solid fa-pause" /> vai atsarpes
-                        taustiņu. <i className="fa-solid fa-circle-xmark" /> -
-                        piezīme, <i className="fa-solid fa-shield" /> - bloks,{" "}
-                        <i className="fa-solid fa-hourglass-start" /> - 1min
-                        pārtraukums.
+                        {lang ? 'Match ongoing! To pause the match, click ' : 'Spēle turpinās! Lai apturētu spēli, spied '}
+                        <i className="fa-solid fa-pause" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu. '}
+                        <i className="fa-solid fa-circle-xmark" /> - {lang ? 'foul' : 'piezīme'},{" "}
+                        <i className="fa-solid fa-shield" /> - {lang ? 'block' : 'bloks'},{" "}
+                        <i className="fa-solid fa-hourglass-start" /> - {lang ? 'timeout' : '1 min pārtraukums'}.
                     </p>
                 );
             }
@@ -322,9 +345,8 @@ export default function Game() {
 
                 setInstructions(
                     <p>
-                        Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                        <i className="fa-solid fa-play" /> vai atsarpes
-                        taustiņu.
+                        {lang ? 'Match paused! To continue the match, click' : 'Spēle apturēta! Lai turpinātu spēli, spied'}{" "}
+                        <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
                     </p>
                 );
             } else {
@@ -349,12 +371,11 @@ export default function Game() {
 
                 setInstructions(
                     <p>
-                        Spēle turpinās! Lai apturētu spēli, spied{" "}
-                        <i className="fa-solid fa-pause" /> vai atsarpes
-                        taustiņu. <i className="fa-solid fa-circle-xmark" /> -
-                        piezīme, <i className="fa-solid fa-shield" /> - bloks,{" "}
-                        <i className="fa-solid fa-hourglass-start" /> - 1min
-                        pārtraukums.
+                        {lang ? 'Match ongoing! To pause the match, click ' : 'Spēle turpinās! Lai apturētu spēli, spied '}
+                        <i className="fa-solid fa-pause" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu. '}
+                        <i className="fa-solid fa-circle-xmark" /> - {lang ? 'foul' : 'piezīme'},{" "}
+                        <i className="fa-solid fa-shield" /> - {lang ? 'block' : 'bloks'},{" "}
+                        <i className="fa-solid fa-hourglass-start" /> - {lang ? 'timeout' : '1 min pārtraukums'}.
                     </p>
                 );
             }
@@ -469,7 +490,7 @@ export default function Game() {
     };
 
     // ! TIMER, RESIZE, LOGIN
-    // Check if user has access token
+    // Check if user has access token & init web workers
     React.useEffect(() => {
         if (!localStorage.getItem("access_token")) {
             navigate("/login");
@@ -542,8 +563,8 @@ export default function Game() {
             timer.current.postMessage("STOP");
             setInstructions(
                 <p>
-                    Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                    <i className="fa-solid fa-play" /> vai atsarpes taustiņu.
+                    {lang ? 'Match paused! To continue the match, click' : 'Spēle apturēta! Lai turpinātu spēli, spied'}{" "}
+                    <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
                 </p>
             );
             return;
@@ -553,7 +574,7 @@ export default function Game() {
             setInstructions(
                 <p>
                     <i className="fa-solid fa-triangle-exclamation" /> <br />
-                    Minūtes pārtraukums: {timeoutTime} sekundes
+                    {lang ? 'Timeout (1 min):' : 'Minūtes pārtraukums:'} {timeoutTime} {lang ? 'seconds' : 'sekundes'}
                 </p>
             );
         } else if (timeoutTime < 60) {
@@ -1349,6 +1370,7 @@ export default function Game() {
         <div className="game__container">
             <StartAnimation start={start} />
 
+            <i className="fa-solid fa-globe changeLang" />
             <div className="gameFlex__container">
                 <div className="flexCont team">
                     <h2>{team1.name}</h2>
