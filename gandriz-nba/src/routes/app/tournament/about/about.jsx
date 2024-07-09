@@ -24,7 +24,7 @@ export default function AboutTournament() {
   const params = useParams();
   document.title = tournament.name
     ? tournament.name + " | Gandrīz NBA"
-    : (lang ? 'Loading' : "Lādējās") + " | Gandrīz NBA";
+    : (lang ? "Loading" : "Lādējās") + " | Gandrīz NBA";
   const navigate = useNavigate();
 
   // Get tournament data
@@ -56,13 +56,16 @@ export default function AboutTournament() {
     }
 
     // Make request to API
-    const request = await fetch("https://basketbols.onrender.com/api/tournaments/" + id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    const request = await fetch(
+      "https://basketbols.onrender.com/api/tournaments/" + id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
       },
-    });
+    );
 
     // Get response
     const response = await request.json();
@@ -195,7 +198,6 @@ export default function AboutTournament() {
     // Set teams
     setTeams(response);
 
-
     // Save to local storage
     const responseData = response.map((team) => {
       return {
@@ -266,11 +268,18 @@ export default function AboutTournament() {
     if ((game && !games.nextGame) || (!game && !games.lastGame))
       return (
         <div className="gameCard">
-          <h3 className="title">{game ? (lang ? 'Next' : "Nākamā") : (lang ? 'Previous' : "Pēdējā")} {lang ? 'match' : 'spēle'}</h3>
+          <h3 className="title">
+            {game ? (lang ? "Next" : "Nākamā") : lang ? "Previous" : "Pēdējā"}{" "}
+            {lang ? "match" : "spēle"}
+          </h3>
           <h2 className="noGame">
             {game
-              ? (lang ? 'All matches have been played' : "Visas spēles jau ir izspēlētas")
-              : (lang ? 'No match has begun yet' : "Neviena spēle vēl nav izspēlēta")}
+              ? lang
+                ? "All matches have been played"
+                : "Visas spēles jau ir izspēlētas"
+              : lang
+                ? "No match has begun yet"
+                : "Neviena spēle vēl nav izspēlēta"}
           </h2>
         </div>
       );
@@ -293,7 +302,10 @@ export default function AboutTournament() {
     } else {
       return (
         <div className="gameCard">
-          <h3 className="title">{game ? (lang ? 'Next' : "Nākamā") : (lang ? 'Previous' : "Pēdējā")} {lang ? 'match' : 'spēle'}</h3>
+          <h3 className="title">
+            {game ? (lang ? "Next" : "Nākamā") : lang ? "Previous" : "Pēdējā"}{" "}
+            {lang ? "match" : "spēle"}
+          </h3>
           <h2 className="noGame">{"Lādējās..."}</h2>
         </div>
       );
@@ -303,11 +315,13 @@ export default function AboutTournament() {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     const group = alphabet[teamData[0].teamgroup];
 
-
     // Return game card
     return (
       <div className={game ? "gameCard" : "gameCard lastGame"}>
-        <h3 className="title">{game ? (lang ? 'Next' : "Nākamā") : (lang ? 'Previous' : "Pēdējā")} {lang ? 'match' : 'spēle'}</h3>
+        <h3 className="title">
+          {game ? (lang ? "Next" : "Nākamā") : lang ? "Previous" : "Pēdējā"}{" "}
+          {lang ? "match" : "spēle"}
+        </h3>
         <div className="teamInfo">
           <div className="team">
             <img src={logoImg} alt="Team 1 logo" className="teamLogo" />
@@ -323,7 +337,7 @@ export default function AboutTournament() {
         </div>
         <div className="gameData">
           <p>
-            <b>{group}</b> {lang ? 'group' : 'grupa'}
+            <b>{group}</b> {lang ? "group" : "grupa"}
           </p>
           <p>
             {/* Set date to correct format */}
@@ -354,7 +368,15 @@ export default function AboutTournament() {
         </div>
         <div className="buttonDiv">
           <Button
-            text={game ? (lang ? 'Prepare game' : "Sagatavot spēli") : (lang ? 'Game analysis' : "Spēles analīze")}
+            text={
+              game
+                ? lang
+                  ? "Prepare game"
+                  : "Sagatavot spēli"
+                : lang
+                  ? "Game analysis"
+                  : "Spēles analīze"
+            }
             onClick={() => {
               game
                 ? navigate("/app/game/" + games.nextGame.id + "/instructions")
@@ -377,7 +399,8 @@ export default function AboutTournament() {
             <p className="locationText">{tournament.location}</p>
           </div>
           <p className="organizer">
-            {lang ? 'Organised by' : 'Organizē'} <b className="organizerName">{tournament.organizer}</b>
+            {lang ? "Organised by" : "Organizē"}{" "}
+            <b className="organizerName">{tournament.organizer}</b>
           </p>
         </div>
       </div>
@@ -387,7 +410,10 @@ export default function AboutTournament() {
 
         <div className="refTable">
           <Table
-            cols={[lang ? 'Name' : "Vārds", lang ? 'Playoffs' : "Izslēgšanas spēles"]}
+            cols={[
+              lang ? "Name" : "Vārds",
+              lang ? "Playoffs" : "Izslēgšanas spēles",
+            ]}
             content={[...setRefereeTable()]}
             id="refTable"
           />
@@ -399,17 +425,24 @@ export default function AboutTournament() {
 
         <div className="rulesCont">
           <p>
-            {lang ? 'Thou tournament is taking place according to official basketball rules approved by FIBA, which can be viewed ' : 'Turnīrs notiek pēc oficiāliem FIBA apstiprinātiem noteikumiem, kurus var apskatīt '}
+            {lang
+              ? "Thou tournament is taking place according to official basketball rules approved by FIBA, which can be viewed "
+              : "Turnīrs notiek pēc oficiāliem FIBA apstiprinātiem noteikumiem, kurus var apskatīt "}
             <Link
               to="https://www.fiba.basketball/documents/official-basketball-rules/current.pdf"
               target="_blank"
               rel="noreferrer"
             >
-              {lang ? 'here' : 'šeit'}
+              {lang ? "here" : "šeit"}
             </Link>
             .
           </p>
-          <p>{lang ? 'Public page: ' : 'Publiskā lapa: '} <Link to={'/' + tournament.pagename}>erngusmik.github.io/{tournament.pagename}</Link></p>
+          <p>
+            {lang ? "Public page: " : "Publiskā lapa: "}{" "}
+            <Link to={"/" + tournament.pagename}>
+              erngusmik.github.io/{tournament.pagename}
+            </Link>
+          </p>
           <div className="dates">
             <i className="fa-regular fa-calendar fa-lg" />
             <p>{tournament.dates}</p>
