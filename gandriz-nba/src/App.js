@@ -41,13 +41,13 @@ function App() {
         {
             path: "/",
             element: <Index />,
-            errorElement: <div>Home error</div>,
+            errorElement: <div>An error occured / Notika kļūda (INDEX-FATAL)</div>,
             children: [],
         },
         {
             path: "/app",
             element: <Root />,
-            errorElement: <div>App error</div>,
+            errorElement: <div>An error occured / Notika kļūda (APP-FATAL)</div>,
             children: [
                 {
                     path: "/app/",
@@ -98,7 +98,7 @@ function App() {
                             element: <TournamentGames />,
                         },
                     ],
-                    errorElement: <div>Tournament error</div>,
+                    errorElement: <div>An error occured / Notika kļūda (TOURNAMENT-FATAL)</div>,
                 },
                 {
                     path: "/app/game/:id",
@@ -124,7 +124,7 @@ function App() {
                         },
 
                     ],
-                    errorElement: <div>Game error</div>,
+                    errorElement: <div>An error occured / Notika kļūda (GAME_ADMIN-FATAL)</div>,
                 },
                 {
                     path: "/app/game/not-found",
@@ -139,49 +139,42 @@ function App() {
         {
             path: "/game/:id/watch",
             element: <Watch />,
-            errorElement: <div>Watch error</div>,
+            errorElement: <div>An error occured / Notika kļūda (GAME-FATAL)</div>,
         },
         {
             path: "login",
             element: <Login />,
-            errorElement: <div>Login error</div>,
-            children: [],
+            errorElement: <div>An error occured / Notika kļūda (LOGIN-FATAL)</div>,
         },
         {
             path: "/login/email",
             element: <Email />,
-            errorElement: <div>Login email error</div>,
-            children: [],
+            errorElement: <div>An error occured / Notika kļūda (LOGIN_EMAIL-FATAL)</div>,
         },
         {
             path: "/signup",
             element: <Signup />,
-            errorElement: <div>Signup error</div>,
-            children: [],
+            errorElement: <div>An error occured / Notika kļūda (SIGNUP-FATAL)</div>,
         },
         {
             path: "/forgot-password",
             element: <ForgotPassword />,
-            errorElement: <div>Forgot password error</div>,
-            children: [],
+            errorElement: <div>An error occured / Notika kļūda (F_PASSW-FATAL)</div>,
         },
         {
             path: "/reset-password",
             element: <ResetPassword />,
-            errorElement: <div>Reset password error</div>,
-            children: [],
+            errorElement: <div>An error occured / Notika kļūda (R_PASSW-FATAL)</div>,
         },
         {
             path: "/404",
             element: <NotFound />,
             errorElement: <NotFound />,
-            children: [],
         },
         {
             path: '/*',
             element: <PublicPage />,
-            errorElement: <div>Public page error</div>,
-            children: [],
+            errorElement: <div>An error occured / Notika kļūda (PUB_PAGE-FATAL)</div>,
         },
     ]);
     return (

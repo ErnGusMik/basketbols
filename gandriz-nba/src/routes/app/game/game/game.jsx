@@ -44,11 +44,11 @@ export default function Game() {
     const [disabled, setDisabled] = React.useState(true);
 
     const [team1, setTeam1] = React.useState({
-        name: lang ? 'Loading...' : "Lādējas...",
+        name: lang ? "Loading..." : "Lādējas...",
     });
 
     const [team2, setTeam2] = React.useState({
-        name: lang ? 'Loading...' : "Lādējas...",
+        name: lang ? "Loading..." : "Lādējas...",
     });
 
     const [start, setStart] = React.useState(false);
@@ -78,24 +78,26 @@ export default function Game() {
     // Set title
     document.title =
         team1.id && team2.id
-            ? `${lang ? 'Match' : 'Spēle'} | ${team1.name} vs ${team2.name} | Gandrīz NBA`
-            : (lang ? 'Match loading' : "Lādējam spēli") + " | Gandrīz NBA";
+            ? `${lang ? "Match" : "Spēle"} | ${team1.name} vs ${
+                  team2.name
+              } | Gandrīz NBA`
+            : (lang ? "Match loading" : "Lādējam spēli") + " | Gandrīz NBA";
 
     // Set refs
     const playButton = useRef();
 
-    // Update lang on localStorage change
-    React.useEffect(() => {
-        window.addEventListener("storage", () => {
-            setLang(Boolean(localStorage.getItem("lang")));
-        });
-
-        return () => {
-            window.removeEventListener("storage", () => {
-                setLang(Boolean(localStorage.getItem("lang")));
-            });
-        };
-    }, []);
+    // Change languege
+    const changeLanguage = () => {
+        if (localStorage.getItem("lang") === "en") {
+            localStorage.removeItem("lang");
+            window.dispatchEvent(new Event("storage"));
+            setLang(false);
+            return;
+        }
+        localStorage.setItem("lang", "en");
+        window.dispatchEvent(new Event("storage"));
+        setLang(true);
+    };
 
     // Get game data from the server
     const getGame = async () => {
@@ -119,7 +121,9 @@ export default function Game() {
             console.log(error);
             setInstructions(
                 <p>
-                    {lang ? 'An error has occured. Refresh the page or contact support.' : 'Ir notikusi kļūda. Atsvaidzini lapu vai sazinies ar atbalstu.'}
+                    {lang
+                        ? "An error has occured. Refresh the page or contact support."
+                        : "Ir notikusi kļūda. Atsvaidzini lapu vai sazinies ar atbalstu."}
                 </p>
             );
             throw new Error("Failed to fetch game data from server.");
@@ -133,8 +137,11 @@ export default function Game() {
 
         setInstructions(
             <p>
-                {lang ? 'To start a 10s countdown until match start, click' : 'Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied'}{" "}
-                <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
+                {lang
+                    ? "To start a 10s countdown until match start, click"
+                    : "Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied"}{" "}
+                <i className="fa-solid fa-play" />{" "}
+                {lang ? "or press the space button." : "vai atsarpes taustiņu."}
             </p>
         );
 
@@ -212,8 +219,13 @@ export default function Game() {
                     setStart(false);
                     setInstructions(
                         <p>
-                            {lang ? 'To start a 10s countdown until match start, click' : 'Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied'}{" "}
-                            <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
+                            {lang
+                                ? "To start a 10s countdown until match start, click"
+                                : "Lai sāktu 10s laika atskaiti līdz spēles sākumam, spied"}{" "}
+                            <i className="fa-solid fa-play" />{" "}
+                            {lang
+                                ? "or press the space button."
+                                : "vai atsarpes taustiņu."}
                         </p>
                     );
                 } else {
@@ -227,8 +239,13 @@ export default function Game() {
                     );
                     setInstructions(
                         <p>
-                            {lang ? 'Match paused! To continue the match, click' : 'Spēle apturēta! Lai turpinātu spēli, spied'}{" "}
-                            <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
+                            {lang
+                                ? "Match paused! To continue the match, click"
+                                : "Spēle apturēta! Lai turpinātu spēli, spied"}{" "}
+                            <i className="fa-solid fa-play" />{" "}
+                            {lang
+                                ? "or press the space button."
+                                : "vai atsarpes taustiņu."}
                         </p>
                     );
                 }
@@ -259,11 +276,19 @@ export default function Game() {
 
                 setInstructions(
                     <p>
-                        {lang ? 'Match ongoing! To pause the match, click ' : 'Spēle turpinās! Lai apturētu spēli, spied '}
-                        <i className="fa-solid fa-pause" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu. '}
-                        <i className="fa-solid fa-circle-xmark" /> - {lang ? 'foul' : 'piezīme'},{" "}
-                        <i className="fa-solid fa-shield" /> - {lang ? 'block' : 'bloks'},{" "}
-                        <i className="fa-solid fa-hourglass-start" /> - {lang ? 'timeout' : '1 min pārtraukums'}.
+                        {lang
+                            ? "Match ongoing! To pause the match, click "
+                            : "Spēle turpinās! Lai apturētu spēli, spied "}
+                        <i className="fa-solid fa-pause" />{" "}
+                        {lang
+                            ? "or press the space button."
+                            : "vai atsarpes taustiņu. "}
+                        <i className="fa-solid fa-circle-xmark" /> -{" "}
+                        {lang ? "foul" : "piezīme"},{" "}
+                        <i className="fa-solid fa-shield" /> -{" "}
+                        {lang ? "block" : "bloks"},{" "}
+                        <i className="fa-solid fa-hourglass-start" /> -{" "}
+                        {lang ? "timeout" : "1 min pārtraukums"}.
                     </p>
                 );
             }
@@ -345,8 +370,13 @@ export default function Game() {
 
                 setInstructions(
                     <p>
-                        {lang ? 'Match paused! To continue the match, click' : 'Spēle apturēta! Lai turpinātu spēli, spied'}{" "}
-                        <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
+                        {lang
+                            ? "Match paused! To continue the match, click"
+                            : "Spēle apturēta! Lai turpinātu spēli, spied"}{" "}
+                        <i className="fa-solid fa-play" />{" "}
+                        {lang
+                            ? "or press the space button."
+                            : "vai atsarpes taustiņu."}
                     </p>
                 );
             } else {
@@ -371,11 +401,19 @@ export default function Game() {
 
                 setInstructions(
                     <p>
-                        {lang ? 'Match ongoing! To pause the match, click ' : 'Spēle turpinās! Lai apturētu spēli, spied '}
-                        <i className="fa-solid fa-pause" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu. '}
-                        <i className="fa-solid fa-circle-xmark" /> - {lang ? 'foul' : 'piezīme'},{" "}
-                        <i className="fa-solid fa-shield" /> - {lang ? 'block' : 'bloks'},{" "}
-                        <i className="fa-solid fa-hourglass-start" /> - {lang ? 'timeout' : '1 min pārtraukums'}.
+                        {lang
+                            ? "Match ongoing! To pause the match, click "
+                            : "Spēle turpinās! Lai apturētu spēli, spied "}
+                        <i className="fa-solid fa-pause" />{" "}
+                        {lang
+                            ? "or press the space button."
+                            : "vai atsarpes taustiņu. "}
+                        <i className="fa-solid fa-circle-xmark" /> -{" "}
+                        {lang ? "foul" : "piezīme"},{" "}
+                        <i className="fa-solid fa-shield" /> -{" "}
+                        {lang ? "block" : "bloks"},{" "}
+                        <i className="fa-solid fa-hourglass-start" /> -{" "}
+                        {lang ? "timeout" : "1 min pārtraukums"}.
                     </p>
                 );
             }
@@ -563,8 +601,13 @@ export default function Game() {
             timer.current.postMessage("STOP");
             setInstructions(
                 <p>
-                    {lang ? 'Match paused! To continue the match, click' : 'Spēle apturēta! Lai turpinātu spēli, spied'}{" "}
-                    <i className="fa-solid fa-play" /> {lang ? 'or press the space button.' : 'vai atsarpes taustiņu.'}
+                    {lang
+                        ? "Match paused! To continue the match, click"
+                        : "Spēle apturēta! Lai turpinātu spēli, spied"}{" "}
+                    <i className="fa-solid fa-play" />{" "}
+                    {lang
+                        ? "or press the space button."
+                        : "vai atsarpes taustiņu."}
                 </p>
             );
             return;
@@ -574,11 +617,17 @@ export default function Game() {
             setInstructions(
                 <p>
                     <i className="fa-solid fa-triangle-exclamation" /> <br />
-                    {lang ? 'Timeout (1 min):' : 'Minūtes pārtraukums:'} {timeoutTime} {lang ? 'seconds' : 'sekundes'}
+                    {lang ? "Timeout (1 min):" : "Minūtes pārtraukums:"}{" "}
+                    {timeoutTime} {lang ? "seconds" : "sekundes"}
                 </p>
             );
         } else if (timeoutTime < 60) {
-            setInstructions(<p>Minūtes pārtraukums: {timeoutTime} sekundes</p>);
+            setInstructions(
+                <p>
+                    {lang ? "Timeout (1 min):" : "Minūtes pārtraukums:"}{" "}
+                    {timeoutTime} {lang ? "seconds" : "sekundes"}
+                </p>
+            );
         }
     }, [timeoutTime]);
 
@@ -587,7 +636,9 @@ export default function Game() {
         if (
             gameData.id &&
             team1.name !== "Lādējas..." &&
-            team2.name !== "Lādējas..."
+            team2.name !== "Lādējas..." &&
+            team1.name !== "Loading..." &&
+            team2.name !== "Loading..."
         ) {
             createPublicGame();
         }
@@ -737,12 +788,19 @@ export default function Game() {
 
             setInstructions(
                 <p>
-                    Spēle sākusies! Lai apturētu spēli, spied{" "}
-                    <i className="fa-solid fa-pause" /> vai atsarpes taustiņu.{" "}
-                    <i className="fa-solid fa-circle-xmark" /> - piezīme,{" "}
-                    <i className="fa-solid fa-shield" /> - bloks,{" "}
-                    <i className="fa-solid fa-hourglass-start" /> - 1min
-                    pārtraukums.
+                    {lang
+                        ? "Match ongoing! To pause the match, click "
+                        : "Spēle turpinās! Lai apturētu spēli, spied "}
+                    <i className="fa-solid fa-pause" />{" "}
+                    {lang
+                        ? "or press the space button."
+                        : "vai atsarpes taustiņu. "}
+                    <i className="fa-solid fa-circle-xmark" /> -{" "}
+                    {lang ? "foul" : "piezīme"},{" "}
+                    <i className="fa-solid fa-shield" /> -{" "}
+                    {lang ? "block" : "bloks"},{" "}
+                    <i className="fa-solid fa-hourglass-start" /> -{" "}
+                    {lang ? "timeout" : "1 min pārtraukums"}.
                 </p>
             );
 
@@ -775,8 +833,13 @@ export default function Game() {
 
             setInstructions(
                 <p>
-                    Spēle apturēta! Lai turpinātu spēli, spied{" "}
-                    <i className="fa-solid fa-play" /> vai atsarpes taustiņu.
+                    {lang
+                        ? "Match paused! To continue the match, click"
+                        : "Spēle apturēta! Lai turpinātu spēli, spied"}{" "}
+                    <i className="fa-solid fa-play" />{" "}
+                    {lang
+                        ? "or press the space button."
+                        : "vai atsarpes taustiņu."}
                 </p>
             );
 
@@ -807,12 +870,19 @@ export default function Game() {
 
             setInstructions(
                 <p>
-                    Spēle turpinās! Lai apturētu spēli, spied{" "}
-                    <i className="fa-solid fa-pause" /> vai atsarpes taustiņu.{" "}
-                    <i className="fa-solid fa-circle-xmark" /> - piezīme,{" "}
-                    <i className="fa-solid fa-shield" /> - bloks,{" "}
-                    <i className="fa-solid fa-hourglass-start" /> - 1min
-                    pārtraukums.
+                    {lang
+                        ? "Match ongoing! To pause the match, click "
+                        : "Spēle turpinās! Lai apturētu spēli, spied "}
+                    <i className="fa-solid fa-pause" />{" "}
+                    {lang
+                        ? "or press the space button."
+                        : "vai atsarpes taustiņu. "}
+                    <i className="fa-solid fa-circle-xmark" /> -{" "}
+                    {lang ? "foul" : "piezīme"},{" "}
+                    <i className="fa-solid fa-shield" /> -{" "}
+                    {lang ? "block" : "bloks"},{" "}
+                    <i className="fa-solid fa-hourglass-start" /> -{" "}
+                    {lang ? "timeout" : "1 min pārtraukums"}.
                 </p>
             );
 
@@ -1188,8 +1258,9 @@ export default function Game() {
         if (!window.Worker) {
             setInstructions(
                 <p>
-                    Jūsu pārlūkprogramma neatbalsta Web Workers. Lūdzu nomainiet
-                    vai atjauniniet savu pārlūkprogrammu.
+                    {lang
+                        ? "Your browser does not support Web Workers. Please change or update your browser."
+                        : "Jūsu pārlūkprogramma neatbalsta Web Workers. Lūdzu nomainiet vai atjauniniet savu pārlūkprogrammu."}
                 </p>
             );
         }
@@ -1225,8 +1296,14 @@ export default function Game() {
             if (quarter === 1 || quarter === 3) {
                 setInstructions(
                     <p>
-                        Pārtraukums pirms {quarter + 1}. ceturtdaļas. Spēle
-                        jāturpina pēc 2 min. (
+                        {lang
+                            ? "Break before " +
+                              (quarter === 1 ? "2nd" : "4th") +
+                              " quarter. Game needs to be continued in 2 min."
+                            : "Pārtraukums pirms " +
+                              (quarter + 1) +
+                              ". ceturtdaļas. Spēle jāturpina pēc 2 min."}{" "}
+                        (
                         {new Date(
                             Date.now() + 60 * 1000 * 2
                         ).toLocaleTimeString("en-GB")}
@@ -1236,8 +1313,10 @@ export default function Game() {
             } else if (quarter === 2) {
                 setInstructions(
                     <p>
-                        Pārtraukums pirms 3. ceturtdaļas. Spēle jāturpina pēc 15
-                        min. (
+                        {lang
+                            ? "Halftime. Match needs to be continued in 15 min."
+                            : "Puslaiks. Spēle jāturpina pēc 15min."}{" "}
+                        (
                         {new Date(
                             Date.now() + 60 * 1000 * 15
                         ).toLocaleTimeString("en-GB")}
@@ -1247,9 +1326,13 @@ export default function Game() {
             } else {
                 setInstructions(
                     <p>
-                        Spēle beigusies. Lai aizietu uz spēles analīzi, spied{" "}
-                        <i className="fa-solid fa-arrow-right" /> vai atsarpes
-                        taustiņu.
+                        {lang
+                            ? "Match has ended. To navigate to the game analysis, click"
+                            : "Spēle beigusies. Lai aizietu uz spēles analīzi, spied"}{" "}
+                        <i className="fa-solid fa-arrow-right" />{" "}
+                        {lang
+                            ? "or press the space button."
+                            : "vai atsarpes taustiņu."}
                     </p>
                 );
                 document.getElementById("gameSpaceBtn").onclick = () => {
@@ -1329,9 +1412,12 @@ export default function Game() {
                         (e.target.parentNode.parentNode.style.display = "none")
                     }
                 />
-                <h2>{team ? team1.name : team2.name} piezīmes</h2>
+                <h2>
+                    {team ? team1.name : team2.name}{" "}
+                    {lang ? "fouls" : "piezīmes"}
+                </h2>
                 <h4>
-                    Kopā:{" "}
+                    {lang ? "In total: " : "Kopā: "}
                     {team
                         ? fouls.team1details.length
                         : fouls.team2details.length}
@@ -1370,7 +1456,7 @@ export default function Game() {
         <div className="game__container">
             <StartAnimation start={start} />
 
-            <i className="fa-solid fa-globe changeLang" />
+            <i className="fa-solid fa-globe changeLang" onClick={changeLanguage}/>
             <div className="gameFlex__container">
                 <div className="flexCont team">
                     <h2>{team1.name}</h2>
@@ -1628,7 +1714,9 @@ export default function Game() {
                         : "0:0" + (time % 600) / 10 + ".0"}
                 </h3>
                 <h4>
-                    <b>Periods {quarter}</b>
+                    <b>
+                        {lang ? "Period" : "Periods"} {quarter}
+                    </b>
                 </h4>
                 <p>
                     <b style={{ fontWeight: 900 }}>
@@ -1641,10 +1729,14 @@ export default function Game() {
                                   )[0]
                             : "N/A"}
                     </b>{" "}
-                    grupa
+                    {lang ? "group" : "grupa"}
                 </p>
                 <p>
-                    {gameData.venue ? gameData.venue : "Turnīra galvenā arēna"}
+                    {gameData.venue
+                        ? gameData.venue
+                        : lang
+                        ? "Main arena of tournament"
+                        : "Turnīra galvenā arēna"}
                 </p>
             </div>
 
@@ -1674,18 +1766,33 @@ export default function Game() {
                 }
             >
                 <h1>
-                    Atvainojamies, uz šī ekrāna nevar skaitīt spēles statistiku
+                    {lang
+                        ? "We're sorry, you can't count game stats on a screen this size"
+                        : "Atvainojamies, uz šī ekrāna nevar skaitīt spēles statistiku"}
                 </h1>
                 <p>
-                    Pamēģiniet:
+                    {lang ? "Try:" : "Pamēģiniet:"}
                     <ul>
-                        <li>Pagriezt ierīci horizontāli</li>
-                        <li>Izmantot citu ierīci/ekrānu</li>
+                        <li>
+                            {lang
+                                ? "Turning the device horizontally"
+                                : "Pagriezt ierīci horizontāli"}
+                        </li>
+                        <li>
+                            {lang
+                                ? "Using a different device/screen"
+                                : "Izmantot citu ierīci/ekrānu"}
+                        </li>
                     </ul>
                 </p>
                 <p>
-                    Ekrāni šaurāki par 715px netiek atbalstīti. (jums{" "}
-                    {windowWidth}px)
+                    {lang
+                        ? "Screens narrower than 715px are not supported. (this one is " +
+                          windowWidth +
+                          "px)"
+                        : "Ekrāni šaurāki par 715px netiek atbalstīti. (jums " +
+                          windowWidth +
+                          "px)"}
                 </p>
             </div>
         </div>
