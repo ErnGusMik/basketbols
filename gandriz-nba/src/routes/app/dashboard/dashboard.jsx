@@ -9,7 +9,21 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
     const [tournaments, setTournaments] = React.useState([]);
     const [name, setName] = React.useState("lietotāj");
-    const [lang, setLang] = React.useState(Boolean(localStorage.getItem("lang")));
+    const [lang, setLang] = React.useState(
+        Boolean(localStorage.getItem("lang"))
+    );
+
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    }, []);
 
     // Function to decode JWTs
     const parseJwt = (token) => {
@@ -38,7 +52,9 @@ const Dashboard = () => {
 
         // Get all tournaments for this user
         const tournamentRequest = await fetch(
-            "https://basketbols.onrender.com/api/" + idToken.sub + "/tournaments",
+            "https://basketbols.onrender.com/api/" +
+                idToken.sub +
+                "/tournaments",
             {
                 method: "GET",
                 headers: {
@@ -104,7 +120,8 @@ const Dashboard = () => {
             // If nextGame exists, get team names
             if (nextGame) {
                 const nextTeam1req = await fetch(
-                    "https://basketbols.onrender.com/api/teams/" + nextGame.team1id,
+                    "https://basketbols.onrender.com/api/teams/" +
+                        nextGame.team1id,
                     {
                         method: "GET",
                         headers: {
@@ -119,7 +136,8 @@ const Dashboard = () => {
                 const nextTeam1Data = await nextTeam1req.json();
 
                 const nextTeam2req = await fetch(
-                    "https://basketbols.onrender.com/api/teams/" + nextGame.team2id,
+                    "https://basketbols.onrender.com/api/teams/" +
+                        nextGame.team2id,
                     {
                         method: "GET",
                         headers: {
@@ -140,7 +158,8 @@ const Dashboard = () => {
             // If lastGame exists, get team names
             if (lastGame) {
                 const prevTeam1req = await fetch(
-                    "https://basketbols.onrender.com/api/teams/" + lastGame.team1id,
+                    "https://basketbols.onrender.com/api/teams/" +
+                        lastGame.team1id,
                     {
                         method: "GET",
                         headers: {
@@ -155,7 +174,8 @@ const Dashboard = () => {
                 const prevTeam1Data = await prevTeam1req.json();
 
                 const prevTeam2req = await fetch(
-                    "https://basketbols.onrender.com/api/teams/" + lastGame.team2id,
+                    "https://basketbols.onrender.com/api/teams/" +
+                        lastGame.team2id,
                     {
                         method: "GET",
                         headers: {
@@ -196,7 +216,10 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <h1>{lang ? 'Hi' : 'Sveiks'}, {name}! {lang ? 'Let\'s play!' : 'Uzspēlējam?'}</h1>
+            <h1>
+                {lang ? "Hi" : "Sveiks"}, {name}!{" "}
+                {lang ? "Let's play!" : "Uzspēlējam?"}
+            </h1>
             {tournaments.map((tournament) => {
                 return (
                     <div className="component">
@@ -248,11 +271,14 @@ const Dashboard = () => {
                                         )}
                                     </p>
                                 </div>
-                                <p>{lang ? 'Organized by' : 'Organizē'} {tournament.organizer}</p>
+                                <p>
+                                    {lang ? "Organized by" : "Organizē"}{" "}
+                                    {tournament.organizer}
+                                </p>
                             </div>
                         </div>
                         <div className="game">
-                            <h3>{lang ? 'Next match' : 'Nākamā spēle'}</h3>
+                            <h3>{lang ? "Next match" : "Nākamā spēle"}</h3>
                             <p>
                                 {tournament.nextGame
                                     ? tournament.nextGame.team1name
@@ -261,7 +287,9 @@ const Dashboard = () => {
                             <h4 style={{ textAlign: "center" }}>
                                 {tournament.nextGame
                                     ? "VS"
-                                    : lang ? 'All matches have ended' : "Visas spēles ir izspēlētas"}
+                                    : lang
+                                    ? "All matches have ended"
+                                    : "Visas spēles ir izspēlētas"}
                             </h4>
                             <p>
                                 {tournament.nextGame
@@ -269,13 +297,25 @@ const Dashboard = () => {
                                     : ""}
                             </p>
                             {tournament.nextGame && (
-                                <Link to={'/app/game/' + tournament.nextGame.id + '/instructions'}>
-                                    <Button text={lang ? 'Prepare match' : "Sagatavot spēli"} />
+                                <Link
+                                    to={
+                                        "/app/game/" +
+                                        tournament.nextGame.id +
+                                        "/instructions"
+                                    }
+                                >
+                                    <Button
+                                        text={
+                                            lang
+                                                ? "Prepare match"
+                                                : "Sagatavot spēli"
+                                        }
+                                    />
                                 </Link>
                             )}
                         </div>
                         <div className="game">
-                            <h3>{lang ? 'Previous match' : 'Pēdējā spēle'}</h3>
+                            <h3>{lang ? "Previous match" : "Pēdējā spēle"}</h3>
                             <p>
                                 {tournament.lastGame
                                     ? tournament.lastGame.team1name
@@ -284,7 +324,9 @@ const Dashboard = () => {
                             <h4 style={{ textAlign: "center" }}>
                                 {tournament.lastGame
                                     ? "VS"
-                                    : lang ? 'No match has been finished yet' : "Neviena spēle vēl nav izspēlēta"}
+                                    : lang
+                                    ? "No match has been finished yet"
+                                    : "Neviena spēle vēl nav izspēlēta"}
                             </h4>
                             <p>
                                 {tournament.lastGame
@@ -292,8 +334,20 @@ const Dashboard = () => {
                                     : ""}
                             </p>
                             {tournament.lastGame && (
-                                <Link to={'/app/game/' + tournament.lastGame.id + '/analysis'}>
-                                    <Button text={lang ? 'Match analysis' : "Spēles analīze"} />
+                                <Link
+                                    to={
+                                        "/app/game/" +
+                                        tournament.lastGame.id +
+                                        "/analysis"
+                                    }
+                                >
+                                    <Button
+                                        text={
+                                            lang
+                                                ? "Match analysis"
+                                                : "Spēles analīze"
+                                        }
+                                    />
                                 </Link>
                             )}
                         </div>
@@ -303,7 +357,7 @@ const Dashboard = () => {
             <div className="newTournamentBtn">
                 <Link to="/app/tournaments/new">
                     <Button
-                        text={lang ? 'New tournament' : "Jauns turnīrs"}
+                        text={lang ? "New tournament" : "Jauns turnīrs"}
                         icon={
                             <i
                                 className="fa-solid fa-plus"

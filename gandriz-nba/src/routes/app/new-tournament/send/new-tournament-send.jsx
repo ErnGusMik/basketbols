@@ -7,6 +7,19 @@ export default function NewTournamentSend() {
     const [lang, setLang] = React.useState(
         Boolean(localStorage.getItem("lang"))
     );
+
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    }, []);
+
     // Set required vars
     const navigate = useNavigate();
     document.title = lang

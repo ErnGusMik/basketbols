@@ -22,10 +22,12 @@ export default function Root() {
     const changeLanguage = () => {
         if (localStorage.getItem("lang") === "en") {
             localStorage.removeItem("lang");
+            window.dispatchEvent(new Event("storage"));
             setLang(false);
             return;
         }
         localStorage.setItem("lang", "en");
+        window.dispatchEvent(new Event("storage"));
         setLang(true);
     };
 

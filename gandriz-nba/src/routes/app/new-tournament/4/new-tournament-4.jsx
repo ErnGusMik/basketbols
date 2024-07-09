@@ -11,6 +11,19 @@ export default function NewTournament4() {
     const [lang, setLang] = React.useState(
         Boolean(localStorage.getItem("lang"))
     );
+
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    }, []);
+
     // Set title and required vars
     document.title = lang
         ? "Step 4 | New tournament | Gandriz NBA"

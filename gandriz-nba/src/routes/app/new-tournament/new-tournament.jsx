@@ -35,6 +35,18 @@ export default function NewTournament() {
         Boolean(localStorage.getItem("lang"))
     );
 
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    }, []);
+
     // set page title
     document.title = lang
         ? "New tournament | Gandrīz NBA"
@@ -115,7 +127,8 @@ export default function NewTournament() {
         }
         document.getElementById("submit-page1").disabled = true;
         const request = await fetch(
-            "https://basketbols.onrender.com/api/tournaments/getIDfromName?name=" + obj.pageName,
+            "https://basketbols.onrender.com/api/tournaments/getIDfromName?name=" +
+                obj.pageName,
             {
                 method: "GET",
             }
@@ -309,7 +322,10 @@ export default function NewTournament() {
                                     .
                                 </p>
                             </div>
-                            <SubmitInput inputID="submit-page1" value={lang ? 'Continue' : 'Turpināt'}/>
+                            <SubmitInput
+                                inputID="submit-page1"
+                                value={lang ? "Continue" : "Turpināt"}
+                            />
                         </div>
                     </div>
                 </div>

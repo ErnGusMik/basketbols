@@ -11,10 +11,27 @@ export default function Analysis() {
 
     const [gameData, setGameData] = useState({});
     const [teamData, setTeamData] = useState({});
+    const [lang, setLang] = React.useState(
+        Boolean(localStorage.getItem("lang"))
+    );
 
-    document.title = `${teamData.team1 ? teamData.team1 : "Lādējas..."} VS ${
-        teamData.team2 ? teamData.team2 : "Lādējas..."
-    } | Spēles analīze | Gandrīz NBA`;
+    React.useEffect(() => {
+        window.addEventListener("storage", () => {
+            setLang(Boolean(localStorage.getItem("lang")));
+        });
+
+        return () => {
+            window.removeEventListener("storage", () => {
+                setLang(Boolean(localStorage.getItem("lang")));
+            });
+        };
+    });
+
+    document.title = `${
+        teamData.team1 ? teamData.team1 : lang ? "Loading" : "Lādējas..."
+    } VS ${
+        teamData.team2 ? teamData.team2 : lang ? "Loading" : "Lādējas..."
+    } | ${lang ? "Game analysis" : "Spēles analīze"} | Gandrīz NBA`;
 
     // Get game statistics data
     const getData = async () => {
@@ -171,7 +188,9 @@ export default function Analysis() {
                                   player.lastname
                         )
                         .join("\n");
-                document.getElementById("team2players").classList.remove("skeleton");
+                document
+                    .getElementById("team2players")
+                    .classList.remove("skeleton");
             } else {
                 document.getElementById("team1players").innerText =
                     playerResponse
@@ -187,7 +206,9 @@ export default function Analysis() {
                                   player.lastname
                         )
                         .join("\n");
-                document.getElementById("team1players").classList.remove("skeleton");
+                document
+                    .getElementById("team1players")
+                    .classList.remove("skeleton");
             }
         }
     };
@@ -221,13 +242,16 @@ export default function Analysis() {
             </div>
             <div className="statRow">
                 <div className="statSection">
-                    <p>Reizes neizšķirts</p>
+                    <p>{lang ? 'Times drawn' : 'Reizes neizšķirts'}</p>
                     <h2>{gameData.timestied ? gameData.timestied : "0"}x</h2>
                 </div>
                 <div className="statSection">
-                    <p>Vadība mainās</p>
+                    <p>{lang ? 'Times lead changed' : 'Vadība mainās'}</p>
                     <h2>
-                        {gameData.timesleadchanged ? gameData.timesleadchanged : "0"}x
+                        {gameData.timesleadchanged
+                            ? gameData.timesleadchanged
+                            : "0"}
+                        x
                     </h2>
                 </div>
             </div>
@@ -236,7 +260,7 @@ export default function Analysis() {
                     <br />
                     <br />
                 </h4>
-                <p className="statLabel">Rezultatīvākie spēlētāji</p>
+                <p className="statLabel">{lang ? 'Best scorers' : 'Rezultatīvākie spēlētāji'}</p>
                 <h4 className="statVal bestPlayers skeleton" id="team2players">
                     <br />
                     <br />
@@ -249,7 +273,7 @@ export default function Analysis() {
                         : "0"}
                     p
                 </h4>
-                <p className="statLabel">Lielākais pārsvars</p>
+                <p className="statLabel">{lang ? 'Biggest lead' : 'Lielākais pārsvars'}</p>
                 <h4 className="statVal">
                     {gameData.team2biggestlead
                         ? gameData.team2biggestlead
@@ -261,17 +285,27 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team13points
                         ? Math.floor(
-                              (gameData.team13points / ((gameData.team1points - gameData.team12points*2 - gameData.team13points*3) + gameData.team12points + gameData.team13points)) *
+                              (gameData.team13points /
+                                  (gameData.team1points -
+                                      gameData.team12points * 2 -
+                                      gameData.team13points * 3 +
+                                      gameData.team12points +
+                                      gameData.team13points)) *
                                   100
                           )
                         : "0"}
                     %
                 </h4>
-                <p className="statLabel">3p % no visiem metieniem</p>
+                <p className="statLabel">{lang ? '3pt % of all points' : '3p % no visiem metieniem'}</p>
                 <h4 className="statVal">
                     {gameData.team23points
                         ? Math.floor(
-                              (gameData.team23points / ((gameData.team2points - gameData.team22points*2 - gameData.team23points*3) + gameData.team22points + gameData.team23points)) *
+                              (gameData.team23points /
+                                  (gameData.team2points -
+                                      gameData.team22points * 2 -
+                                      gameData.team23points * 3 +
+                                      gameData.team22points +
+                                      gameData.team23points)) *
                                   100
                           )
                         : "0"}
@@ -282,17 +316,27 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team12points
                         ? Math.floor(
-                              (gameData.team12points / ((gameData.team1points - gameData.team12points*2 - gameData.team13points*3) + gameData.team12points + gameData.team13points)) *
+                              (gameData.team12points /
+                                  (gameData.team1points -
+                                      gameData.team12points * 2 -
+                                      gameData.team13points * 3 +
+                                      gameData.team12points +
+                                      gameData.team13points)) *
                                   100
                           )
                         : "0"}
                     %
                 </h4>
-                <p className="statLabel">2p % no visiem metieniem</p>
+                <p className="statLabel">{lang ? '2pt % of all points' : '2p % no visiem metieniem'}</p>
                 <h4 className="statVal">
                     {gameData.team22points
                         ? Math.floor(
-                              (gameData.team22points / ((gameData.team2points - gameData.team22points*2 - gameData.team23points*3) + gameData.team22points + gameData.team23points)) *
+                              (gameData.team22points /
+                                  (gameData.team2points -
+                                      gameData.team22points * 2 -
+                                      gameData.team23points * 3 +
+                                      gameData.team22points +
+                                      gameData.team23points)) *
                                   100
                           )
                         : "0"}
@@ -306,7 +350,7 @@ export default function Analysis() {
                         : "0"}
                     p
                 </h4>
-                <p className="statLabel">Garākais izrāviens</p>
+                <p className="statLabel">{lang ? 'Most points in row' : 'Garākais izrāviens'}</p>
                 <h4 className="statVal">
                     {gameData.team2mostpointsinrow
                         ? gameData.team2mostpointsinrow
@@ -318,7 +362,7 @@ export default function Analysis() {
                 <h4 className="statVal">
                     {gameData.team1blocks ? gameData.team1blocks : "0"}
                 </h4>
-                <p className="statLabel">Bloki</p>
+                <p className="statLabel">{lang ? 'Blocks' : 'Bloki'}</p>
                 <h4 className="statVal">
                     {gameData.team2blocks ? gameData.team2blocks : "0"}
                 </h4>
