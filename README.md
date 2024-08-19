@@ -7,23 +7,21 @@ Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitīt
 !UZMANĪBU! Vietne kur ir serveris var būt ļoti lēna (~30sek līdz atbildēm), jo izmantoju bezmaksas versiju.
 
 ### Ātrs ieskats
+
 (Angļu valodā)
 
 https://github.com/user-attachments/assets/a0e05158-7430-4d98-9918-1d8e7da291d3
 
-
-
-
 ### Darba plānojums
 
-| Darbs                     | Statuss                |
-| ------------------------- | ---------------------- |
-| Serveris, Datubāze        | ✔️ Pabeigts            |
-| Jauna turnīra lapa, login | ✔️ Pabeigts            |
-| Spēles, turnīra lapa      | ✔️ Pabeigts            |
-| Pēcspēles analīze         | ✔️ Pabeigts            |
-| Publiskās funkcijas       | ✔️ Pabeigts            |
-| Testēšana, pabeigšana     | ✔️ Pabeigts            |
+| Darbs                     | Statuss     |
+| ------------------------- | ----------- |
+| Serveris, Datubāze        | ✔️ Pabeigts |
+| Jauna turnīra lapa, login | ✔️ Pabeigts |
+| Spēles, turnīra lapa      | ✔️ Pabeigts |
+| Pēcspēles analīze         | ✔️ Pabeigts |
+| Publiskās funkcijas       | ✔️ Pabeigts |
+| Testēšana, pabeigšana     | ✔️ Pabeigts |
 
 Iespējamie statusi:
 
