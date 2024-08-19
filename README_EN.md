@@ -8,17 +8,16 @@ A platform for creating and managing basketball tournaments.
 
 https://github.com/user-attachments/assets/a0e05158-7430-4d98-9918-1d8e7da291d3
 
-
 ### Progress
 
-| Job                         | Status                 |
-| --------------------------- | ---------------------- |
-| Server, database            | ✔️ Finished            |
-| 'New tournament' page, auth | ✔️ Finished            |
-| Games, tournament pages     | ✔️ Finished            |
-| After-game analysis         | ✔️ Finished            |
-| 'Public' functions          | ✔️ Finished            |
-| Testing, finalizing         | ✔️ Finished            |
+| Job                         | Status      |
+| --------------------------- | ----------- |
+| Server, database            | ✔️ Finished |
+| 'New tournament' page, auth | ✔️ Finished |
+| Games, tournament pages     | ✔️ Finished |
+| After-game analysis         | ✔️ Finished |
+| 'Public' functions          | ✔️ Finished |
+| Testing, finalizing         | ✔️ Finished |
 
 Possible statuses:
 
