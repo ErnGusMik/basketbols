@@ -6,6 +6,14 @@ Basketbola turnīru veidošanas un pārvaldīšanas platforma un punktu skaitīt
 
 !UZMANĪBU! Vietne kur ir serveris var būt ļoti lēna (~30sek līdz atbildēm), jo izmantoju bezmaksas versiju.
 
+### Ātrs ieskats
+(Angļu valodā)
+
+https://github.com/user-attachments/assets/a0e05158-7430-4d98-9918-1d8e7da291d3
+
+
+
+
 ### Darba plānojums
 
 | Darbs                     | Statuss                |
